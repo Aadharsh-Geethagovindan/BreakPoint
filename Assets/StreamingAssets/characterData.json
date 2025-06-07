@@ -1,0 +1,472 @@
+{
+    "characterDataArray": [
+        {
+            "name": "Aang",
+            "moves": [
+                {
+                    "name": "Elemental Master",
+                    "description": "All elemental damage increased by 10%",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Airburst",
+                    "description": "Aang shoots a gust of air dealing 40 air damage. Affected enemies have a 40% chance of being stunned next turn.",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Energy Bending",
+                    "description": "If target has less than 100 HP, they will be unable to use elemental attacks for 1 turn",
+                    "cooldown": 3
+                },
+                {
+                    "name": "Avatar State",
+                    "description": "Aang deals 25 fire, air, water and earth damage",
+                    "cooldown": 4
+                }
+            ],
+             "imageName": "CIAang"
+        },
+        {
+            "name": "Aqua",
+            "moves": [
+                {
+                    "name": "Water Goddess",
+                    "description": "Water and Ice damage aimed at Aqua is converted into health instead",
+                    "cooldown": 0
+                },
+                {
+                    "name": "God Blow",
+                    "description": "Aqua deals 30 water damage",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Blessing",
+                    "description": "Aqua heals a character for 75 HP",
+                    "cooldown": 2
+                },
+                {
+                    "name": "Resurrection",
+                    "description": "Aqua can bring back a character that died this turn with 25% HP",
+                    "cooldown": 4
+                }
+            ],
+            "imageName": "CIAqua"
+        },
+        {
+            "name": "Captain America",
+            "moves": [
+                {
+                    "name": "Vibranium Protection",
+                    "description": "If an energy attack below 40 damage targets the Captain or any ally adjacent to him, there is a 50% chance for the damage to be reflected back",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Shield Bash",
+                    "description": "The Captain slams his shield and does 20 physical damage.",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Ricochet",
+                    "description": "The Captain skillfully throws his shield at an enemy and bounces it off them to hit a second enemy, dealing 15 physical damage each time.",
+                    "cooldown": 2
+                },
+                {
+                    "name": "Avengers Assemble",
+                    "description": "Allies receive a signature charge equal to 50% of their requirement. All debuffs on any party members are erased.",
+                    "cooldown": 3
+                }
+            ],
+            "imageName": "CICaptain America"
+        },
+        {
+            "name": "Geralt",
+            "moves": [
+                {
+                    "name": "Witcher Mutation",
+                    "description": "Any buffs applied to Geralt are doubled, and any debuffs are halved.",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Silver Sword Slash",
+                    "description": "Geralt attacks with his greatsword for 25 physical damage.",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Flaming Sword Moulinet",
+                    "description": "Geralt infuses his sword with fire and attacks for 45 fire damage. He has a 60% chance to deal 20 damage on the next turn.",
+                    "cooldown": 2
+                },
+                {
+                    "name": "All Out",
+                    "description": "Geralt drinks a cocktail of dangerous potions and attacks. He has a 20% chance of taking 30 damage, and an 80% chance to deal 80 damage to an opponent, as well as gain a 50% damage buff for the next turn (not affected by passive)",
+                    "cooldown": 4
+                }
+            ],
+            "imageName": "CIGeralt"
+        },
+        {
+            "name": "Goku",
+            "moves": [
+                {
+                    "name": "Sayian genetics",
+                    "description": "Goku gains a 25% damage bonus for every 70 HP he regains. This effect can occur 3 times",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Kamehameha",
+                    "description": "Goku fires a blast dealing 50 energy damage",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Solar Flare",
+                    "description": "Goku deals 18 energy damage to all enemies, and lowers their accuracy by 20%",
+                    "cooldown": 3
+                },
+                {
+                    "name": "Super Dragon Fist",
+                    "description": "Goku creates a dragon of pure energy, punching through it to deal 160 energy damage",
+                    "cooldown": 4
+                }
+            ],
+            "imageName": "CIGoku"
+        },
+        {
+            "name": "Jack",
+            "moves": [
+                {
+                    "name": "Illusionist",
+                    "description": "Attacks aimed at Jack have a 20% increased chance to miss",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Blaster Rifle",
+                    "description": "Jack shoots his rifle, dealing 20 energy damage.",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Matador",
+                    "description": "Jack verbally abuses an enemy. The enemy takes 20% extra damage next turn.",
+                    "cooldown": 3
+                },
+                {
+                    "name": "Psychological Warfare",
+                    "description": "All allies gain a 30% damage bonus and 10 shield points",
+                    "cooldown": 4
+                }
+            ],
+            "imageName": "CIJack"
+        },
+        {
+            "name": "Kirito",
+            "moves": [
+                {
+                    "name": "OP Grinder",
+                    "description": "Kirito Farms experience. Every turn he is not attacked, he gains 20% attack damage.",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Starburst Stream",
+                    "description": "Kirito becomes a dual wielding beyblade and deals 40 physical damage.",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Full Swing",
+                    "description": "Kirito attacks with Excalibur, dealing 140 energy damage. Can only be used after summoning Excalibur.",
+                    "cooldown": 3
+                },
+                {
+                    "name": "Admin Privileges",
+                    "description": "Kirito Summons Excalibur, which lasts for 2 turns",
+                    "cooldown": 5
+                }
+            ],
+            "imageName": "CIKirito"
+        },
+        {
+            "name": "Kratos",
+            "moves": [
+                {
+                    "name": "God of War",
+                    "description": "Kratos boosts the power of his allies signature by 50%",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Leviathan Axe",
+                    "description": "Kratos attacks with his axe and deals 35 Ice damage.",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Chains of Hell",
+                    "description": "Kratos swings his chains at an enemy, dealing 35 Fire Damage for two turns.",
+                    "cooldown": 2
+                },
+                {
+                    "name": "Spartan Rage",
+                    "description": "Kratos becomes enraged for the next two turns. All damage he deals is increased by 70%, and he uses his Leviathan axe.",
+                    "cooldown": 4
+                }
+            ],
+            "imageName": "CIKratos"
+        },
+        {
+            "name": "Maul",
+            "moves": [
+                {
+                    "name": "Multiplying Rage",
+                    "description": "At the end of each round, Maul gains 15% damage bonus but takes 10% more damage.",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Saber Slice",
+                    "description": "Maul slices with his lightsaber, dealing 40 energy damage.",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Force Choke",
+                    "description": "Maul chokes an opponent, dealing 35 Air damage. If the opponent has less than 120 HP, they will do 30% reduced damage on their next attack.",
+                    "cooldown": 2
+                },
+                {
+                    "name": "Power of the Dark",
+                    "description": "Maul rips at the very foundations of the battleground, and hurls large rocks at his enemies. Deals 55 earth damage at two enemies",
+                    "cooldown": 4
+                }
+            ],
+            "imageName": "CIMaul"
+        },
+        {
+            "name": "Nut",
+            "moves": [
+                {
+                    "name": "Sky Goddess",
+                    "description": "Nut is immune to air damage, and has a 40% chance to dodge attacks from characters",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Whirlwind",
+                    "description": "Nut shoots a cyclone dealing 30 Air damage at two enemies",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Dust Storm",
+                    "description": "Nut creates a dust storm. Deals 20 air damage and reduces target's accuracy by 50% this turn",
+                    "cooldown": 2
+                },
+                {
+                    "name": "World Wind",
+                    "description": "Nut creates a powerful windstorm that deals 60 air damage to all enemies",
+                    "cooldown": 4
+                }
+            ],
+            "imageName": "CINut"
+        },
+        {
+            "name": "Optimus",
+            "moves": [
+                {
+                    "name": "Cybertron's Leader",
+                    "description": "Party members under 100 HP deal 50% additional damage",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Ion Blaster",
+                    "description": "Optimus shoots a blast at an enemy, dealing 35 energy damage.",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Thermal Machine Gun",
+                    "description": "Optimus shoots all enemies with a machine gun, dealing 20 energy damage per enemy.",
+                    "cooldown": 3
+                },
+                {
+                    "name": "Sword of Judgement",
+                    "description": "Optimus deals 60 energy damage and 15 energy damage to an enemy for the next two turns.",
+                    "cooldown": 4
+                }
+            ],
+            "imageName": "CIOptimus"
+        },
+        {
+            "name": "R2D2",
+            "moves": [
+                {
+                    "name": "Targeting System",
+                    "description": "Increases allies base accuracy by 20%",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Zapper",
+                    "description": "Deals 10 lightning damage",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Confusion Tactics",
+                    "description": "Lowers an enemy's accuracy by 15%, deals 15 physical damage",
+                    "cooldown": 2
+                },
+                {
+                    "name": "System Hack",
+                    "description": "R2 finds the opponents weak spots. All enemies take 50% increased damage next turn",
+                    "cooldown": 3
+                }
+            ],
+            "imageName": "CIR2D2"
+        },
+        {
+            "name": "Ra",
+            "moves": [
+                {
+                    "name": "Sacrifice",
+                    "description": "When an ally dies, Ra's damage is increased by 50%",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Claw",
+                    "description": "Ra strikes dealing 20 physical damage",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Sun Strike",
+                    "description": "Ra unleashes an energy wave, dealing 30 energy damage",
+                    "cooldown": 2
+                },
+                {
+                    "name": "Sun Dragon",
+                    "description": "Ra deals energy damage equal to 150% of the damage he has received",
+                    "cooldown": 4
+                }
+            ],
+            "imageName": "CIWinged Dragon of Ra"
+        },
+        {
+            "name": "Raiden Shogun",
+            "moves": [
+                {
+                    "name": "Electric Empress",
+                    "description": "Each time the Shogun is attacked by a move that deals lightning or energy damage, her damage is increased by 30%",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Katana Strike",
+                    "description": "The Shogun attacks with her lightning katana, dealing 40 lightning damage",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Burst Charge",
+                    "description": "Raiden deals 35 Lightning damage to an opponent. For every subsequent signature attack used by any person on this turn, Raiden deals an additional 20 lightning damage",
+                    "cooldown": 3
+                },
+                {
+                    "name": "Musou no Hitotachi",
+                    "description": "The Shogun slices the fabric of reality with her blade, dealing 140 lightning damage at an enemy",
+                    "cooldown": 4
+                }
+            ],
+            "imageName": "CIRaiden"
+        },
+        {
+            "name": "TRex",
+            "moves": [
+                {
+                    "name": "Apex Predator",
+                    "description": "Trex deals 50% increased damage to opponents below 100 hp",
+                    "cooldown": 0
+                },
+                {
+                    "name": "CHOMP",
+                    "description": "Trex bites dealing 40 physical damage",
+                    "cooldown": 1
+                },
+                {
+                    "name": "ROAR",
+                    "description": "All enemies below 50hp are terrified for 1 turn. Enemies under the terrified condition do not attack and take 30% extra damage.",
+                    "cooldown": 2
+                },
+                {
+                    "name": "Tyrant Lizard King",
+                    "description": "Trex bites dealing 50 physical damage. The target takes 20 poison damage for the next 2 turns",
+                    "cooldown": 4
+                }
+            ],
+            "imageName": "CITRex"
+        },
+        {
+            "name": "Starfire",
+            "moves": [
+                {
+                    "name": "Tamaranean Durability",
+                    "description": "Starfire has a 50% chance to ignore physical attacks under 30 damage.",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Heat Vision",
+                    "description": "Starfire shoots lasers out her eyes and deals 40 Energy Damage.",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Seducer's Tongue",
+                    "description": "Starfire targets an enemy. She has a 60% chance to apply the seduced effect for 1 turn. Enemies that are seduced will deal 0 damage.",
+                    "cooldown": 2
+                },
+                {
+                    "name": "Starburst Explosion",
+                    "description": "Starfire launches a giant explosion, dealing 50 AoE energy damage.",
+                    "cooldown": 4
+                }
+            ],
+            "imageName": "CIStarfire"
+        },
+        {
+            "name": "Yennefer",
+            "moves": [
+                {
+                    "name": "Aretuza's Patronage",
+                    "description": "Yennefer removes a debuff on an ally once per round",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Protection Magic",
+                    "description": "Yennefer casts a shield on an ally. The shield can absorb 15 elemental and energy damage and lasts two turns. Cannot be stacked.",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Witch's Blessing",
+                    "description": "Yen boosts an ally's elemental or energy attack by 35%",
+                    "cooldown": 2
+                },
+                {
+                    "name": "Flaming Devastation",
+                    "description": "Yen consumes 60% of her current HP and deals 70 fire damage and an additional 20 fire damage for 2 turns",
+                    "cooldown": 5
+                }
+            ],
+            "imageName": "CIYen"
+        },
+        {
+            "name": "Zhongli",
+            "moves": [
+                {
+                    "name": "Defensive Rock",
+                    "description": "All allies take 20% less damage",
+                    "cooldown": 0
+                },
+                {
+                    "name": "Spear Strike",
+                    "description": "Zhongli heavy attacks dealing 30 physical damage",
+                    "cooldown": 1
+                },
+                {
+                    "name": "Meteor Strike",
+                    "description": "Zhongli fires a rock at all opponents. Each hit does 15 earth damage.",
+                    "cooldown": 2
+                },
+                {
+                    "name": "Mighty Shield",
+                    "description": "Zhongli casts a shield on a party member. This shield has 50 shield points.",
+                    "cooldown": 4
+                }
+            ],
+            "imageName": "CIZhongli"
+        }
+    ]
+}

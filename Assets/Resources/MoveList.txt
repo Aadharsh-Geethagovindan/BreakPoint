@@ -1,0 +1,108 @@
+Aang Rarity:UR
+Elemental Master: All elemental damage increased by 10%
+Airburst: Aang shoots a gust of air dealing 40 air damage. Affected enemies have a 40% chance of being stunned next turn. cd:1
+Energy Bending: If target has less than 100 HP, they will be unable to use elemental attacks for 1 turn cd:3
+Avatar State: Aang deals 100 fire damage cd:4
+
+Aqua Rarity:R
+Water Goddess: Water and Ice damage aimed at Aqua is converted into health instead
+God Blow: Aqua deals 30 water damage cd:1
+Blessing: Aqua heals a character for 75 HP cd:2
+Resurrection: Aqua can bring back a character that died this turn with 25% HP cd:4
+
+Captain America Rarity:R
+Vibranium Protection: If an energy attack below 40 damage targets the Captain, there is a 50% chance for the damage to be reflected back
+Shield Bash: The Captain slams his shield and does 20 physical damage. cd:1
+Ricochet: The Captain skillfully throws his shield at an enemy and bounces it off them to hit a second enemy, dealing 15 physical damage each time. cd:2
+Avengers Assemble: Allies receive a signature charge equal to 50% of their requirement. All debuffs on any party members are erased. cd:3
+
+Geralt Rarity:UC
+Witcher Mutation: All healing and damage bonus buffs given to Geralt will be doubled
+Silver Sword Slash: Geralt attacks with his greatsword for 25 physical damage. cd:1
+Flaming Sword Moulinet: Geralt infuses his sword with fire and attacks for 45 fire damage. He has a 60% chance to inflict Burn, which deals 20 damage on the next turn. cd:2
+All Out: Geralt deals 60 physical damage. This damage is increased by 30 for every buff he currently has cd:4
+
+Goku Rarity:L
+Sayian genetics: Goku gains a 25% damage bonus for every 70 HP he regains. This effect can occur 3 times
+Kamehameha: Goku fires a blast dealing 50 energy damage cd:1
+Solar Flare: Goku deals 18 energy damage to all enemies, and inflicts blinding,lowering their accuracy by 20% for the next turn cd:3
+Super Dragon Fist: Goku creates a dragon of pure energy, punching through it to deal 160 energy damage cd:4
+
+Jack Rarity:UC
+Crafty Crafty: If an attack would have killed jack, it will instead reduce his hp to 1
+Blaster Rifle: Jack shoots his rifle, dealing 20 energy damage. cd:1
+Matador: Jack verbally abuses an enemy inflicting 'Mocked'. The next ally to attack the mocked enemy gains +20% damage cd:3
+Psychological Warfare: All allies gain a 30% damage bonus and 10 shield points cd:4
+
+Kirito Rarity:R
+Calm Focus: If Kirito wasn’t attacked during the previous turn, he gains a 10-point shield at the start of his turn.
+Starburst Stream: Kirito slashes the enemy in a flurry of strikes, dealing 40 physical damage. cd:1
+Dual Wield Precision: Kirito dashes to strike two enemies with 25 physical damage each. If only one enemy remains, both hits hit them. cd:2
+Sword Skill: Eclipse: Kirito unleashes a finishing combo dealing 100 energy damage and grants himself 10 shield. cd:4
+
+Kratos Rarity:UR
+God of War: Kratos's physical and fire resistance increase by 10% for every 20% reduction in his health
+Leviathan Axe: Kratos attacks with his axe and deals 35 Ice damage. cd:1
+Chains of Hell: Kratos swings his chains, dealing 30 fire damage. He inflicts Burn on an enemy for 2 turns, dealing 20 fire damage cd:2
+Spartan Rage: Kratos heals himself for 100 and becomes enraged for the next two turns. While Enraged, he only uses his normal attack and gains a 100% damage bonus multiplier cd:4
+
+Maul Rarity:R
+Multiplying Rage: At the end of each round, Maul gains 15% damage bonus but takes 10 true damage.
+Saber Slice: Maul slices with his lightsaber, dealing 40 energy damage. cd:1
+Force Choke: Maul chokes an opponent, dealing 35 Air damage. If the opponent has less than half their max HP, they will gain Weakened, and do 30% reduced damage on their next attack. cd:2
+Power of the Dark: Maul rips at the very foundations of the battleground, and hurls large rocks at his enemies. Deals 55 earth damage at two enemies cd:4
+
+Nut Rarity:L
+Sky Goddess: Nut is immune to air damage, and has a 40% chance to dodge attacks from characters
+Whirlwind: Nut shoots a cyclone dealing 30 Air damage at two enemies cd:1
+Dust Storm: Nut creates a dust storm. Deals 20 air damage and inflicts Covered, which reduces target's accuracy by 50% this turn cd:2
+World Wind: Nut creates a powerful windstorm that deals 60 air damage to all enemies cd:4
+
+Optimus Rarity:UR
+Cybertron's Leader: Party members under 100 HP gain a 50% damage buff (checked at start of each round)
+Ion Blaster: Optimus shoots a blast at an enemy, dealing 35 energy damage. cd:1
+Thermal Machine Gun: Optimus shoots all enemies with a machine gun, dealing 20 energy damage per enemy. cd:3
+Sword of Judgement: Optimus deals 60 energy damage and 15 energy damage to an enemy for the next two turns. cd:4
+
+R2D2 Rarity:C
+Targeting System: Increases allies accuracy by 20%
+Zapper: Deals 10 lightning damage cd:1
+Confusion Tactics: Lowers an enemy's accuracy by 15%, deals 15 physical damage cd:2
+System Hack: R2 finds the opponents weak spots. All enemies lightning and energy resistance is reduced by 30% cd:3
+
+Ra Rarity:UC
+Sacrifice: When an ally dies, Ra's damage is increased by 50%
+Claw: Ra strikes dealing 20 physical damage cd:1
+Sun Strike: Ra unleashes an energy wave, dealing 30 energy damage cd:2
+Sun Dragon: Ra deals energy damage equal to 150% of the damage he has received cd:4
+
+Raiden Shogun Rarity:UR
+Electric Empress: The shogun is immune to lightning damage. She is also immune to Energy attacks dealing 30 damage or less
+Katana Strike: The Shogun attacks with her lightning katana, dealing 40 lightning damage cd:1
+Burst Charge: Raiden deals 35 Lightning damage to an opponent and inflicts Electroshock for 2 turns. Enemies that are electroshocked have their electric and water resistance decreased by 20%, and will take 10 damage per turn cd:3
+Musou no Hitotachi: The Shogun slices the fabric of reality with her blade, dealing 140 lightning damage at an enemy and a 40% chance to inflict Stun. Stunned enemies cannot act on their turn, but status effects will take place cd:4
+
+Starfire Rarity:R
+Tamaranean Durability: Starfire has a 50% chance to ignore physical attacks under 30 damage.
+Heat Vision: Starfire shoots lasers out her eyes and deals 40 Energy Damage. cd:1
+Nova Lash: Starfire dashes in and slashes a target with solar fire, dealing 40 energy damage and applying Solar Wind (20 energy dmg over 2 turns) cd:2
+Starburst Explosion: Starfire launches a giant explosion, dealing 50 AoE energy damage. cd:4
+
+TRex Rarity:R
+Apex Predator: When T-Rex is the only surviving member of his team, gain 50% damage and full signature charge
+CHOMP: Trex bites dealing 40 physical damage cd:1
+ROAR: The Rex attempts to inflict terrify on a target.Terrified lasts 2 turns and decreases accuracy by 40% and damage by 50%. Base 20% chance. For every 10% below the maxHP of the target, chance to terrify the target increases 20%. cd:2
+Tyrant Lizard King: Trex bites dealing 50 physical damage and inflict Poisoned. When Poisoned, The target takes 20 poison damage for the next 2 turns cd:4
+
+Yennefer Rarity:UC
+Aretuza's Patronage: Yennefer removes a debuff on an ally once per round on her turn
+Witch's Chill: Yennefer deals 15 ice dmg cd:1
+Witch's Blessing: Yen grants a shield of 50 points to 2 allies or herself cd:2
+Flaming Devastation: Yen consumes 60% of her current HP and deals 70 fire damage and inflict Burn for an additional 20 fire damage for 2 turns cd:5
+
+Zhongli Rarity:R
+Defensive Rock: All resistances for all allies increase by 10%
+Spear Strike: Zhongli attacks dealing 30 physical damage cd:1
+Meteor Strike: Zhongli fires a rock at all opponents. Each hit does 15 earth damage. cd:2
+Mighty Shield: Zhongli casts a shield on a party member. This shield has 350 shield points. cd:4
+
