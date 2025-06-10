@@ -18,6 +18,9 @@ public class CharacterData
     public string rarity;
     public int SigChargeReq;
     public string imageName;
+    public string affiliation = "";  // New
+    public string species = "";      // New
+    public string lore = "";         // New
     public MoveData[] moves;
 }
 

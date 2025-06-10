@@ -13,6 +13,9 @@ public class GameCharacter
     public int SigChargeReq { get; private set; }
     public int LastDamageTaken = 0;
     public float DamageMultiplier { get; private set; } = 1f;
+    public string Affil { get; private set; }
+    public string Lore { get; private set; }
+    public string Species { get; private set; }
     public float Accuracy { get; private set; } = 1f; // 1 = 100%
     public float DodgeChance { get; private set; } = 0f; // 0 = 0%
     private int totalHealed = 0;
@@ -40,13 +43,16 @@ public class GameCharacter
 
 
     public GameCharacter(string name, int hp, int speed, int sigChargeReq,
-                         Ability normal, Ability skill, Ability signature, Ability passive,string imageName)
+                         Ability normal, Ability skill, Ability signature, Ability passive,string imageName, string affil, string lore, string species)
     {
         Name = name;
         MaxHP = hp;
         HP = hp;
         Speed = speed;
         SigChargeReq = sigChargeReq;
+        Affil = affil;
+        Lore = lore;
+        Species = species;
 
         Charge = 0;
         DamageMultiplier = 1f;
@@ -77,6 +83,7 @@ public class GameCharacter
         if (amount <= 0)
         {
             Debug.LogWarning($"[TakeDamage] {Name} took no damage of type {type} — potential bug?");
+            Logger.Instance.PostLog($"[TakeDamage] {Name} took no damage of type {type} — potential bug?", LogType.Warning);
         }
         float resistance = GetModifiedResistance(type); 
         float modifiedAmount = type == DamageType.True ? amount : amount * (1 - resistance);
@@ -100,10 +107,11 @@ public class GameCharacter
 
         if (finalDamage > 0)
         {
-            
+
             HP -= finalDamage;
             if (HP < 0) HP = 0;
             Debug.Log($"{Name} took {finalDamage} {type} damage. HP: {HP}/{MaxHP}");
+            Logger.Instance.PostLog($"{Name} took {finalDamage} {type} damage. HP: {HP}/{MaxHP}", LogType.Damage);
         }
          SetHasBeenAttackedThisTurn(true);
          LastDamageTaken = totDamage;
@@ -114,6 +122,7 @@ public class GameCharacter
     {
         Shield += amount;
         Debug.Log($"{Name} gained a shield of {amount}. Total Shield: {Shield}");
+        Logger.Instance.PostLog($"{Name} gained a shield of {amount}. Total Shield: {Shield}", LogType.Shield);
     }
 
      public int Heal(int amount)
@@ -140,7 +149,7 @@ public class GameCharacter
                                     {
                                         healThresholdsMet++;
                                         ModifyDamageMultiplier(0.25f);
-                                        Debug.Log($"Huron passive triggered: +25% damage (x{healThresholdsMet})");
+                                        Logger.Instance.PostLog($"Huron passive triggered: +25% damage (x{healThresholdsMet})", LogType.Passive);
                                     }
 
                                     return actualHealed;
@@ -163,6 +172,7 @@ public class GameCharacter
         Accuracy += amount;
         Accuracy = Mathf.Clamp(Accuracy, 0f, 2f); // Optional clamp
         Debug.Log($"{Name}'s accuracy modified by {amount}. New accuracy: {Accuracy}");
+        Logger.Instance.PostLog($"{Name}'s accuracy modified by {amount}. New accuracy: {Accuracy}", LogType.Info);
     }
 
     public void ModifyDamageMultiplier(float amount)
@@ -170,6 +180,7 @@ public class GameCharacter
         DamageMultiplier += amount;
         DamageMultiplier = Mathf.Clamp(DamageMultiplier, 0f, 5f); // Optional clamp
         Debug.Log($"{Name}'s damage multiplier modified by {amount}. New multiplier: {DamageMultiplier}");
+        Logger.Instance.PostLog($"{Name}'s damage multiplier modified by {amount}. New multiplier: {DamageMultiplier}", LogType.Info);
     }
 
      public void ModifyResistance(DamageType type, float value)
@@ -275,12 +286,14 @@ public class GameCharacter
     {
         Charge += amount;
         Debug.Log($"{Name} gained {amount} charge. Current: {Charge}/{SignatureAbility.ChargeRequirement}");
+        Logger.Instance.PostLog($"{Name} gained {amount} charge. Current: {Charge}/{SignatureAbility.ChargeRequirement}", LogType.Buff);
     }
 
     public void ReduceCharge(int amount)
     {
         Charge -= amount;
         Debug.Log($"{Name} lost {amount} charge. Current: {Charge}/{SignatureAbility.ChargeRequirement}");
+        Logger.Instance.PostLog($"{Name} lost {amount} charge. Current: {Charge}/{SignatureAbility.ChargeRequirement}", LogType.Debuff);
     }
     public void ResetCharge()
     {

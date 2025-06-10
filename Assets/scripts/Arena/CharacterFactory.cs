@@ -14,8 +14,14 @@ public static class CharacterFactory
                 return CreateArkhe(data);
             case "Avarice":
                 return CreateAvarice(data);
+            case "Bessil":
+                return CreateBessil(data);
+            case "Breach Specialist":
+                return CreateBreachSpecialist(data);
             case "Captain Dinso":
                 return CreateCap(data);
+            case "Constellian Trooper":
+                return CreateConstellianTrooper(data);
             case "Faru":
                 return CreateFaru(data);
             case "Huron":
@@ -26,6 +32,8 @@ public static class CharacterFactory
                 return CreateKAS(data);
             case "Krakoa":
                 return CreateKrakoa(data);
+            case "Legionary":
+                return CreateLegionary(data);
             case "Mizca":
                 return CreateMizca(data);
             case "Nou":
@@ -44,6 +52,8 @@ public static class CharacterFactory
                 return CreateVyGar(data);
             case "Rover":
                 return CreateRover(data);
+            case "Temple Guard":
+                return CreateTempleGuard(data);
             case "TRex":
                 return CreateTRex(data);
             case "Skirvex":
@@ -99,7 +109,7 @@ public static class CharacterFactory
         var sig = new Ability(moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
                             100, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, null, DamageType.Fire);
 
-        var arkhe = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive,data.imageName);
+        var arkhe = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive,data.imageName, data.affiliation, data.lore, data.species);
 
         // Optional: Give arkhe moderate air resistance
         arkhe.Resistances[DamageType.Air] = 0.2f;
@@ -122,7 +132,7 @@ public static class CharacterFactory
         var sig = new Ability(moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
                             0, 0, 0, data.SigChargeReq, TargetType.Ally, 1);
 
-        var Avarice = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        var Avarice = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
 
         // Optional: Avarice is resistant to Water and Ice, weak to Fire
         Avarice.Resistances[DamageType.Water] = 0.3f;
@@ -131,7 +141,63 @@ public static class CharacterFactory
 
         return Avarice;
     }
+    private static GameCharacter CreateBessil(CharacterData data)
+    {
+        List<MoveData> moves = new List<MoveData>(data.moves);
 
+        var passive = new Ability(moves[0].name, moves[0].description, AbilityType.Passive, 0, 0, 0, 0, 0, TargetType.Self, 1);
+        // Passive handled in PassiveManager: reduce all enemy accuracy by 15% at game start
+
+        var normal = new Ability(moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown, 40, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Psychic);
+
+        var skill = new Ability(moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown, 20, 0, 0, 0, TargetType.Enemy, 2, null, DamageType.Psychic);
+        skill.CustomDamageOverride = (user, target) =>
+        {
+            int debuffCount = target.StatusEffects.Count(e => e.IsDebuff && e.ToDisplay);
+            return 30 + (10 * debuffCount);
+        };
+
+        var stun = new StatusEffect("Stun", StatusEffectType.Stun, 1, 0, null, isDebuff: true, applyChance: 0.5f);
+        var sig = new Ability(moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown, 80, 0, 0, data.SigChargeReq, TargetType.Enemy, 2, new List<StatusEffect> { stun }, DamageType.Psychic);
+
+        GameCharacter bessil = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
+        return bessil;
+    }
+
+    private static GameCharacter CreateBreachSpecialist(CharacterData data)
+    {
+        List<MoveData> moves = new List<MoveData>(data.moves);
+
+        // Passive: fire resistance to all allies
+        var fireRes = new StatusEffect("Insulated Lining", StatusEffectType.ResistanceModifier, 5, 0.15f, null, DamageType.Fire, isDebuff: false);
+        var passive = new Ability(moves[0].name, moves[0].description, AbilityType.Passive, 0, 0, 0, 0, 0, TargetType.AllyOrSelf, 3, new List<StatusEffect> { fireRes });
+
+        // Normal
+        var normal = new Ability(
+            moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
+            18, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Fire
+        );
+
+        // Skill
+        var accuracyDebuff = new StatusEffect("Blinded", StatusEffectType.AccuracyModifier, 1, -0.10f, null, isDebuff: true);
+        var skill = new Ability(
+            moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
+            10, 0, 0, 0, TargetType.Enemy, 2, new List<StatusEffect> { accuracyDebuff }, DamageType.Fire
+        );
+
+        // Signature
+        var burn = new StatusEffect("Burn", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Fire, isDebuff: true);
+        var afterburn = new StatusEffect("Afterburn", StatusEffectType.ResistanceModifier, 3, -0.20f, null, DamageType.Fire, isDebuff: true, applyChance: 0.30f);
+        var sigEffects = new List<StatusEffect> { burn, afterburn };
+        var sig = new Ability(
+            moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
+            10, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, sigEffects, DamageType.Fire
+        );
+
+        GameCharacter breacher = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive,
+                                                    data.imageName, data.affiliation, data.lore, data.species);
+        return breacher;
+    }
     private static GameCharacter CreateCap(CharacterData data)
     {
         List<MoveData> moves = new List<MoveData>(data.moves);
@@ -155,10 +221,26 @@ public static class CharacterFactory
         );
         // Special case: Sig applies charge and clears debuffs — handled in BattleManager
 
-        GameCharacter cap = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        GameCharacter cap = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
         return cap;
     }
+    private static GameCharacter CreateConstellianTrooper(CharacterData data)
+    {
+        List<MoveData> moves = new List<MoveData>(data.moves);
 
+        var passive = new Ability(moves[0].name, moves[0].description,AbilityType.Passive, 0, 0, 0, 0, 0,TargetType.Self, 1);
+        // Passive logic handled in PassiveManager: Bonus damage scaling with CAF-affiliated allies
+
+        var normal = new Ability(moves[1].name, moves[1].description,AbilityType.Normal, moves[1].cooldown,20, 0, 0, 0, TargetType.Enemy, 1,null, DamageType.Energy);
+
+        var skill = new Ability(moves[2].name, moves[2].description,AbilityType.Skill, moves[2].cooldown,35, 0, 0, 0, TargetType.Enemy, 1,null, DamageType.Energy);
+
+        var sig = new Ability(moves[3].name, moves[3].description,AbilityType.Signature, moves[3].cooldown,22, 0, 0, data.SigChargeReq, TargetType.Enemy, 3,null, DamageType.Energy);
+
+        GameCharacter trooper = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq,normal, skill, sig, passive,data.imageName, data.affiliation, data.lore, data.species);
+
+        return trooper;
+    }
     private static GameCharacter CreateFaru(CharacterData data)
     {
         List<MoveData> moves = new List<MoveData>(data.moves);
@@ -188,11 +270,11 @@ public static class CharacterFactory
         // Custom damage override: +30 per active non-debuff effect
         sig.CustomDamageOverride = (user, target) =>
         {
-            int buffCount = user.StatusEffects.Count(e => !e.IsDebuff);
+            int buffCount = user.StatusEffects.Count(e => !e.IsDebuff && e.ToDisplay);
             return 60 + (30 * buffCount);
         };
 
-        GameCharacter Faru = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        GameCharacter Faru = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
         return Faru;
     }
 
@@ -222,7 +304,7 @@ public static class CharacterFactory
             160, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, null, DamageType.Energy
         );
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
 
     private static GameCharacter CreateJack(CharacterData data)
@@ -257,7 +339,7 @@ public static class CharacterFactory
             0, 0, 10, data.SigChargeReq, TargetType.AllyOrSelf, 2, psychEffects
         );
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation,data.lore,data.species);
     }
 
         private static GameCharacter CreateKAS(CharacterData data)
@@ -291,7 +373,7 @@ public static class CharacterFactory
             100, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, sigEffects, DamageType.Energy
         );
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
 
     private static GameCharacter CreateKrakoa(CharacterData data)
@@ -306,18 +388,18 @@ public static class CharacterFactory
             35, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Ice
         );
 
-        var burnEffect = new StatusEffect("Chilled", StatusEffectType.DamageOverTime, 2, 20, null, DamageType.Ice,isDebuff: true);
+        var burnEffect = new StatusEffect("Chilled", StatusEffectType.DamageOverTime, 2, 20, null, DamageType.Ice, isDebuff: true);
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
             30, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { burnEffect }, DamageType.Ice
         );
 
         var rageEffect = new StatusEffect("Enraged", StatusEffectType.DamageModifier, 2, 1f, null);
-        var lockSkill = new StatusEffect("Enraged Lockout", StatusEffectType.CDModifier, 2, 1, null, toDisplay: false){
+        var lockSkill = new StatusEffect("Enraged Lockout", StatusEffectType.CDModifier, 2, 1, null, toDisplay: false) {
             AffectedAbilityType = AbilityType.Skill,
             CooldownChangeAmount = 1
         };
-        Debug.Log($"[Factory] AffectedAbilityType: {lockSkill.AffectedAbilityType}, HasValue: {lockSkill.AffectedAbilityType.HasValue}");
+        //Debug.Log($"[Factory] AffectedAbilityType: {lockSkill.AffectedAbilityType}, HasValue: {lockSkill.AffectedAbilityType.HasValue}");
         var healAndRage = new List<StatusEffect> { rageEffect, lockSkill };
 
         var sig = new Ability(
@@ -326,8 +408,29 @@ public static class CharacterFactory
         );
         // Signature: heals 100, and enrages Krakoa (BattleManager can restrict actions while enraged)
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
+
+    private static GameCharacter CreateLegionary(CharacterData data)
+    {
+        List<MoveData> moves = new List<MoveData>(data.moves);
+
+        var passive = new Ability(moves[0].name, moves[0].description,AbilityType.Passive, 0, 0, 0, 0, 0,TargetType.Self, 1);
+        // Passive will require BattleManager hook: trigger shield once when HP drops below 30%
+
+        var normal = new Ability(moves[1].name, moves[1].description,AbilityType.Normal, moves[1].cooldown,16, 0, 0, 0, TargetType.Enemy, 1,null, DamageType.Earth);
+
+        var rupture = new StatusEffect("Rupture", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Earth, isDebuff: true, applyChance: 0.5f);
+        var skill = new Ability(moves[2].name, moves[2].description,AbilityType.Skill, moves[2].cooldown,20, 0, 0, 0, TargetType.Enemy, 1,new List<StatusEffect> { rupture }, DamageType.Earth);
+
+        var empower = new StatusEffect("Empowered", StatusEffectType.DamageModifier, 2, 0.2f, null, isDebuff: false);
+        var fortify = new Ability(moves[3].name, moves[3].description,AbilityType.Signature, moves[3].cooldown,0, 0, 40, data.SigChargeReq, TargetType.Self, 1,new List<StatusEffect> { empower }, DamageType.None);
+
+        GameCharacter legionary = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq,normal, skill, fortify, passive,data.imageName, data.affiliation, data.lore, data.species);
+
+        return legionary;
+}
+
 
     private static GameCharacter CreateMizca(CharacterData data)
     {
@@ -356,7 +459,7 @@ public static class CharacterFactory
             55, 0, 0, data.SigChargeReq, TargetType.Enemy, 2, null, DamageType.Earth
         );
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
 
     private static GameCharacter CreateNou(CharacterData data)
@@ -382,7 +485,7 @@ public static class CharacterFactory
             60, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, null, DamageType.Air
         );
 
-        GameCharacter nut = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        GameCharacter nut = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
         nut.Resistances[DamageType.Air] = 1f;
         return nut;
     }
@@ -410,7 +513,7 @@ public static class CharacterFactory
             60, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, new List<StatusEffect> { dotEffect }, DamageType.Energy
         );
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
     private static GameCharacter CreateRover(CharacterData data)
     {
@@ -445,7 +548,7 @@ public static class CharacterFactory
             0, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, resistanceDebuffs
         );
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
 
     private static GameCharacter CreateRaish(CharacterData data)
@@ -479,7 +582,7 @@ public static class CharacterFactory
             raishDmg = .5f * (user.MaxHP - user.HP); // Damage = damage taken so far
             return System.Convert.ToInt32(raishDmg);
         };
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
 
     public static GameCharacter CreateRei(CharacterData data)
@@ -528,7 +631,7 @@ public static class CharacterFactory
         );
 
         var rei = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq,
-                                    normal, skill, signature, passive, data.imageName);
+                                    normal, skill, signature, passive, data.imageName, data.affiliation, data.lore, data.species);
 
         // Flag for override logic in PassiveManager
         //PassiveManager.MarkSpecialOverride("Rei");
@@ -564,7 +667,7 @@ public static class CharacterFactory
             85, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, new List<StatusEffect> { shocked }, DamageType.Lightning
         );
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
 
     private static GameCharacter CreateSanguine(CharacterData data)
@@ -599,7 +702,7 @@ public static class CharacterFactory
             return 60 + (20 * dotCount);
         };
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
 
     private static GameCharacter CreateSedra(CharacterData data)
@@ -628,7 +731,7 @@ public static class CharacterFactory
             50, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, null, DamageType.Energy
         );
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
     
     private static GameCharacter CreateSkirvex(CharacterData data)
@@ -669,10 +772,30 @@ public static class CharacterFactory
         );
         // Special-case: Expires HoTs on each target in BattleManager
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
 
+    private static GameCharacter CreateTempleGuard(CharacterData data)
+    {
+        List<MoveData> moves = new List<MoveData>(data.moves);
 
+        var passive = new Ability(moves[0].name, moves[0].description, AbilityType.Passive, 0, 0, 0, 0, 0, TargetType.Self, 1);
+        
+
+        var normal = new Ability(moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown, 15, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Water);
+
+        var halo = new StatusEffect("Halo", StatusEffectType.ResistanceModifier, 2, 0.2f, null, DamageType.Water, isDebuff: false);
+        var halo2 = new StatusEffect("Halo (ice)", StatusEffectType.ResistanceModifier, 2, 0.2f, null, DamageType.Ice, isDebuff: false, toDisplay: false);
+        var halo3 = new StatusEffect("Halo (psychic)", StatusEffectType.ResistanceModifier, 2, 0.2f, null, DamageType.Psychic, isDebuff: false, toDisplay: false);
+        var clarity = new StatusEffect("Clarity", StatusEffectType.AccuracyModifier, 1, 0.15f, null, isDebuff: false, applyChance: 0.4f);
+        var skill = new Ability(moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown, 0, 0, 0, 0, TargetType.Ally, 1, new List<StatusEffect> { halo, halo2, halo3, clarity }, DamageType.None);
+
+        var blind = new StatusEffect("Blinding", StatusEffectType.AccuracyModifier, 1, -0.2f, null, isDebuff: true);
+        var sig = new Ability(moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown, 50, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, new List<StatusEffect> { blind }, DamageType.Water);
+
+        GameCharacter guard = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
+        return guard;
+    }
     private static GameCharacter CreateTRex(CharacterData data)
     {
         List<MoveData> moves = new List<MoveData>(data.moves);
@@ -705,7 +828,7 @@ public static class CharacterFactory
             50, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, new List<StatusEffect> { poisonEffect }, DamageType.Physical
         );
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
 
     private static GameCharacter CreateTrustless(CharacterData data)
@@ -737,7 +860,9 @@ public static class CharacterFactory
             new List<StatusEffect> { burn, poison, shock }, DamageType.Energy
         );
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        var Trustless = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
+        Trustless.Resistances[DamageType.Poison] = .20f;
+        return Trustless;
     }
 
     private static GameCharacter CreateUlmika(CharacterData data)
@@ -771,7 +896,7 @@ public static class CharacterFactory
             0, 0, 0, data.SigChargeReq, TargetType.AllyOrSelf, 1, flamingWardEffects
         );
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
 
     private static GameCharacter CreateVasDrel(CharacterData data)
@@ -808,7 +933,7 @@ public static class CharacterFactory
             new List<StatusEffect> { recover, reduceSkillCD },DamageType.Water
         );
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
 
     private static GameCharacter CreateVemk(CharacterData data)
@@ -838,7 +963,7 @@ public static class CharacterFactory
         );
         // Special-case: Signature reduces each target’s sig charge by 30%
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
     private static GameCharacter CreateVirae(CharacterData data)
     {
@@ -875,7 +1000,7 @@ public static class CharacterFactory
         new List<StatusEffect> { dmgBuff, extendBuff }
     );
 
-        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
     }
     private static GameCharacter CreateVyGar(CharacterData data)
     {
@@ -888,10 +1013,7 @@ public static class CharacterFactory
             new StatusEffect("Rock Protection (Earth)", StatusEffectType.ResistanceModifier, 999, 0.1f, null, DamageType.Earth,toDisplay: false),
             new StatusEffect("Rock Protection (Air)", StatusEffectType.ResistanceModifier, 999, 0.1f, null, DamageType.Air,toDisplay: false)
         };
-        var passive = new Ability(
-            moves[0].name, moves[0].description, AbilityType.Passive, 0, 0, 0, 0, 0,
-            TargetType.AllyOrSelf, 3, rockBuffs
-        );
+        var passive = new Ability(moves[0].name, moves[0].description, AbilityType.Passive, 0, 0, 0, 0, 0,TargetType.AllyOrSelf, 3, rockBuffs);
         // PassiveManager applies resistances to all allies at start.
 
         var normal = new Ability(
@@ -909,7 +1031,7 @@ public static class CharacterFactory
             0, 0, 120, data.SigChargeReq, TargetType.AllyOrSelf, 1
         );
 
-        var VyGar = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName);
+        var VyGar = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
 
         VyGar.Resistances[DamageType.Physical] = .10f;
         VyGar.Resistances[DamageType.Air] = .10f;

@@ -1,36 +1,10 @@
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Newtonsoft.Json.Linq;
 
-public class CharacterStatEditor : MonoBehaviour
+public class CharacterJsonPatcher : MonoBehaviour
 {
-    [System.Serializable]
-    public class Move
-    {
-        public string name;
-        public string description;
-        public int cooldown;
-    }
-
-    [System.Serializable]
-    public class CharacterData
-    {
-        public string name;
-        public int hp;
-        public int speed;
-        public string rarity;
-        public int SigChargeReq;
-        public string imageName;
-        public List<Move> moves;
-    }
-
-    [System.Serializable]
-    public class CharacterDataArray
-    {
-        public List<CharacterData> characters;
-    }
-
-    public string jsonFileName = "characters.json"; // must be inside StreamingAssets
+    public string jsonFileName = "Characters.json"; // Must be in StreamingAssets
 
     void Start()
     {
@@ -43,17 +17,39 @@ public class CharacterStatEditor : MonoBehaviour
         }
 
         string json = File.ReadAllText(path);
-        CharacterDataArray data = JsonUtility.FromJson<CharacterDataArray>(json);
 
-        foreach (var character in data.characters)
+        JObject root = JObject.Parse(json);
+        JArray characters = (JArray)root["characters"];
+        bool updated = false;
+
+        foreach (JObject character in characters)
         {
-            character.hp = Mathf.RoundToInt(character.hp * 1.5f);
-            Debug.Log($"Updated {character.name}'s HP to {character.hp}");
+            if (character["affiliation"] == null)
+            {
+                character["affiliation"] = "";
+                updated = true;
+            }
+            if (character["species"] == null)
+            {
+                character["species"] = "";
+                updated = true;
+            }
+            if (character["lore"] == null)
+            {
+                character["lore"] = "";
+                updated = true;
+            }
         }
 
-        string updatedJson = JsonUtility.ToJson(data, true);
-        File.WriteAllText(path, updatedJson);
-
-        Debug.Log("All character HP values modified and saved.");
+        if (updated)
+        {
+            string updatedJson = root.ToString(); // Pretty print
+            File.WriteAllText(path, updatedJson);
+            Debug.Log("Characters.json successfully patched with missing fields.");
+        }
+        else
+        {
+            Debug.Log("No patching needed. All fields present.");
+        }
     }
 }

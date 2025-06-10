@@ -43,16 +43,42 @@ public static class PassiveManager
         {
             character.ModifyDamageMultiplier(.10f);
             Debug.Log("Arkhe's passive applied: +10% elemental damage.");
+            Logger.Instance.PostLog("Arkhe's passive applied: +10% elemental damage.", LogType.Passive);
         }
 
-        if (character.Name == "Rover")
+        if (character.Name == "Bessil")
         {
-            foreach (var ally in character.Allies)
+            foreach (var enemy in character.Enemies)
             {
-                ally.ModifyAccuracy(0.20f);
+                enemy.ModifyAccuracy(-.15f);
             }
-            Debug.Log("R passive applied: +20% accuracy to all allies.");
         }
+        if (character.Name == "Constellian Trooper")
+        {
+            int cafAllies = character.Allies.Count(ally => ally.Affil == "Constellian Armed Forces");
+
+            if (cafAllies == 1)
+            {
+                character.ModifyDamageMultiplier(.10f);
+                Debug.Log("Trooper has 1 Constellian ally, gained 10% dmg Bonus");
+                Logger.Instance.PostLog("Trooper has 1 Constellian ally, gained 10% dmg Bonus", LogType.Passive);
+            }
+            else if (cafAllies >= 2)
+            {
+                character.ModifyDamageMultiplier(.25f);
+                Debug.Log("Trooper has 2 Constellian allies, gained 25% dmg Bonus");
+                Logger.Instance.PostLog("Trooper has 2 Constellian allies, gained 25% dmg Bonus", LogType.Passive);
+            }
+        }
+        if (character.Name == "Rover")
+            {
+                foreach (var ally in character.Allies)
+                {
+                    ally.ModifyAccuracy(0.20f);
+                }
+                Debug.Log("R passive applied: +20% accuracy to all allies.");
+                Logger.Instance.PostLog("Rover passive applied: +20% accuracy to all allies.", LogType.Passive);
+            }
 
         if (character.Name == "Trustless Engineer")
         {
@@ -61,14 +87,25 @@ public static class PassiveManager
                 var resist = new StatusEffect("Poison Safety", StatusEffectType.ResistanceModifier, 99, .2f, character, DamageType.Poison, isDebuff: false);
                 ally.StatusEffects.Add(resist);
                 Debug.Log($"{character.Name} applied Poison Safety to {ally.Name}");
+                Logger.Instance.PostLog($"{character.Name} applied Poison Safety to {ally.Name}", LogType.Passive);
             }
         }
 
-
+        if (character.Name == "Temple Guard")
+        {
+            foreach (var ally in character.Allies)
+            {
+                if (ally.Affil == "Council of Ascendance" || ally.Affil == "Aetherion" || ally.Affil == "Intergalactic Wizarding Organization")
+                {
+                    ally.AddShield(30);
+                }
+            }
+        }
         if (character.Name == "Nou")
         {
             character.ModifyDodge(.35f);
             Debug.Log("Nous passive applied: 40% dodge");
+            Logger.Instance.PostLog("Nous passive applied: 40% dodge", LogType.Passive);
         }
 
         if (character.Name == "VyGar")
@@ -82,12 +119,27 @@ public static class PassiveManager
             }
 
             Debug.Log("VyGar's passive applied: Rock Protection status effects given to allies.");
+            Logger.Instance.PostLog("VyGar's passive applied: Rock Protection status effects given to allies.", LogType.Passive);
         }
 
+        if (character.Name == "Breach Specialist")
+        {
+            foreach (GameCharacter ally in character.Allies)
+            {
+                foreach (StatusEffect effect in character.PassiveAbility.StatusEffectsApplied)
+                {
+                    ally.AddStatusEffect(new StatusEffect(effect)); // clone the effect
+                }
+            }
+
+            Debug.Log("Breacher's passive applied:Fire Protection status effects given to allies.");
+            Logger.Instance.PostLog("Breacher's passive applied:Fire Protection status effects given to allies.", LogType.Passive);
+        }
         if (character.Name == "Vemk Parlas")
         {
             character.ModifyAccuracy(1.0f); // +100% accuracy
             Debug.Log("Vemk's passive: Accuracy doubled.");
+            Logger.Instance.PostLog("Vemk's passive: Accuracy doubled.", LogType.Passive);
         }
     }
 
@@ -102,6 +154,7 @@ public static class PassiveManager
             }
             character.TakeDamage(10, DamageType.True);
             Debug.Log("Mizca's passive applied: 15% dmg bonus at start of round and takes 10 true dmg");
+            Logger.Instance.PostLog("Mizca's passive applied: 15% dmg bonus at start of round and takes 10 true dmg", LogType.Passive);
             if (character.HP <= 0 && !character.IsDead)
             {
                 BattleManager.Instance.HandleDeath(character);
@@ -129,12 +182,23 @@ public static class PassiveManager
 
                         ally.AddStatusEffect(dmgBuff);
                         Debug.Log($"Olthar's passive applied: {ally.Name} gains Cybertron Boost.");
+                        Logger.Instance.PostLog($"Olthar's passive applied: {ally.Name} gains Cybertron Boost.", LogType.Passive);
                     }
                 }
             }
         }
 
-
+        if (character.Name == "Legionary" && !character.HasUsedOneTimePassive)
+        {
+            float hpThreshold = character.MaxHP * 0.30f;
+            if (character.HP <= hpThreshold)
+            {
+                character.AddShield(50);
+                character.MarkOneTimePassive();
+                Debug.Log("Legionary's passive triggered: Gained 50 shield due to low HP.");
+                Logger.Instance.PostLog("Legionary's passive triggered: Gained 50 shield due to low HP", LogType.Passive);
+            }
+        }
 
         if (character.Name == "Ulmika")
         {
@@ -146,6 +210,7 @@ public static class PassiveManager
                 {
                     ally.RemoveStatusEffect(debuff);
                     Debug.Log($"Ulmika's passive removed '{debuff.Name}' from {ally.Name}");
+                    Logger.Instance.PostLog($"Ulmika's passive removed '{debuff.Name}' from {ally.Name}", LogType.Passive);
                     break; // Only remove one effect
                 }
             }
@@ -192,9 +257,20 @@ public static class PassiveManager
                 character.AddStatusEffect(fireBuff);
 
                 Debug.Log($"Krakoa passive applied: +{resistanceBonus * 100}% Physical & Fire resistance this turn.");
+                Logger.Instance.PostLog($"Krakoa passive applied: +{resistanceBonus * 100}% Physical & Fire resistance this turn.", LogType.Passive);
             }
         }
-
+        if (character.Name == "Legionary" && !character.HasUsedOneTimePassive)
+        {
+            float hpThreshold = character.MaxHP * 0.30f;
+            if (character.HP <= hpThreshold)
+            {
+                character.AddShield(50);
+                character.MarkOneTimePassive();
+                Debug.Log("Legionary's passive triggered: Gained 50 shield due to low HP.");
+                Logger.Instance.PostLog("Legionary's passive triggered: Gained 50 shield due to low HP.", LogType.Passive);
+            }
+        }
         if (character.Name == "TRex")
         {
             bool allAlliesDead = character.Allies.All(a => a.IsDead);
@@ -204,6 +280,7 @@ public static class PassiveManager
                 character.IncreaseCharge(character.SigChargeReq);
                 character.MarkOneTimePassive();
                 Debug.Log("T-Rex's passive triggered: +50% damage and full signature charge (Territorial Dominance).");
+                Logger.Instance.PostLog("T-Rex's passive triggered: +50% damage and full signature charge (Territorial Dominance).", LogType.Passive);
             }
         }
 
@@ -213,6 +290,7 @@ public static class PassiveManager
             character.MarkOneTimePassive();
 
             BattleManager.Instance.SetInfoText($"{character.Name}'s Overdrive Matrix activates! +50% Signature Charge");
+            Logger.Instance.PostLog($"{character.Name}'s Overdrive Matrix activates! +50% Signature Charge", LogType.Passive);
         }
 
         if (character.Name == "Sanguine")
@@ -232,6 +310,7 @@ public static class PassiveManager
                 character.StatusEffects.Add(buff);
 
                 Debug.Log($"{character.Name} triggered Blood Race: DoT durations reduced and damage buff applied.");
+                Logger.Instance.PostLog($"{character.Name} triggered Blood Race: DoT durations reduced and damage buff applied.", LogType.Passive);
             }
         }
 
@@ -253,6 +332,7 @@ public static class PassiveManager
                 if (t == target)
                 {
                     Debug.Log("Rei's passive blocked the attack.");
+                    Logger.Instance.PostLog("Rei's passive blocked the attack", LogType.Passive);
                     return 0;
                 }
                 return ability.Damage;
@@ -271,6 +351,7 @@ public static class PassiveManager
                 if (t == target)
                 {
                     Debug.Log("Captain Dinso reflected the attack!");
+                    Logger.Instance.PostLog("Captain Dinso reflected the attack", LogType.Passive);
                     return 0;
                 }
                 return ability.Damage;
@@ -287,12 +368,28 @@ public static class PassiveManager
                 if (t == target)
                 {
                     Debug.Log("Avarice's passive: Converted Water/Ice damage into healing.");
+                    Logger.Instance.PostLog("Avarice's passive: Converted Water/Ice damage into healing.", LogType.Passive);
                     return 0;
                 }
                 return ability.Damage;
             };
         }
 
+         if (target.Name == "Virae" &&
+            (ability.DamageType == DamageType.Ice))
+        {
+            target.AddShield(ability.Damage);
+            ability.CustomDamageOverride = (u, t) =>
+            {
+                if (t == target)
+                {
+                    Debug.Log("Virae's passive: Converted Ice damage into Shielding.");
+                    Logger.Instance.PostLog("Virae's passive: Converted Ice damage into Shielding.", LogType.Passive);
+                    return 0;
+                }
+                return ability.Damage;
+            };
+        }
         // Sedra ignores low physical damage (50% chance)
         if (target.Name == "Sedra" &&
             ability.DamageType == DamageType.Physical &&
@@ -304,6 +401,7 @@ public static class PassiveManager
                 if (t == target)
                 {
                     Debug.Log("Sedra's passive: Ignored low physical attack.");
+                    Logger.Instance.PostLog("Sedra's passive: Ignored low physical attack", LogType.Passive);
                     return 0;
                 }
                 return ability.Damage;
@@ -317,17 +415,19 @@ public static class PassiveManager
         {
             target.IncreaseCharge(ability.Damage);
             Debug.Log($"Rellin gained {ability.Damage} charge from lightning damage");
+            Logger.Instance.PostLog($"Rellin gained {ability.Damage} charge from lightning damage", LogType.Passive);
         }
 
-        // IMPORTANT - UPDATE THIS LINE AFTER ADDING SPECIES TO JSON
+        
         //Vas drel and his allies take less damage from riftbeasts
         if ((target.Name == "Vas Drel" || target.Allies.Any(ally => ally.Name == "Vas Drel")) &&
-            user.Name == "Riftbeast")
+            user.Species == "Riftbeast")
         {
             ability.CustomDamageOverride = (u, t) =>
             {
                 int reduced = Mathf.RoundToInt(ability.Damage * 0.8f);  // 20% reduction
                 Debug.Log($"Vas Drel's passive reduced damage from Riftbeast ({u.Name}) to {reduced} for {t.Name}");
+                Logger.Instance.PostLog($"Vas Drel's passive reduced damage from Riftbeast ({u.Name}) to {reduced} for {t.Name}", LogType.Passive);
                 return reduced;
             };
         }
@@ -340,15 +440,30 @@ public static class PassiveManager
     {
         deadCharacter.deathStatus(true);
         Debug.Log($"{deadCharacter.Name} marked as dead.");
+        Logger.Instance.PostLog($"{deadCharacter.Name} marked as dead.", LogType.Death);
+
+        if (deadCharacter.Name == "Skirvex")
+        {
+            Debug.Log("Skirvex death case being checked");
+            Logger.Instance.PostLog("", LogType.Passive);
+            foreach (var enemy in deadCharacter.Enemies)
+            {
+                enemy.TakeDamage(20, DamageType.Poison);
+                Debug.Log($"Skirvex's Parastic Birth dealt poison damage to {enemy.Name}");
+                Logger.Instance.PostLog($"Skirvex's Parastic Birth dealt poison damage to {enemy.Name}", LogType.Passive);
+            }
+        }
 
         // Combine both teams
-        List<GameCharacter> allCharacters = new List<GameCharacter>();
+            List<GameCharacter> allCharacters = new List<GameCharacter>();
         allCharacters.AddRange(deadCharacter.Allies);
         allCharacters.AddRange(deadCharacter.Enemies);
 
         foreach (var character in allCharacters)
         {
-            if (character.IsDead) continue;
+            
+            if (character.IsDead && character != deadCharacter) continue;
+
 
             switch (character.Name)
             {
@@ -358,6 +473,7 @@ public static class PassiveManager
                     {
                         character.ModifyDamageMultiplier(0.5f);
                         Debug.Log("Raish's passive triggered: +50% damage from ally death.");
+                        Logger.Instance.PostLog("Raish's passive triggered: +50% damage from ally death.", LogType.Passive);
                     }
                     break;
 
@@ -367,16 +483,10 @@ public static class PassiveManager
                     {
                         ResurrectionTracker.Add(deadCharacter); // Assume ResurrectionTracker is a temp list
                         Debug.Log("Avarice's passive tracked a dead ally for resurrection.");
+                        Logger.Instance.PostLog("Avarice's passive tracked a dead ally for resurrection.", LogType.Passive);
                     }
                     break;
-                case "Skirvex":
                 
-                    foreach (var enemy in character.Enemies)
-                    {
-                        enemy.TakeDamage(20, DamageType.Poison);
-                        Debug.Log($"Skirvex's Parastic Birth dealt 20 poison damage to {enemy.Name}");
-                    }
-                    break;
                 
 
 

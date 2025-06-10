@@ -101,6 +101,7 @@ public class Ability
                 if (roll > hitChance)
                 {
                     Debug.Log($"{user.Name}'s {Name} missed {target.Name}!");
+                    Logger.Instance.PostLog($"{user.Name}'s {Name} missed {target.Name}!", LogType.Miss);
                     SoundManager.Instance.PlaySFX("miss"); // play sound
                     PopupManager.Instance.ShowPopup(PopupType.Miss); // show visual MISS effect
                     continue; // Skip to next target
@@ -143,14 +144,16 @@ public class Ability
                 float roll = UnityEngine.Random.value;
                 if (roll <= effect.ApplyChance)
                 {
-                    var applied = new StatusEffect(effect.Name, effect.Type, effect.Duration, effect.Value, user, effect.DamageType, effect.IsDebuff, effect.ApplyChance, toDisplay: effect.ToDisplay,targetingMode: effect.DurationTargeting)
-                    { AffectedAbilityType = effect.AffectedAbilityType,CooldownChangeAmount = effect.CooldownChangeAmount};
+                    var applied = new StatusEffect(effect.Name, effect.Type, effect.Duration, effect.Value, user, effect.DamageType, effect.IsDebuff, effect.ApplyChance, toDisplay: effect.ToDisplay, targetingMode: effect.DurationTargeting)
+                    { AffectedAbilityType = effect.AffectedAbilityType, CooldownChangeAmount = effect.CooldownChangeAmount };
                     target.AddStatusEffect(applied);
                     Debug.Log($"{effect.Name} applied to {target.Name} with chance {effect.ApplyChance}");
+                    Logger.Instance.PostLog($"{effect.Name} applied to {target.Name} with chance {effect.ApplyChance}", LogType.Status);
                 }
                 else
                 {
                     Debug.Log($"{effect.Name} failed to apply to {target.Name} (rolled {roll})");
+                    Logger.Instance.PostLog($"{effect.Name} failed to apply to {target.Name} (rolled {roll})", LogType.Miss);
                 }
 
                 // Trigger BUFF popup if it's not a debuff
@@ -181,6 +184,7 @@ public class Ability
         user.HasActedThisTurn = true;
 
         Debug.Log($"{user.Name} used {Name} on {targets.Count} target(s).");
+        Logger.Instance.PostLog($"{user.Name} used {Name} on {targets.Count} target(s).", LogType.Info);
     }
 
     public void SetDamage(int amount)
