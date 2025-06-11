@@ -5,7 +5,8 @@ public enum PopupType
     Hit,
     Heal,
     Buff,
-    Miss
+    Miss,
+    Shield
 }
 
 public class PopupManager : MonoBehaviour
@@ -16,6 +17,7 @@ public class PopupManager : MonoBehaviour
     public GameObject hitPopupPrefab;
     public GameObject healPopupPrefab;
     public GameObject buffPopupPrefab;
+    public GameObject shieldPopupPrefab;
     public GameObject missPopupPrefab;
     public Transform centerAnchor; // Drag your PopupAnchor object here
 
@@ -59,6 +61,7 @@ public class PopupManager : MonoBehaviour
             case PopupType.Heal: return healPopupPrefab;
             case PopupType.Buff: return buffPopupPrefab;
             case PopupType.Miss: return missPopupPrefab;
+            case PopupType.Shield: return shieldPopupPrefab;
             default: return null;
         }
     }

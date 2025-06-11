@@ -210,6 +210,8 @@ public class ActiveCharPanel : MonoBehaviour
     private void UseMove(int index)
     {
          SoundManager.Instance.PlaySFX("click");
+         ClearTargetingState();
+         
          switch (index)
         {
             case 0:
