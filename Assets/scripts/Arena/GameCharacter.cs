@@ -121,6 +121,8 @@ public class GameCharacter
     public void AddShield(int amount)
     {
         Shield += amount;
+        SoundManager.Instance.PlaySFX("shield");
+        PopupManager.Instance.ShowPopup(PopupType.Shield); 
         Debug.Log($"{Name} gained a shield of {amount}. Total Shield: {Shield}");
         Logger.Instance.PostLog($"{Name} gained a shield of {amount}. Total Shield: {Shield}", LogType.Shield);
     }

@@ -48,7 +48,7 @@ public class PopupManager : MonoBehaviour
         }
 
         GameObject popup = Instantiate(prefab, centerAnchor.position, Quaternion.identity, centerAnchor);
-        //Debug.Log("Showing popup");
+        Debug.Log("Showing popup");
         Destroy(popup, 2f);
 }
 

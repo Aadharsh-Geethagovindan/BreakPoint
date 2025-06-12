@@ -3623,7 +3623,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 853805734}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.10918724
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5427,7 +5427,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000030517578}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1932290568
@@ -5525,6 +5525,7 @@ MonoBehaviour:
   hitPopupPrefab: {fileID: 5042461809086728452, guid: f91d9cd50dfd4544fb26542cf7dd2035, type: 3}
   healPopupPrefab: {fileID: 7951652645898774880, guid: 8882c6e301efc6a499e0fcbac37d1d9c, type: 3}
   buffPopupPrefab: {fileID: 2237266919156946386, guid: a4b55533c6212c143b597072592e737b, type: 3}
+  shieldPopupPrefab: {fileID: 3117508409302733835, guid: 40689390a8e00774f8b887388dbe33bc, type: 3}
   missPopupPrefab: {fileID: 2503858997193576404, guid: e2bd10c79a00b494283ca04256288667, type: 3}
   centerAnchor: {fileID: 1984533010}
 --- !u!1 &1984533009
@@ -5559,7 +5560,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -199, y: -0.00000095367}
+  m_AnchoredPosition: {x: -115, y: 17}
   m_SizeDelta: {x: 200, y: 170}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2014092218
