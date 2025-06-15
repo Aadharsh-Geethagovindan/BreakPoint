@@ -149,8 +149,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4294923235
+  m_fontColor: {r: 0.88825995, g: 0.3254717, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -356,6 +356,7 @@ MonoBehaviour:
   cardButton: {fileID: 493328951112701006}
   shieldSlider: {fileID: 0}
   statusEffectDisplay: {fileID: 9205945379119164789}
+  setRecent: 1
 --- !u!114 &9205945379119164789
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,6 +372,7 @@ MonoBehaviour:
   buffPanel: {fileID: 5386510648271355310}
   debuffPanel: {fileID: 227649757391093883}
   iconPrefab: {fileID: 7843688640851637947, guid: c276e80962879094bb354909808c1d10, type: 3}
+  recentStatusImage: {fileID: 0}
 --- !u!1 &4961253308921831795
 GameObject:
   m_ObjectHideFlags: 0
@@ -829,8 +831,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278698239
+  m_fontColor: {r: 1, g: 0.7529412, b: 0.02745098, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

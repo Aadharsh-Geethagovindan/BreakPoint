@@ -110,13 +110,13 @@ public class CharacterCardUI : MonoBehaviour
         if (setRecent)
         {
             statusEffectDisplay.recentStatusImage = GameObject.Find("RecentStatusImage")?.GetComponent<Image>();
-            Debug.LogWarning("Set Recent");
+            //Debug.LogWarning("Set Recent");
             setRecent = false;
         }
-        Debug.Log("In refresh status");
+        //Debug.Log("In refresh status");
         if (statusEffectDisplay != null)
         {
-            Debug.Log("Updating status effect display");
+            //Debug.Log("Updating status effect display");
             statusEffectDisplay.UpdateStatusEffectDisplay(character);
         }
     }

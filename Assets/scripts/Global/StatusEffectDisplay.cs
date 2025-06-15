@@ -32,7 +32,7 @@ public class StatusEffectDisplay : MonoBehaviour
                 Debug.LogWarning($"Missing icon: {iconName}");
                 continue;
             }
-            Debug.Log($"Instantiating {iconName}");
+            //Debug.Log($"Instantiating {iconName}");
 
             GameObject iconObj = Instantiate(iconPrefab, effect.IsDebuff ? debuffPanel : buffPanel);
             Image iconImage = iconObj.GetComponent<Image>(); // not child
