@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7206bcb6852cdd044842ea0bda6fac5a
+guid: bda2d08f48e191d45b62c71fddfbc616
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8243581054944241388
-    second: HoTIcon_0
+      213: 6489471546171652785
+    second: hot_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,9 +46,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: HoTIcon_0
+      name: hot_0
       rect:
         serializedVersion: 2
         x: 18
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 41998e6f4bae89d80800000000000000
-      internalID: -8243581054944241388
+      spriteID: 1baf0911dfb3f0a50800000000000000
+      internalID: 6489471546171652785
       vertices: []
       indices: 
       edges: []
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      hot_0: 6489471546171652785
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

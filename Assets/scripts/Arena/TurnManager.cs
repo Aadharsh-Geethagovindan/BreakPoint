@@ -23,6 +23,10 @@ public class TurnManager : MonoBehaviour
         }
         Instance = this;
         SoundManager.Instance.PlayMusic("arena"); // play background song
+
+        
+        
+
     }
 
     private void Start()
@@ -92,24 +96,32 @@ public class TurnManager : MonoBehaviour
 
     private void StartTurn()
     {
+        // move to next character, skip dead ones
         while (charactersInOrder[currentCharacterIndex].IsDead)
         {
             currentCharacterIndex = (currentCharacterIndex + 1) % charactersInOrder.Count;
         }
-
         currentCharacter = charactersInOrder[currentCharacterIndex];
         BattleManager.Instance.SetInfoText($"{currentCharacter.Name} is choosing a move.");
 
-        //Debug.Log($"Turn started for: {currentCharacter.Name}");
 
+        //Apply Status effects and update status effect UI
+        CharacterCardUI card = activeCharPanel.FindCardForCharacter(currentCharacter);
+        if (card != null)
+        {
+            Debug.Log("Calling refresh from turn manager");
+            card.RefreshStatusEffects(currentCharacter);
+        }
         StatusEffect.ApplyTurnEffects(currentCharacter);
+        
+
         foreach (var effect in currentCharacter.StatusEffects.ToList()) // Copy to prevent modification while iterating
         {
-            
+
             if (effect.Type == StatusEffectType.CDModifier && effect.AffectedAbilityType.HasValue)
             {
                 AbilityType type = effect.AffectedAbilityType.Value;
-                Ability ability = currentCharacter.GetAbilityOfType(type); 
+                Ability ability = currentCharacter.GetAbilityOfType(type);
                 if (ability != null)
                 {
                     if (effect.CooldownChangeAmount > 0)

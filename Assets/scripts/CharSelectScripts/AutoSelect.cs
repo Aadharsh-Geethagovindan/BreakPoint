@@ -12,12 +12,12 @@ public class AutoSelect : MonoBehaviour
 
         // Add predefined characters for testing
         GameData.SelectedCharactersP1.Add(new CharacterData { name = "Krakoa" });
-        GameData.SelectedCharactersP1.Add(new CharacterData { name = "Avarice" });
+        GameData.SelectedCharactersP1.Add(new CharacterData { name = "Virae" });
         GameData.SelectedCharactersP1.Add(new CharacterData { name = "Jack" });
 
-        GameData.SelectedCharactersP2.Add(new CharacterData { name = "Rover" });
-        GameData.SelectedCharactersP2.Add(new CharacterData { name = "Sedra" });
-        GameData.SelectedCharactersP2.Add(new CharacterData { name = "Ulmika" });
+        GameData.SelectedCharactersP2.Add(new CharacterData { name = "Vas Drel" });
+        GameData.SelectedCharactersP2.Add(new CharacterData { name = "Sanguine" });
+        GameData.SelectedCharactersP2.Add(new CharacterData { name = "Breach Specialist" });
 
         Debug.Log("Auto-Select Complete. Loading Arena Scene...");
 

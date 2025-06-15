@@ -10,6 +10,7 @@ public class BattleManager : MonoBehaviour
     public static BattleManager Instance;
 
     private List<GameCharacter> allCharacters;
+    private ActiveCharPanel charPanel;
 
     private GameCharacter currentCharacter => TurnManager.Instance.GetCurrentCharacter();
 
@@ -28,6 +29,7 @@ public class BattleManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
+       charPanel = Object.FindFirstObjectByType<ActiveCharPanel>();
         // Character creation and team setup will happen here
     }
 
@@ -146,6 +148,17 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(DelayedInfoAndAdvance());
 
 
+        
+
+        foreach (var target in targets)
+        {
+           CharacterCardUI card = charPanel.FindCardForCharacter(target);
+            if (card != null)
+            {
+                Debug.Log("Calling refresh from battle manager");
+                card.RefreshStatusEffects(target);
+            }
+        }
         //TurnManager.Instance.AdvanceTurn();
     }
 

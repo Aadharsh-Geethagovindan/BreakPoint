@@ -91,9 +91,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -120,7 +120,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -500,7 +500,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -509,7 +509,23 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      dmgDebuff_0: 6086850212166893143
+      dmgDebuff_1: 1178444303228325699
+      dmgDebuff_10: -8222668463970977989
+      dmgDebuff_11: 9137556234352426924
+      dmgDebuff_12: 1261820020789531213
+      dmgDebuff_13: 8231981559903032492
+      dmgDebuff_14: -9018771215935018700
+      dmgDebuff_15: -6979836485853428081
+      dmgDebuff_2: 3616483725982206432
+      dmgDebuff_3: -100514552980812457
+      dmgDebuff_4: 4541852888146842903
+      dmgDebuff_5: -3858634579998949356
+      dmgDebuff_6: 3057752928570612852
+      dmgDebuff_7: 5715217435378935494
+      dmgDebuff_8: 3668259811428560671
+      dmgDebuff_9: -556575497543083691
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

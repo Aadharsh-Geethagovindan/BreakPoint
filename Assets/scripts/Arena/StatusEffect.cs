@@ -112,8 +112,8 @@ public class StatusEffect
                 break;
 
             case StatusEffectType.DurationModifier:
-                
-               {
+
+                {
                     bool ShouldAffect(StatusEffect eff)
                     {
                         switch (DurationTargeting)
@@ -163,6 +163,32 @@ public class StatusEffect
     public bool IsExpired()
     {
         return Duration <= 0;
+    }
+
+    public string GetIconName()
+    {
+        switch (Type)
+        {
+            case StatusEffectType.DamageOverTime:
+                Debug.Log($"{DamageType.ToString().ToLower()}");
+                return $"{DamageType.ToString().ToLower()}";  // e.g., "dot_fire"
+            case StatusEffectType.HealingOverTime:
+                return "hot";
+            case StatusEffectType.Stun:
+                return "Stunned";
+            case StatusEffectType.AccuracyModifier:
+                return IsDebuff ? "accDebuff" : "accBuff";
+            case StatusEffectType.DamageModifier:
+                return IsDebuff ? "dmgDebuff" : "dmgBuff";
+            case StatusEffectType.ResistanceModifier:
+                return IsDebuff ? "resDebuff" : "resBuff";
+            case StatusEffectType.DodgeModifier:
+                return IsDebuff ? "dodgeDebuff" : "dodgeBuff";
+            default:
+                Debug.Log("Could not match");
+                return null;
+                
+        }
     }
 
 }

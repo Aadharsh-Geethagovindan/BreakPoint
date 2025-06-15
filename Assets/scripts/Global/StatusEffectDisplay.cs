@@ -1,43 +1,60 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine.UI;
+using TMPro;
 public class StatusEffectDisplay : MonoBehaviour
 {
     public Transform buffPanel, debuffPanel;
     public GameObject iconPrefab;
 
+    [SerializeField] public Image recentStatusImage;
+
     private Dictionary<StatusEffect, GameObject> activeIcons = new();
+    
+    
 
-    public void UpdateIcons(List<StatusEffect> effects)
+    public void UpdateStatusEffectDisplay(GameCharacter character)
     {
-        // Clear expired icons
-        var expired = activeIcons.Keys.Except(effects).ToList();
-        foreach (var expiredEffect in expired)
+        // Clear previous icons
+        foreach (Transform child in buffPanel) Destroy(child.gameObject);
+        foreach (Transform child in debuffPanel) Destroy(child.gameObject);
+        //Debug.Log("In Update Status Effect Display");
+        foreach (StatusEffect effect in character.StatusEffects)
         {
-            Destroy(activeIcons[expiredEffect]);
-            activeIcons.Remove(expiredEffect);
-        }
+            if (!effect.ToDisplay) continue;
 
-        /*
-        // Add or update active icons
-        foreach (var eff in effects)
-        {
-            if (!eff.ToDisplay) continue;
+            string iconName = effect.GetIconName();
+            if (string.IsNullOrEmpty(iconName)) continue;
 
-            if (!activeIcons.ContainsKey(eff))
+            Sprite icon = Resources.Load<Sprite>($"EffectIcons/{iconName}");
+            if (icon == null)
             {
-                var parent = eff.IsDebuff ? debuffPanel : buffPanel;
-                var icon = Instantiate(iconPrefab, parent);
-                var iconComp = icon.GetComponent<StatusEffectIcon>();
-                iconComp.Initialize(StatusEffectIconMapper.GetIconFor(eff), eff.Duration);
-                activeIcons[eff] = icon;
+                Debug.LogWarning($"Missing icon: {iconName}");
+                continue;
+            }
+            Debug.Log($"Instantiating {iconName}");
+
+            GameObject iconObj = Instantiate(iconPrefab, effect.IsDebuff ? debuffPanel : buffPanel);
+            Image iconImage = iconObj.GetComponent<Image>(); // not child
+            TextMeshProUGUI durText = iconObj.GetComponentInChildren<TextMeshProUGUI>();
+            if (iconImage != null && durText != null)
+            {
+                iconImage.sprite = icon;
+                durText.text = effect.Duration.ToString();
             }
             else
+                Debug.LogError("No Image found in status icon prefab.");
+
+            if (recentStatusImage != null)
             {
-                activeIcons[eff].GetComponent<StatusEffectIcon>().UpdateDuration(eff.Duration);
+                recentStatusImage.sprite = icon;
+                recentStatusImage.color = Color.white; // Ensure it's visible
             }
+
         }
-        */
     }
-    
+
+   
+
+
 }

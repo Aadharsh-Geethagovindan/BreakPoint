@@ -76,9 +76,9 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -105,7 +105,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -375,7 +375,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -384,7 +384,18 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      accBuff_0: 1293731170509795231
+      accBuff_1: -8804351572989929640
+      accBuff_10: 5452372400017040673
+      accBuff_2: 8324374010943565896
+      accBuff_3: 6640571219638904327
+      accBuff_4: 9059171129070725007
+      accBuff_5: -676748367753997104
+      accBuff_6: 240521406956372842
+      accBuff_7: -1558355040176556762
+      accBuff_8: 5215294835842698495
+      accBuff_9: 2455658087304657703
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -12,6 +12,9 @@ public class CharacterCardUI : MonoBehaviour
 
     public Slider shieldSlider; // Reference to the shield slider
 
+    public StatusEffectDisplay statusEffectDisplay;
+
+    public bool setRecent = true;
     public void SetCharacter(GameCharacter character)
     {
         characterRef = character;
@@ -80,9 +83,9 @@ public class CharacterCardUI : MonoBehaviour
     }
 
     public void Shake(float duration = 0.3f, float magnitude = 10f)
-{
-    StartCoroutine(ShakeCoroutine(duration, magnitude));
-}
+    {
+        StartCoroutine(ShakeCoroutine(duration, magnitude));
+    }
 
     private IEnumerator ShakeCoroutine(float duration, float magnitude)
     {
@@ -101,4 +104,21 @@ public class CharacterCardUI : MonoBehaviour
 
         transform.localPosition = originalPos;
     }
+    
+    public void RefreshStatusEffects(GameCharacter character)
+    {
+        if (setRecent)
+        {
+            statusEffectDisplay.recentStatusImage = GameObject.Find("RecentStatusImage")?.GetComponent<Image>();
+            Debug.LogWarning("Set Recent");
+            setRecent = false;
+        }
+        Debug.Log("In refresh status");
+        if (statusEffectDisplay != null)
+        {
+            Debug.Log("Updating status effect display");
+            statusEffectDisplay.UpdateStatusEffectDisplay(character);
+        }
+    }
+
 }
