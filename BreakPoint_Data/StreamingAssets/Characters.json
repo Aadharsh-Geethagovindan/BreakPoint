@@ -1,0 +1,994 @@
+{
+  "characters": [
+    {
+      "name": "Arkhe",
+      "hp": 750,
+      "speed": 35,
+      "rarity": "UR",
+      "SigChargeReq": 100,
+      "imageName": "Arkhe",
+      "moves": [
+        {
+          "name": "Elemental Master",
+          "description": "All elemental damage increased by 10%",
+          "cooldown": 0
+        },
+        {
+          "name": "Airburst",
+          "description": "Arkhe shoots a gust of air dealing 30 air damage. Affected enemies have a 15% chance of being stunned next turn.",
+          "cooldown": 1
+        },
+        {
+          "name": "Elemental Support",
+          "description": "Using the mastery of water and warth, provide 20 healing and 15 shield to an ally",
+          "cooldown": 3
+        },
+        {
+          "name": "Monk's Rage",
+          "description": "Arkhe deals 100 fire damage",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "None",
+      "species": "Human",
+      "lore": "Arkhe is a monk from Valkun’s Reach, an isolated city built beneath a stable skyborne rift in a newly contacted world on the edge of the known galaxy. He is a wanderer, making his way through the alliance systems. He is known primarily as an elemental monk — someone whose body and spirit have harmonized with the leylines near the Valkun Rift."
+    },
+    {
+      "name": "Avarice",
+      "hp": 360,
+      "speed": 20,
+      "rarity": "R",
+      "SigChargeReq": 160,
+      "imageName": "Avarice",
+      "moves": [
+        {
+          "name": "Water Priestess",
+          "description": "Water and Ice damage aimed at Avarice is converted into health instead",
+          "cooldown": 0
+        },
+        {
+          "name": "God Blow",
+          "description": "Avarice deals 30 water damage",
+          "cooldown": 1
+        },
+        {
+          "name": "Blessing",
+          "description": "Avarice heals a character for 75 HP",
+          "cooldown": 2
+        },
+        {
+          "name": "Resurrection",
+          "description": "Avarice can bring back a character that died this turn with 25% HP",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Undercurrent Sanctum",
+      "species": "Del'Terran",
+      "lore": "Avarice is a water-attuned cleric hailing from Del'Terah, a lush oceanic planet marked by vast fjords, sunken temples, and semi-submerged cities that was found during the second push era of alliance exploration. She is a devout follower of the water goddess Myriel and serves as a traveling divine channeler"
+    },
+    {
+      "name": "Bessil",
+      "hp": 420,
+      "speed": 34,
+      "rarity": "L",
+      "SigChargeReq": 135,
+      "imageName": "Bessil",
+      "moves": [
+        {
+          "name": "Enter the Nightmare",
+          "description": "At the start of the game, permanently reduces all enemies' accuracy by 15%",
+          "cooldown": 0
+        },
+        {
+          "name": "Psionic Scream",
+          "description": "Deals 40 psychic damage to 1 enemy",
+          "cooldown": 1
+        },
+        {
+          "name": "Abandon Hope",
+          "description": "Deals 20 psychic damage to 2 target. Damage increases by 10 for every debuff on the target",
+          "cooldown": 3
+        },
+        {
+          "name": "KillShot",
+          "description": "Deals 80 psychic damage to 2 enemies. 50% chance to inflict Stun",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Rift",
+      "species": "Riftbeast",
+      "lore": "Bessil is an anomaly among riftbeasts.It's origins are a mystery, and the IWO gave it a rating of Apex Class 1: the highest rating for any known current rift beasts. Bessil has psychic corruption capabilites known to sow discord among entire armies and cities"
+    },
+    {
+      "name": "Breach Specialist",
+      "hp": 330,
+      "speed": 10,
+      "rarity": "C",
+      "SigChargeReq": 30,
+      "imageName": "Breacher",
+      "moves": [
+        {
+          "name": "Insulated Lining",
+          "description": "All allies gain 15% fire resistance for 5 turns",
+          "cooldown": 0
+        },
+        {
+          "name": "Ignition Flare",
+          "description": "Deals 18 fire damage to 1 enemy",
+          "cooldown": 1
+        },
+        {
+          "name": "Firecracker Bombard",
+          "description": "Deals 10 fire damage to 2 enemies and applies 10% accuracy debuff for 1 turn",
+          "cooldown": 2
+        },
+        {
+          "name": "Thermal Charge",
+          "description": "Deals 10 damage to all enemies and applies Burn(20 Fire DoT)for 1 turn and a 30% chance to apply Afterburn (-20% fire res) for 3 turns ",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Silgar Sprawler Corps",
+      "species": "Human",
+      "lore": "Trained to contain small-scale rift breaches, SSC Breach Specialists wield flamethrowers to purge unstable anomalies and clear corrupted zones. Their tactics are blunt but brutally effective."
+    },
+    {
+      "name": "Captain Dinso",
+      "hp": 600,
+      "speed": 30,
+      "rarity": "R",
+      "SigChargeReq": 90,
+      "imageName": "Dinso",
+      "moves": [
+        {
+          "name": "Vibranium Protection",
+          "description": "If an energy attack below 40 damage targets the Captain, there is a 50% chance for the damage to be reflected back",
+          "cooldown": 0
+        },
+        {
+          "name": "Shield Bash",
+          "description": "The Captain slams his shield and does 20 physical damage.",
+          "cooldown": 1
+        },
+        {
+          "name": "Ricochet",
+          "description": "The Captain skillfully throws his shield at an enemy and bounces it off them to hit a second enemy, dealing 15 physical damage each time.",
+          "cooldown": 2
+        },
+        {
+          "name": "Constellian Command",
+          "description": "Allies receive a signature charge equal to 50% of their requirement. All debuffs on any party members are erased.",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Constellian Armed Forces",
+      "species": "Human",
+      "lore": "Dinso is a decorated officer of the Constellian Army, best known as the commanding captain of the 73rd Constellian Company (73rd CC).Born in Silgar, trained at StarSprawler Academy,transferred into the Constellian forces, he rose through the ranks not just through tactical success but for his unwavering reputation as a protector and battlefield leader. "
+    },
+    {
+      "name": "Constellian Trooper",
+      "hp": 320,
+      "speed": 36,
+      "rarity": "C",
+      "SigChargeReq": 70,
+      "imageName": "Trooper",
+      "moves": [
+        {
+          "name": "Professional Military",
+          "description": "Gains 10% bonus damage if 1 ally is CAF affiliated, and 25% if 2 allies are",
+          "cooldown": 0
+        },
+        {
+          "name": "Rifle Shot",
+          "description": "Deals 20 energy damage to 1 enemy",
+          "cooldown": 1
+        },
+        {
+          "name": "Scoped Rifle Shot",
+          "description": "Deals 35 energy damage to 1 enemy",
+          "cooldown": 3
+        },
+        {
+          "name": "Carbine Overloaded",
+          "description": "Fires a burst at 3 enemies, dealing 22 energy damage to each",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Constellian Armed Forces",
+      "species": "Sapien",
+      "lore": "The backbone of the Constellian Army, Troopers are equipped with standard-issue energy rifles and serve as the primary force in the known galaxy’s largest military. Disciplined, numerous, and relentlessly deployed."
+    },
+    {
+      "name": "Faru",
+      "hp": 500,
+      "speed": 25,
+      "rarity": "UC",
+      "SigChargeReq": 110,
+      "imageName": "Faru",
+      "moves": [
+        {
+          "name": "Rift Mutation",
+          "description": "All healing and damage bonus buffs given to Faru will be doubled",
+          "cooldown": 0
+        },
+        {
+          "name": "Silver Sword Slash",
+          "description": "Faru attacks with his greatsword for 25 physical damage.",
+          "cooldown": 1
+        },
+        {
+          "name": "Flaming Sword Strike",
+          "description": "Faru infuses his sword with fire and attacks for 45 fire damage. He has a 60% chance to inflict Burn, which deals 20 damage on the next turn.",
+          "cooldown": 2
+        },
+        {
+          "name": "All Out",
+          "description": "Faru deals 60 physical damage. This damage is increased by 30 for every buff he currently has",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "None",
+      "species": "Modified Human",
+      "lore": "Faru is a Rifthunter from Thalnys. Rifthunters are genetically altered warriors trained from youth to combat rift-corrupted threats. Faru is unaffiliated with any galactic faction and operates as a freelance hunter, "
+    },
+    {
+      "name": "Huron",
+      "hp": 600,
+      "speed": 90,
+      "rarity": "L",
+      "SigChargeReq": 200,
+      "imageName": "Huron",
+      "moves": [
+        {
+          "name": "Silgar's Undying Protector",
+          "description": "Huron gains a 25% damage bonus for every 70 HP he regains. This effect can occur 3 times",
+          "cooldown": 0
+        },
+        {
+          "name": "Scorch Ray",
+          "description": "Huron fires a blast dealing 50 energy damage",
+          "cooldown": 1
+        },
+        {
+          "name": "Solar Cover",
+          "description": "Huron deals 18 energy damage to all enemies, and inflicts blinding,lowering their accuracy by 20% for the next turn",
+          "cooldown": 3
+        },
+        {
+          "name": "Silgar's Might",
+          "description": "Huron creates a dragon of pure energy, punching through it to deal 160 energy damage",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Silgar",
+      "species": "Ascended Sapien",
+      "lore": "Huron, the Ascended Sapien of unknown origin, is Silgar’s living embodiment of martial perfection. Wielding divine strength and tactical mastery, he is the best line of defense against the galaxy’s most catastrophic enemies. No other non-divine force in known space has proven more effective at suppressing apex class rift threats"
+    },
+    {
+      "name": "Jack",
+      "hp": 340,
+      "speed": 20,
+      "rarity": "UC",
+      "SigChargeReq": 50,
+      "imageName": "Jack",
+      "moves": [
+        {
+          "name": "Crafty Crafty",
+          "description": "If an attack would have killed jack, it will instead reduce his hp to 1",
+          "cooldown": 30
+        },
+        {
+          "name": "Blaster Rifle",
+          "description": "Jack shoots his rifle, dealing 20 energy damage.",
+          "cooldown": 1
+        },
+        {
+          "name": "Targeted Strike",
+          "description": "Jack verbally abuses an enemy inflicting 'Mocked'. Mocked decreases the targets dodge by 20%",
+          "cooldown": 3
+        },
+        {
+          "name": "Cindrillian Enhancements",
+          "description": "All allies gain a 30% damage bonus and 10 shield points",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Cindralith",
+      "species": "Human",
+      "lore": "Jack is a rogue artificer and saboteur hailing from Cindralith, known for his deep understanding of arcano-technological systems and a long history of weaponized mischief. He often appears in CAF databases, as a person of interest linked to unsanctioned weapons theft, sabotage, or data extraction."
+    },
+    {
+      "name": "KAS",
+      "hp": 600,
+      "speed": 35,
+      "rarity": "R",
+      "SigChargeReq": 130,
+      "imageName": "KAS",
+      "moves": [
+        {
+          "name": "Overdrive Matrix",
+          "description": "When KAS drops below 50% HP for the first time, he gains 50% signature charge.",
+          "cooldown": 0
+        },
+        {
+          "name": "Cinder Stream",
+          "description": "KAS slashes the enemy in a flurry of strikes, dealing 40 physical damage.",
+          "cooldown": 1
+        },
+        {
+          "name": "Dual Wield Precision",
+          "description": "KAS dashes to strike two enemies with 25 physical damage each. If only one enemy remains, both hits hit them.",
+          "cooldown": 2
+        },
+        {
+          "name": "Sword Skill: Eclipse",
+          "description": "KAS deals 100 physical damage and also reduces the targets accuracy by 10%",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Halion Dynamics",
+      "species": "Construct",
+      "lore": "KAS (Kinematic Assault System) is a hyper-agile mechanized combat unit developed by a private military tech group in Cindralith under the banner of Halion Dynamics. Designed to serve as a single-unit strike operative, KAS combines state-of-the-art technomantic circuitry with physical design principles derived from Rift-class creature countermeasures"
+    },
+    {
+      "name": "Krakoa",
+      "hp": 720,
+      "speed": 26,
+      "rarity": "UR",
+      "SigChargeReq": 130,
+      "imageName": "Krakoa",
+      "moves": [
+        {
+          "name": "CA's Special Force",
+          "description": "Krakoa's physical and fire resistance increase by 10% for every 20% reduction in his health",
+          "cooldown": 0
+        },
+        {
+          "name": "Riftbreaker Axe",
+          "description": "Krakoa attacks with his axe and deals 35 Ice damage.",
+          "cooldown": 1
+        },
+        {
+          "name": "WarFrost",
+          "description": "Krakoa's axe unleashes a wall of ice, dealing 30 Ice damage. He inflicts Chill on an enemy for 2 turns, dealing 20 ice damage",
+          "cooldown": 2
+        },
+        {
+          "name": "Warriors Rage",
+          "description": "Krakoa heals himself for 100 and becomes enraged for the next two turns. While Enraged, he only uses his normal attack and gains a 100% damage bonus multiplier",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Constellian Armed Forces",
+      "species": "Human",
+      "lore": "Krakoa is a Voidblade operative in the Constellian Navy’s elite special forces division, originally born and trained in Silgar. His combat instincts, while exceptional, were often flagged as dangerously aggressive. He was eventually recruited into the Constellian Navy's Voidblade program after catching the attention of a Vice Helm during a live simulation."
+    },
+    {
+      "name": "Legionary",
+      "hp": 380,
+      "speed": 22,
+      "rarity": "C",
+      "SigChargeReq": 58,
+      "imageName": "Legionary",
+      "moves": [
+        {
+          "name": "Last Stand Protocol",
+          "description": "When HP falls below 30% for the first time, gain a 50 point shield at the start of their turn or new round",
+          "cooldown": 0
+        },
+        {
+          "name": "Bolter Strike",
+          "description": "Deals 16 earth damage to 1 enemy",
+          "cooldown": 1
+        },
+        {
+          "name": "Seismic Blow",
+          "description": "Deals 20 earth damage to 1 enemy and has a 50% chance to apply Rupture (20 earth DoT for 1 turn)",
+          "cooldown": 3
+        },
+        {
+          "name": "Fortify",
+          "description": "Grants self Empowered (20% damage boost) for 2 turns and a 40 point shield",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Silgar Sprawler Corps",
+      "species": "Human",
+      "lore": "Silgar Legionaries are elite veterans of the Sprawler Corps, promoted from the rank of Warrior for their battlefield discipline and tactical skill. Armed with heavy seismic bolters, they specialize in breaking enemy lines and holding critical ground during large-scale engagements."
+    },
+    {
+      "name": "Mizca",
+      "hp": 580,
+      "speed": 30,
+      "rarity": "R",
+      "SigChargeReq": 120,
+      "imageName": "Mizca",
+      "moves": [
+        {
+          "name": "Multiplying Rage",
+          "description": "At the end of each round,The Mizca gains 15% damage bonus (capped at 50%) but takes 10 true damage.",
+          "cooldown": 0
+        },
+        {
+          "name": "Saber Slice",
+          "description": "The Mizca slices with his rift weapon, dealing 40 energy damage.",
+          "cooldown": 1
+        },
+        {
+          "name": "Saber Quake",
+          "description": "Mizca slams the earth, dealing 20 Earth damage to 2 enemies. Has a 30% chance to inflict weakened, which reduces enemy damage by 20 percent.",
+          "cooldown": 2
+        },
+        {
+          "name": "Power of the Corrupted",
+          "description": "Mizca rips at the very foundations of the battleground, and hurls large rocks at its enemies. Deals 55 earth damage at two enemies",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Rift",
+      "species": "Riftbeast",
+      "lore": "Mizca are high-tier riftborn entities most commonly associated with Class B riftbreaks, though many A-class incidents have reported them as forward units. Standing taller than a giraffe at full extension but built with a broad, humanoid physique, Mizca embody both raw power and battlefield disruption."
+    },
+    {
+      "name": "Nou",
+      "hp": 480,
+      "speed": 50,
+      "rarity": "L",
+      "SigChargeReq": 200,
+      "imageName": "Nou",
+      "moves": [
+        {
+          "name": "Sky Goddess",
+          "description": "Nou is immune to air damage, and has a 35% chance to dodge attacks from characters",
+          "cooldown": 0
+        },
+        {
+          "name": "Whirlwind",
+          "description": "Nou shoots a cyclone dealing 30 Air damage at two enemies",
+          "cooldown": 1
+        },
+        {
+          "name": "Dust Storm",
+          "description": "Nou creates a dust storm. Deals 20 air damage and inflicts Covered, which reduces target's accuracy by 50% this turn",
+          "cooldown": 2
+        },
+        {
+          "name": "World Wind",
+          "description": "Nou creates a powerful windstorm that deals 60 air damage to all enemies",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Aetherion",
+      "species": "Divine",
+      "lore": "Nou is a wind-aligned divine goddess and the central protector of Aetherion, one of the three major systems of Arkhalion’s Delta. Nou rose to prominence after the catastrophe, becoming the spiritual and magical guardian of survivors in the southern hemisphere. In the present day, she is the last god still active on Arkhalion and is considered the founder and enduring protector of Aetherion."
+    },
+    {
+      "name": "Olthar",
+      "hp": 660,
+      "speed": 37,
+      "rarity": "UR",
+      "SigChargeReq": 120,
+      "imageName": "Olthar",
+      "moves": [
+        {
+          "name": "Arbiter of Silgar",
+          "description": "Party members under 200 HP gain a 50% damage buff (checked at start of each round)",
+          "cooldown": 0
+        },
+        {
+          "name": "Ocular Blaster",
+          "description": "Olthar shoots an enery blast from his eyes, dealing 35 energy damage.",
+          "cooldown": 1
+        },
+        {
+          "name": "Concussive Wave",
+          "description": "Olthar's Hands shoot a wave of concussive force, dealing 20 air damage per enemy.",
+          "cooldown": 3
+        },
+        {
+          "name": " Word of Judgement",
+          "description": "Olthar deals 60 energy damage and 15 energy damage to an enemy for the next two turns.",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Silguard",
+      "species": "Construct",
+      "lore": "Olthar is the Lawbearer of Silgar and the highest judicial authority on the planet. Constructed by the IWO to counter a corrupt Silgarian High command, Olthar rose to power and is widely credited with ending Silgar’s most shameful period (The Shrouded Silgar era) and establishing the modern legal and ethical framework under which the city now operates."
+    },
+    {
+      "name": "Rover",
+      "hp": 300,
+      "speed": 7,
+      "rarity": "C",
+      "SigChargeReq": 30,
+      "imageName": "Rover",
+      "moves": [
+        {
+          "name": "Targeting System",
+          "description": "Increases allies accuracy by 20%",
+          "cooldown": 0
+        },
+        {
+          "name": "Zapper",
+          "description": "Deals 10 lightning damage",
+          "cooldown": 1
+        },
+        {
+          "name": "Confusion Tactics",
+          "description": "Rover's anti-radar lowers an enemy's accuracy by 15%, deals 15 physical damage",
+          "cooldown": 2
+        },
+        {
+          "name": "System Hack",
+          "description": "Rover finds the opponents weak spots. All enemies lightning and energy resistance is reduced by 30%",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Constellian Armed Forces",
+      "species": "Construct",
+      "lore": "Rover is a modified combat-support droid serving aboard Constellian Navy single-pilot interceptor vessels as a tactical adjunct and systems specialist. Originally built from a common astromech-class model, Rover has undergone extensive post-manufacture modification to meet the Navy’s high-performance standards — particularly those of the elite Riftstrike carrier fleet."
+    },
+    {
+      "name": "Raish",
+      "hp": 450,
+      "speed": 20,
+      "rarity": "UC",
+      "SigChargeReq": 75,
+      "imageName": "Raish",
+      "moves": [
+        {
+          "name": "Sacrifice",
+          "description": "When an ally dies, Raish's damage is increased by 50%",
+          "cooldown": 0
+        },
+        {
+          "name": "Claw",
+          "description": "Raish strikes dealing 20 poison damage",
+          "cooldown": 1
+        },
+        {
+          "name": "Venomous Strike",
+          "description": "Raish bites with its corrupted mouth, dealing 30 poison damage",
+          "cooldown": 2
+        },
+        {
+          "name": "Martyr",
+          "description": "Raish deals poison damage equal to 150% of the damage it has received",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Rift",
+      "species": "Riftbeast",
+      "lore": "Raish are corrupted quadrupedal riftbeasts commonly encountered in Class C or D riftbreaks across Arkhalion and nearby systems.They are  mid-sized rift creatures known for their unpredictable aggression and volatile physiology. They move with unnatural speed and reflexes, favoring sudden, erratic charges over coordinated tactics "
+    },
+    {
+      "name": "Rei",
+      "hp": 600,
+      "speed": 32,
+      "rarity": "UR",
+      "SigChargeReq": 100,
+      "imageName": "Rei",
+      "moves": [
+        {
+          "name": "Electric Empress",
+          "description": "Rei is immune to lightning damage. She is also immune to Energy attacks dealing 30 damage or less",
+          "cooldown": 0
+        },
+        {
+          "name": "Katana Strike",
+          "description": "Rei attacks with her lightning katana, dealing 40 lightning damage",
+          "cooldown": 1
+        },
+        {
+          "name": "Burst Charge",
+          "description": "Rei deals 35 Lightning damage to an opponent and inflicts Electroshock(10 lightning DoT, -10% lightning and water res) for 2 turns",
+          "cooldown": 3
+        },
+        {
+          "name": "Stunlock Spear",
+          "description": "Rei enhances her spear with arcana, dealing 140 lightning damage at an enemy and a has a 40% chance to inflict Stun",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Intergalactic Wizarding Organization",
+      "species": "Human",
+      "lore": "Rei is a mid-ranking operative within the Applied Arcana Division of the Intergalactic Wizarding Organization (IWO), holding the formal clearance rank of Tier IV ArcWarden. She is based on Arkhalion, where she oversees the testing and deployment of experimental magical technologies near active or unstable rift zones. She is an offensive spellcaster who specializes in lightning-based magic."
+    },
+    {
+      "name": "Rellin",
+      "hp": 480,
+      "speed": 30,
+      "rarity": "R",
+      "SigChargeReq": 100,
+      "imageName": "Rellin",
+      "moves": [
+        {
+          "name": "Turbocharged",
+          "description": "Whatever lightning damage rellin takes is also added to his sig charge",
+          "cooldown": 0
+        },
+        {
+          "name": "Arc Bore",
+          "description": "rellins modified boring arc deals 30 lightning damage",
+          "cooldown": 1
+        },
+        {
+          "name": "Plasma Capacitor",
+          "description": "Deals 25 lightning damage and applies Static(20 Lightning DoT) for 1 turn",
+          "cooldown": 2
+        },
+        {
+          "name": "Constellian Breacher",
+          "description": "Rellin charges with his mech, dealing 85 lightning damage and applies Shocked (-15% lightning res) for 2 turns",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Constellian Armed Forces",
+      "species": "Virellionese",
+      "lore": "Rellin is a Line Master in the Constellian Navy, hailing from the mineral-dense world of Virellion. He leads boarding operations on compromised vessels, specializing in shock entry and power system disruption."
+    },
+    {
+      "name": "Sanguine",
+      "hp": 450,
+      "speed": 10,
+      "rarity": "R",
+      "SigChargeReq": 80,
+      "imageName": "Sanguine",
+      "moves": [
+        {
+          "name": "Blood Race",
+          "description": "At the start of her turn, if Sanguine has 2 or more DoT effects on her, reduce their duration by 1 and gain 25% damage bonus",
+          "cooldown": 0
+        },
+        {
+          "name": "Wire Whip",
+          "description": "Deals 20 physical damage with a 10% chance to apply Bleed(15 Physical DoT) for 1 turn",
+          "cooldown": 1
+        },
+        {
+          "name": "Incision",
+          "description": "Deal 25 physical damage and apply Bleed for 2 turns",
+          "cooldown": 3
+        },
+        {
+          "name": "Assassin's Detonation",
+          "description": "Applies 60 physical damage. For every DoT on the target, the damage is increased by 20.",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Silgar Sprawler Corps",
+      "species": "Human",
+      "lore": "Sanguine is a Silgarian combat specialist known for her mastery of bleed-based damage. She operates as a sanctioned solo agent under direct orders from high command. She is deployed when the Silgarians want a message sent along with the kill. When fear, suffering, and spectacle are as important as the target’s elimination, Sanguine is the one for the job"
+    },
+    {
+      "name": "Sedra",
+      "hp": 525,
+      "speed": 60,
+      "rarity": "R",
+      "SigChargeReq": 100,
+      "imageName": "Sedra",
+      "moves": [
+        {
+          "name": "Tamaranean Durability",
+          "description": "Sedra has a 50% chance to ignore physical attacks under 30 damage.",
+          "cooldown": 0
+        },
+        {
+          "name": "Heat Vision",
+          "description": "Sedra shoots lasers out her eyes and deals 40 Energy Damage.",
+          "cooldown": 1
+        },
+        {
+          "name": "Nova Lash",
+          "description": "Sedra dashes in and slashes a target with solar fire, dealing 40 energy damage and applying Solar Wind (20 energy dmg over 2 turns)",
+          "cooldown": 2
+        },
+        {
+          "name": "Starburst Explosion",
+          "description": "Sedra launches a giant explosion, dealing 50 AoE energy damage.",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Council of Ascendance",
+      "species": "Ascended Human",
+      "lore": "Sedra is a magically gifted young woman born in Aetherion, the daughter of two of the city’s most influential figures.She is a rising defender of Aetherion and often serves as a first response combatant for major rift activity in the region."
+    },
+    {
+      "name": "Skirvex",
+      "hp": 40,
+      "speed": 25,
+      "rarity": "C",
+      "SigChargeReq": 65,
+      "imageName": "Skirvex",
+      "moves": [
+        {
+          "name": "Parastic Birth",
+          "description": "The skirvex explodes upon death, unleashing rift flies that deal 20 poison damage to all enemies",
+          "cooldown": 0
+        },
+        {
+          "name": "Rabid Strike",
+          "description": "Skirvex strikes for 10 poison damage, 20% chance to apply Venom(20 Poison DoT)",
+          "cooldown": 1
+        },
+        {
+          "name": "Vapid Bite",
+          "description": "Skirvex bites dealing 25 poison damage. It has a 35% chance to inflict Decaying(-20% dmg) for 2 turns",
+          "cooldown": 2
+        },
+        {
+          "name": "Necrosis",
+          "description": "Skirvex unleashes a horde of flies from its flesh sacs, which inflict Necrosis(-20% poison res) for 2 turns and expire any HoT effects on the target",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Rift",
+      "species": "Riftbeast",
+      "lore": "The Skirvex is a quadrupedal riftbeast commonly encountered in Class B riftbreaks. Heavily mutated, it functions as a mobile hive for parasitic riftflies that gestate within its rotting internal cavities. The creature’s slow, unstable gait conceals its real threat: on death, the internal swarm is released, aggressively targeting nearby lifeforms"
+    },
+    {
+      "name": "Temple Guard",
+      "hp": 325,
+      "speed": 36,
+      "rarity": "C",
+      "SigChargeReq": 50,
+      "imageName": "Temple_Guard",
+      "moves": [
+        {
+          "name": "Salvation",
+          "description": "All IWO or Aetherion-aligned allies gain a 30 point shield at the start of the game",
+          "cooldown": 0
+        },
+        {
+          "name": "Snap Flush",
+          "description": "Deals 15 water damage to 1 enemy",
+          "cooldown": 1
+        },
+        {
+          "name": "Aetherion Halo",
+          "description": "Applies Halo (increases Water, Ice, and Psychic resistances) for 2 turns to 1 ally and has a 40% chance to apply Clarity (accuracy +15%) for 1 turn",
+          "cooldown": 3
+        },
+        {
+          "name": "Sonic Pump",
+          "description": "Deals 50 water damage to 1 enemy and applies Blinding (-20% accuracy)",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Council of Ascendance",
+      "species": "Human",
+      "lore": "Elite defenders of Aetherion’s sacred sites, Temple Guards are entrusted with protecting the city's ancient rituals and divine relics. Trained in both martial and magical combat, they are unwavering in their duty to uphold the will of the Council of Ascendance."
+    },
+    {
+      "name": "TRex",
+      "hp": 770,
+      "speed": 24,
+      "rarity": "R",
+      "SigChargeReq": 130,
+      "imageName": "TRex",
+      "species": "Riftbeast",
+      "affiliation": "Rift",
+      "moves": [
+        {
+          "name": "Apex Predator",
+          "description": "When T-Rex is the only surviving member of his team, gain 50% damage and full signature charge",
+          "cooldown": 0
+        },
+        {
+          "name": "CHOMP",
+          "description": "Trex bites dealing 40 physical damage",
+          "cooldown": 1
+        },
+        {
+          "name": "Rift-Hardened Hide",
+          "description": "Trex gains a flat 30 point shield and additionally gets 25 healing for 2 turns",
+          "cooldown": 4
+        },
+        {
+          "name": "Tyrant Lizard King",
+          "description": "Trex bites dealing 50 physical damage and inflict Poisoned. When Poisoned, The target takes 20 poison damage for the next 2 turns",
+          "cooldown": 1
+        }
+      ],
+      "lore": "A towering, rift-altered predator, the Corrupted T-Rex is an apex-class threat born from the dimensional corruption of a prehistoric Earth-like species. This riftbeast falls under the category of a rift-mutated natural organism, elevated far beyond its original capabilities by exposure to high-intensity riftfields"
+    },
+    {
+      "name": "Trustless Engineer",
+      "hp": 350,
+      "speed": 10,
+      "rarity": "C",
+      "SigChargeReq": 80,
+      "imageName": "Trustless",
+      "moves": [
+        {
+          "name": "Safety Matters...ish",
+          "description": "All allies gain 20% poison resistance",
+          "cooldown": 0
+        },
+        {
+          "name": "Acid Shot",
+          "description": "Deals 18 poison damage",
+          "cooldown": 1
+        },
+        {
+          "name": "Venom Strike",
+          "description": "The engineer hurls an assortment of poison grenades, dealing 15 poison damage to all enemies",
+          "cooldown": 3
+        },
+        {
+          "name": "JunkMix Bombs",
+          "description": "He launches a bomb at 1 enemy dealing 20 energy damage, and has a 20 chance to independently apply Burn,Poisoned,or Shock (20 fire,phys,poison) lasting 1 turn.",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Cindralith",
+      "species": "Modified Human",
+      "lore": "A rogue inventor operating in the outer sectors of Cindralith, this engineer has no formal affiliations and no official permits. Known only by outdated registry numbers and salvaged ID tags, he drifts from world to world selling volatile gadgets, offering quick repairs, or trading custom throwables for strange parts."
+    },
+    {
+      "name": "Ulmika",
+      "hp": 390,
+      "speed": 10,
+      "rarity": "UC",
+      "SigChargeReq": 140,
+      "imageName": "Ulmika",
+      "moves": [
+        {
+          "name": "IWO's Patronage",
+          "description": "Ulmika removes a debuff on an ally once per round on her turn",
+          "cooldown": 0
+        },
+        {
+          "name": "Wind Gust",
+          "description": "Ulmika deals 15 air dmg",
+          "cooldown": 1
+        },
+        {
+          "name": "Arcane Blessing",
+          "description": "Ulmika grants a shield of 50 points to 2 allies or herself",
+          "cooldown": 2
+        },
+        {
+          "name": "Flaming Ward",
+          "description": "Ulmika performs a warding ritual, giving 1 ally or herself 20% dodge and 40% fire resistannce for 2 turns",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Intergalactic Wizarding Organization",
+      "species": "Modified Human",
+      "lore": "Ulmika is a Tier II Field Agent assigned to the Reconnaissance Subfield of the IWO Combat Division.She operates as part of forward-deployed detachments, often assigned to accompany Constellian military units during Class C-D riftbreaks. Her role blends recon, magical analysis, and long-range elemental support."
+    },
+    {
+      "name": "Vas Drel",
+      "hp": 340,
+      "speed": 18,
+      "rarity": "C",
+      "SigChargeReq": 30,
+      "imageName": "Vas",
+      "moves": [
+        {
+          "name": "Protection from Evil",
+          "description": "Allies take 10% less damage from riftbeast species characters ",
+          "cooldown": 0
+        },
+        {
+          "name": "Jet Stream",
+          "description": "Vas shoots a stream of compressed water for 10 damage",
+          "cooldown": 1
+        },
+        {
+          "name": "Mostly Stable Runic Blessing",
+          "description": "Vas casts 2 runes on a party member, with a 40% chance each of applying Haste (dodge 15%) and Clarity (accuracy 15%) for 1 turn",
+          "cooldown": 3
+        },
+        {
+          "name": "Fully Stable Runic Array",
+          "description": "Vas tunes his runic array on an ally, which applies Recover (20 HoT) for 2 turns and also reduces their skill cooldown by 2 turns",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Intergalactic Wizarding Organization",
+      "species": "Eronial",
+      "lore": "Vas Drel is a rune systems theorist within the IWO’s Theoretical Division, known for his obsessive field research into arcane ward systems and pre-Breakpoint sigil architecture.He carries several experimental wards designed to enhance allies' reflexes, accuracy, and healing responses"
+    },
+    {
+      "name": "Vemk Parlas",
+      "hp": 400,
+      "speed": 15,
+      "rarity": "R",
+      "SigChargeReq": 50,
+      "imageName": "Vemk",
+      "moves": [
+        {
+          "name": "Unwavering Precision",
+          "description": "Vemk has a 100% increase to his own accuracy",
+          "cooldown": 0
+        },
+        {
+          "name": "Poisoned Chalice",
+          "description": "Enemy is dealt 20 poison damage",
+          "cooldown": 1
+        },
+        {
+          "name": "Disruption Tactics",
+          "description": "Vemk applies Dazed(25% accuracy debuff) for 1 turn on 2 enemies, and deals 15 psychic damage",
+          "cooldown": 2
+        },
+        {
+          "name": "Engineered Setback",
+          "description": "Reduces 2 enemies signature charge by 30% and deals 25 Pyschic damage",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Intergalactic Wizarding Organization",
+      "species": "Human",
+      "lore": "Vemk, a Tier 5 Veilkeeper in the Intergalactic Wizarding Organization, is one of the IWO’s most influential non-combat operatives. Officially a diplomatic liaison, Vemk operates as a silent enforcer of the IWO’s deeper agenda — ensuring that secrets stay buried, narratives remain controlled, and the organization's image never falters"
+    },
+    {
+      "name": "Virae",
+      "hp": 520,
+      "speed": 21,
+      "rarity": "UC",
+      "SigChargeReq": 60,
+      "imageName": "Virae",
+      "moves": [
+        {
+          "name": "Wrapped In Ice",
+          "description": "Any ice damage directed at Virae is converted into shield points for her",
+          "cooldown": 0
+        },
+        {
+          "name": "Icicle Hit",
+          "description": "Shoots a large icicle at an opponent dealing 15 ice damage",
+          "cooldown": 1
+        },
+        {
+          "name": "Frozen Aegis",
+          "description": "Grants a 25 shield to one ally and increases their ice resistance by 20%",
+          "cooldown": 2
+        },
+        {
+          "name": "Glacial Bloom",
+          "description": " Increases target ally's damage by 15% and extends the duration of one existing buff by 2 turns",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "Aetherion",
+      "species": "Human",
+      "lore": "Virae is a shieldcaster from Aetherion, trained by a silent sect of monks and deeply devout to a long-fallen ice deity. Though not a frontline fighter, her presence in battle preserves her allies through cold-born barriers and quiet resilience. Her techniques emphasize protection, precision, and faith"
+    },
+    {
+      "name": "VyGar",
+      "hp": 600,
+      "speed": 33,
+      "rarity": "R",
+      "SigChargeReq": 80,
+      "imageName": "VyGar",
+      "moves": [
+        {
+          "name": "Defensive Rock",
+          "description": "Physical,Earth,Air and Poison Resistances for all allies increase by 10%",
+          "cooldown": 0
+        },
+        {
+          "name": "Spear Strike",
+          "description": "VyGar attacks dealing 30 physical damage",
+          "cooldown": 1
+        },
+        {
+          "name": "Meteor Strike",
+          "description": "VyGar fires a rock at all opponents. Each hit does 15 earth damage.",
+          "cooldown": 2
+        },
+        {
+          "name": "Mighty Shield",
+          "description": "VyGar casts a shield on a party member. This shield has 120 shield points.",
+          "cooldown": 1
+        }
+      ],
+      "affiliation": "None",
+      "species": "Zavrosi",
+      "lore": "VyGar is a Zavrosian weapons appraiser contracted frequently by the Constellian Armed Forces and various independent trusts. He specializes in collecting weapons that have historical, political, or tactical significance. Born in the forge-cluster of Durnskarn, he rejected his clan’s traditional role as smiths and became an interpreter of weapon history instead"
+    }
+  ]
+}
