@@ -63,9 +63,10 @@ public class TurnManager : MonoBehaviour
             Debug.LogError("ActiveCharPanel not found.");
             yield break;
         }
+        
 
         //  Apply one-time passives
-        PassiveManager.OnGameStart(charactersInOrder);
+            PassiveManager.OnGameStart(charactersInOrder);
         StartNewRound(); // Begin first round
     }
 
@@ -81,7 +82,14 @@ public class TurnManager : MonoBehaviour
                 if (ability != null && ability.CurrentCooldown > 0)
                     ability.CurrentCooldown--;
             }
-
+        
+            CharacterCardUI card = activeCharPanel.FindCardForCharacter(character);
+            if (card != null)
+            {
+                Debug.Log($"Refreshing icons for {character.Name} ");
+                card.RefreshStatusEffects(character);
+            }
+        
             
         }
         PassiveManager.ClearResurrectionTracker();
@@ -90,6 +98,7 @@ public class TurnManager : MonoBehaviour
         {
             roundText.text = $"Round {currentRound}";
         }
+
         currentCharacterIndex = 0;
         StartTurn();
     }

@@ -149,7 +149,7 @@ public class BattleManager : MonoBehaviour
 
 
         
-
+        //Update Status Effect Icons
         foreach (var target in targets)
         {
            CharacterCardUI card = charPanel.FindCardForCharacter(target);

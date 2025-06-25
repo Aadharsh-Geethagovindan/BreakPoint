@@ -914,8 +914,8 @@ public static class CharacterFactory
             10, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Water
         );
 
-        var haste = new StatusEffect("Haste", StatusEffectType.DodgeModifier, 1, 15, null, DamageType.True, isDebuff: false, applyChance: 0.4f);
-        var clarity = new StatusEffect("Clarity", StatusEffectType.AccuracyModifier, 1, 15, null, DamageType.True, isDebuff: false, applyChance: 0.4f);
+        var haste = new StatusEffect("Haste", StatusEffectType.DodgeModifier, 1, .15f, null, DamageType.True, isDebuff: false, applyChance: 0.4f);
+        var clarity = new StatusEffect("Clarity", StatusEffectType.AccuracyModifier, 1, .15f, null, DamageType.True, isDebuff: false, applyChance: 0.4f);
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
             0, 0, 0, 0, TargetType.AllyOrSelf, 1, new List<StatusEffect> { haste, clarity }

@@ -115,13 +115,13 @@ public class ActiveCharPanel : MonoBehaviour
         if (accuracyText != null && damageMultiplierText != null)
         {
             accuracyText.text = $"Accuracy: \n{Mathf.RoundToInt(character.GetModifiedAccuracy() * 100)}%";
-            damageMultiplierText.text = $"Damage Multiplier: \n {character.GetModifiedDamageMultiplier()}x";
+            damageMultiplierText.text = $"Dmg Multiplier: \n {character.GetModifiedDamageMultiplier()}x";
         }
 
         // === STATUS EFFECTS ==
         if (statusEffectsText != null)
         {
-            string statusText = "Status Effects:\n";
+            string statusText = "";
 
             foreach (StatusEffect effect in character.StatusEffects)
             {
