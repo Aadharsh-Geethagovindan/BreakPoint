@@ -24,4 +24,12 @@ public class AutoSelect : MonoBehaviour
         // Load the Arena Scene
         SceneManager.LoadScene("Arena");
     }
+
+    public void ClearSelections()
+    {
+        SoundManager.Instance.PlaySFX("click"); // play button noise
+        FindFirstObjectByType<CharacterDisplayManager>()?.ClearSelections();
+        FindFirstObjectByType<ConfirmSelection>()?.ClearSelections();
+
+    }
 }

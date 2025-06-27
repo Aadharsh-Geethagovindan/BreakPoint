@@ -80,4 +80,13 @@ public class ConfirmSelection : MonoBehaviour
         GameData.SelectedCharactersP1 = selectedCharactersP1;
         GameData.SelectedCharactersP2 = selectedCharactersP2;
     }
+
+    public void ClearSelections()
+    {
+        selectedCharactersP1.Clear();
+        selectedCharactersP2.Clear();
+        GameData.SelectedCharactersP1.Clear();
+        GameData.SelectedCharactersP2.Clear();
+    }
+
 }

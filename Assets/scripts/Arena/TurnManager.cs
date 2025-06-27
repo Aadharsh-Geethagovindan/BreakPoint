@@ -165,6 +165,12 @@ public class TurnManager : MonoBehaviour
     public void AdvanceTurn()
     {
         TickAndExpireStatusEffects(currentCharacter);
+        CharacterCardUI card = activeCharPanel.FindCardForCharacter(currentCharacter);
+            if (card != null)
+            {
+                Debug.Log($"Refreshing icons for {currentCharacter.Name} ");
+                card.RefreshStatusEffects(currentCharacter);
+            }
         do
         {
             currentCharacterIndex = (currentCharacterIndex + 1) % charactersInOrder.Count;

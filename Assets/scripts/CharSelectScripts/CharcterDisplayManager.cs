@@ -29,6 +29,8 @@ public class CharacterDisplayManager : MonoBehaviour
     private Coroutine messageCoroutine;
     public TextMeshProUGUI statusText;
 
+
+
     private void Start()
     {
         DisplayAllCharacterCards();
@@ -61,7 +63,7 @@ public class CharacterDisplayManager : MonoBehaviour
 
         TextMeshProUGUI statsText = card.transform.Find("Stats").GetComponent<TextMeshProUGUI>();
         statsText.text = $"{character.hp} HP {character.speed} SPD {character.rarity}";
-        
+
         Button button = card.GetComponent<Button>();
         button.onClick.AddListener(() => OnCharacterCardClicked(card, character));
     }
@@ -176,4 +178,37 @@ public class CharacterDisplayManager : MonoBehaviour
         yield return new WaitForSeconds(duration);
         statusText.text = originalMessage;
     }
+    
+    public void ClearSelections()
+{
+    SoundManager.Instance.PlaySFX("click");
+
+    // Destroy confirmed visual cards
+    foreach (var card in confirmedSelectionsP1) Destroy(card);
+    foreach (var card in confirmedSelectionsP2) Destroy(card);
+    confirmedSelectionsP1.Clear();
+    confirmedSelectionsP2.Clear();
+
+    // Destroy current selections (unconfirmed)
+    if (currentSelectionP1 != null) Destroy(currentSelectionP1);
+    if (currentSelectionP2 != null) Destroy(currentSelectionP2);
+    currentSelectionP1 = null;
+    currentSelectionP2 = null;
+    currentCharacterP1 = null;
+    currentCharacterP2 = null;
+
+    foreach (Transform card in characterSelectionArea.transform)
+    {
+        Button btn = card.GetComponent<Button>();
+        if (btn != null) btn.interactable = true;
+
+        Image img = card.GetComponent<Image>();
+        if (img != null) img.color = Color.white;
+    }
+
+
+    // Reset turn and UI
+    isPlayer1Turn = true;
+    statusText.text = "Player 1 selecting...";
+}
 }
