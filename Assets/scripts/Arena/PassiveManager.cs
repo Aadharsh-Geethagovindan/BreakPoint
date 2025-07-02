@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Unity.VisualScripting;
 
 public static class PassiveManager
 {
@@ -18,12 +19,12 @@ public static class PassiveManager
     }
 
     // Called at the start of each round
-    public static void OnRoundStart(List<GameCharacter> allCharacters)
+    public static void OnRoundStart(List<GameCharacter> allCharacters, int roundNum)
     {
         //Debug.Log("PassiveManager: OnRoundStart triggered.");
         foreach (var character in allCharacters)
         {
-            HandleRoundStartPassives(character);
+            HandleRoundStartPassives(character, roundNum);
         }
     }
 
@@ -143,15 +144,21 @@ public static class PassiveManager
         }
     }
 
-    private static void HandleRoundStartPassives(GameCharacter character)
+    private static void HandleRoundStartPassives(GameCharacter character, int roundNum)
     {
         // For passives that trigger each round (like Nou, Mizca, Rover, Olthar)
         if (character.Name == "Mizca")
         {
-            if (character.DamageMultiplier <= 1.5)
+            if (roundNum <= 1)
             {
-                character.ModifyDamageMultiplier(.15f);
+                Debug.Log($"Round Number is {roundNum}");
+                return;
             }
+            if (character.DamageMultiplier <= 1.5)
+                {
+
+                    character.ModifyDamageMultiplier(.15f);
+                }
             character.TakeDamage(10, DamageType.True);
             Debug.Log("Mizca's passive applied: 15% dmg bonus at start of round and takes 10 true dmg");
             Logger.Instance.PostLog("Mizca's passive applied: 15% dmg bonus at start of round and takes 10 true dmg", LogType.Passive);

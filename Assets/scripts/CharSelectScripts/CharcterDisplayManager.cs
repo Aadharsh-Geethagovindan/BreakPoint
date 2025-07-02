@@ -74,13 +74,14 @@ public class CharacterDisplayManager : MonoBehaviour
                 nameText.color = new Color(255, 255, 255, 255); // White with light alpha
                 break;
             case "UC":
-                nameText.color = new Color(182, 207, 205, 255); // White with light alpha
+                nameText.color = new Color(0.2f, 0.6f, 1f, 1f); // White with light alpha
                 break;
             case "R":
-                nameText.color = new Color(48, 222, 0, 255); // Green-ish
+                nameText.color = new Color(0.2f, 0.6f, 0f, 1f); // Green-ish
                 break;
             case "UR":
-                nameText.color = new Color(255, 81, 242, 255); // Purple
+                nameText.color = new Color(0.6f, 0f, 1f, 1f); // Purple
+                 Debug.Log($"{character.name}'s color is set to purple");
                 break;
             case "L":
                 nameText.color = new Color(255, 192, 0, 255); // Gold

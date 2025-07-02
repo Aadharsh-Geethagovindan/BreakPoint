@@ -882,7 +882,7 @@ public static class CharacterFactory
 
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            0, 0, 50, 0, TargetType.AllyOrSelf, 2
+            0, 0, 25, 0, TargetType.AllyOrSelf, 2
         );
 
         var flamingWardEffects = new List<StatusEffect>

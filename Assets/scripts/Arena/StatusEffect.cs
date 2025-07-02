@@ -97,14 +97,25 @@ public class StatusEffect
     // Apply the effect to the target on their turn
     public void ApplyEffect(GameCharacter target)
     {
+        int valueDone = 0;
         switch (Type)
         {
             case StatusEffectType.DamageOverTime:
-                target.TakeDamage(Mathf.RoundToInt(Value), DamageType);
+                valueDone = target.TakeDamage(Mathf.RoundToInt(Value), DamageType);
+                if (Source != null)
+                {
+                    Debug.Log($"{Source.Name} gained {valueDone} charge");
+                    Source.IncreaseCharge(valueDone);
+                }
                 break;
 
             case StatusEffectType.HealingOverTime:
-                target.Heal(Mathf.RoundToInt(Value));
+                valueDone = target.Heal(Mathf.RoundToInt(Value));
+                if (Source != null)
+                {
+                    Debug.Log($"{Source.Name} gained {valueDone} charge");
+                    Source.IncreaseCharge(valueDone);
+                }
                 break;
 
             case StatusEffectType.Shield:

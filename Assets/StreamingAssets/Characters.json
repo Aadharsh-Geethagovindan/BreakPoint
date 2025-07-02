@@ -2,7 +2,7 @@
   "characters": [
     {
       "name": "Arkhe",
-      "hp": 750,
+      "hp": 650,
       "speed": 35,
       "rarity": "UR",
       "SigChargeReq": 100,
@@ -69,7 +69,7 @@
     {
       "name": "Bessil",
       "hp": 420,
-      "speed": 34,
+      "speed": 72,
       "rarity": "L",
       "SigChargeReq": 135,
       "imageName": "Bessil",
@@ -201,7 +201,7 @@
     {
       "name": "Faru",
       "hp": 500,
-      "speed": 25,
+      "speed": 52,
       "rarity": "UC",
       "SigChargeReq": 110,
       "imageName": "Faru",
@@ -233,7 +233,7 @@
     },
     {
       "name": "Huron",
-      "hp": 600,
+      "hp": 450,
       "speed": 90,
       "rarity": "L",
       "SigChargeReq": 200,
@@ -332,8 +332,8 @@
     },
     {
       "name": "Krakoa",
-      "hp": 720,
-      "speed": 26,
+      "hp": 520,
+      "speed": 50,
       "rarity": "UR",
       "SigChargeReq": 130,
       "imageName": "Krakoa",
@@ -531,7 +531,7 @@
     {
       "name": "Raish",
       "hp": 450,
-      "speed": 20,
+      "speed": 42,
       "rarity": "UC",
       "SigChargeReq": 75,
       "imageName": "Raish",
@@ -761,7 +761,7 @@
     },
     {
       "name": "TRex",
-      "hp": 770,
+      "hp": 670,
       "speed": 24,
       "rarity": "R",
       "SigChargeReq": 130,
@@ -830,7 +830,7 @@
       "hp": 390,
       "speed": 10,
       "rarity": "UC",
-      "SigChargeReq": 140,
+      "SigChargeReq": 90,
       "imageName": "Ulmika",
       "moves": [
         {
@@ -845,7 +845,7 @@
         },
         {
           "name": "Arcane Blessing",
-          "description": "Ulmika grants a shield of 50 points to 2 allies or herself",
+          "description": "Ulmika grants a shield of 25 points to 2 allies or herself",
           "cooldown": 2
         },
         {
@@ -959,7 +959,7 @@
     },
     {
       "name": "VyGar",
-      "hp": 600,
+      "hp": 520,
       "speed": 33,
       "rarity": "R",
       "SigChargeReq": 80,

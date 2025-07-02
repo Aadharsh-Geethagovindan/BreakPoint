@@ -93,7 +93,7 @@ public class TurnManager : MonoBehaviour
             
         }
         PassiveManager.ClearResurrectionTracker();
-        PassiveManager.OnRoundStart(charactersInOrder);
+        PassiveManager.OnRoundStart(charactersInOrder, currentRound);
         if (roundText != null)
         {
             roundText.text = $"Round {currentRound}";
