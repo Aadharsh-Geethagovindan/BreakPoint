@@ -51,7 +51,7 @@ public class CharacterDisplayManager : MonoBehaviour
     private void SetupCard(GameObject card, CharacterData character)
     {
         TextMeshProUGUI nameText = card.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
-        nameText.text = character.name;
+        nameText.text = $"({character.rarity}) {character.name}";
 
         Image portrait = card.transform.Find("PortraitImage").GetComponent<Image>();
         Sprite loadedSprite = Resources.Load<Sprite>("Images/" + character.imageName);
@@ -62,7 +62,34 @@ public class CharacterDisplayManager : MonoBehaviour
             portrait.sprite = defaultPortrait;
 
         TextMeshProUGUI statsText = card.transform.Find("Stats").GetComponent<TextMeshProUGUI>();
-        statsText.text = $"{character.hp} HP {character.speed} SPD {character.rarity}";
+        statsText.text = $"HP: {character.hp}  SPD: {character.speed}";
+
+        //Image rarityGlow = card.transform.Find("rarityImage").GetComponent<Image>();
+        //rarityGlow.gameObject.SetActive(true);
+
+        // Tint NameText based on rarity
+        switch (character.rarity)
+        {
+            case "C":
+                nameText.color = new Color(255, 255, 255, 255); // White with light alpha
+                break;
+            case "UC":
+                nameText.color = new Color(182, 207, 205, 255); // White with light alpha
+                break;
+            case "R":
+                nameText.color = new Color(48, 222, 0, 255); // Green-ish
+                break;
+            case "UR":
+                nameText.color = new Color(255, 81, 242, 255); // Purple
+                break;
+            case "L":
+                nameText.color = new Color(255, 192, 0, 255); // Gold
+                Debug.Log($"{character.name}'s color is set to gold");
+                break;
+            default:
+                nameText.color = new Color(255, 255, 255, 255); // Fallback
+                break;
+        }
 
         Button button = card.GetComponent<Button>();
         button.onClick.AddListener(() => OnCharacterCardClicked(card, character));

@@ -695,7 +695,7 @@
     },
     {
       "name": "Skirvex",
-      "hp": 40,
+      "hp": 340,
       "speed": 25,
       "rarity": "C",
       "SigChargeReq": 65,

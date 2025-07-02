@@ -150,7 +150,7 @@ public class ArenaCharacterLoader : MonoBehaviour
                 if (isPlayer2)
                     borderImage.color = new Color32(132, 0, 243, 255); // Purple for Player 2
                 else
-                    borderImage.color = new Color32(255, 215, 0, 255);  // Gold for Player 1
+                    borderImage.color = new Color32(0, 0, 255, 255);  // Gold for Player 1
             }
 
             RectTransform rectTransform = cardObj.GetComponent<RectTransform>();
