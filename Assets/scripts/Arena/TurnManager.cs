@@ -111,7 +111,7 @@ public class TurnManager : MonoBehaviour
             currentCharacterIndex = (currentCharacterIndex + 1) % charactersInOrder.Count;
         }
         currentCharacter = charactersInOrder[currentCharacterIndex];
-        BattleManager.Instance.SetInfoText($"{currentCharacter.Name} is choosing a move.");
+        EventManager.Trigger("OnTurnStarted", currentCharacter);
 
 
         //Apply Status effects and update status effect UI
@@ -155,8 +155,9 @@ public class TurnManager : MonoBehaviour
 
         if (currentCharacter.HasStatusEffect(StatusEffectType.Stun))
         {
-            BattleManager.Instance.SetInfoText($"{currentCharacter.Name} is stunned and cannot act.");
-            BattleManager.Instance.StartCoroutine(BattleManager.Instance.DelayedInfoAndAdvance());
+            GameUI.Announce($"{currentCharacter.Name} is stunned and cannot act.");
+            UIAnnouncer.Instance.DelayedAnnounceAndAdvance($"{TurnManager.Instance.PeekNextCharacter().Name} is choosing a move.");
+
             return;
         }
 

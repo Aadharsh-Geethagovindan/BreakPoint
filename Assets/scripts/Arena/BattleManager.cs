@@ -72,51 +72,41 @@ public class BattleManager : MonoBehaviour
         }
 
         charactersInOrder = allCharacters.OrderByDescending(c => c.Speed).ToList();
-        /*
-        //targeting dictionary lookup
-        // Reference to the ActiveCharPanel
-        ActiveCharPanel panel = Object.FindFirstObjectByType<ActiveCharPanel>();
-        if (panel == null)
-        {
-            Debug.LogError("ActiveCharPanel not found.");
-            return;
-        }
-
-        // Create cards and populate lookup
-        foreach (GameCharacter character in charactersInOrder)
-        {
-            GameObject cardObj = GameObject.Instantiate(characterCardPrefab, panel.characterHolder); // <-- you’ll need to expose this
-            CharacterCardUI cardUI = cardObj.GetComponent<CharacterCardUI>();
-            cardUI.SetCharacter(character);
-
-            panel.RegisterCard(character, cardUI); // <-- you’ll define this method next
-        }*/
+       
     }
 
 
 
     public void ExecuteAbility(GameCharacter user, Ability ability, List<GameCharacter> targets)
     {
-        //1. Check if ability is usable
-        if (!ability.IsUsable(user.Charge)) // ✔ Pass the charge, not the object
+        // Check if ability is usable
+        if (!ability.IsUsable(user.Charge)) 
         {
             Debug.LogWarning($"{ability.Name} is not usable right now.");
             return;
         }
-        //2. Check Passives
+        // Check Passives
         foreach (GameCharacter target in targets)
         {
-            // ✅ Passive override logic BEFORE applying the move
+            // Passive override logic BEFORE applying the move
             PassiveManager.ApplyOverride(user, target, ability);
         }
-        //3. Apply Ability, clear any overrides
+        // Apply Ability, clear any overrides
         ability.Apply(user, targets);
         ability.CustomDamageOverride = null;
 
-        //4 Apply custom logic in abilities
-        HandleImmediateAbilityEffects(ability, user, targets);
+        // Apply custom logic in abilities
+        HandleImmediateAbilityEffects(ability, user, targets); 
 
-        //5. Check DEATH
+        // Create OnAbilityUsed info payload
+        var evt = new GameEventData();
+        evt.Set("User", user);
+        evt.Set("Ability", ability);
+        evt.Set("Targets", targets);
+
+        EventManager.Trigger("OnAbilityUsed", evt);
+
+        // Check DEATH
         foreach (var target in targets)
         {
             if (target.HP <= 0)
@@ -125,27 +115,28 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        // 6. Special Effects (Post-death)
+        //  Special Effects (Post-death)
         HandlePostDeathAbilityEffects(ability, user, targets);
 
 
-        // 🔊 Show damage text for first valid target (or loop through all)
+        //  Show damage text for first valid target (or loop through all)
         string summary = "";
         foreach (var target in targets)
         {
             if (target.LastDamageTaken > 0)
                 summary += $"{target.Name} took {target.LastDamageTaken} damage.\n";
-            else if (ability.Healing > 0)
+            if (ability.Healing > 0)
                 summary += $"{target.Name} healed {ability.Healing} HP.\n";
-            else if (ability.Shielding > 0)
+            if (ability.Shielding > 0)
                 summary += $"{target.Name} gained a shield of {ability.Shielding} \n";
             // Optionally include shield or buff info
         }
 
-        SetInfoText(summary.Trim());
+        GameUI.Announce(summary.Trim());
 
         // Delay then advance turn
-        StartCoroutine(DelayedInfoAndAdvance());
+        UIAnnouncer.Instance.DelayedAnnounceAndAdvance($"{TurnManager.Instance.PeekNextCharacter().Name} is choosing a move.");
+
 
 
         
@@ -179,10 +170,8 @@ public class BattleManager : MonoBehaviour
         }
 
         character.deathStatus(true);
-        //Debug.Log($"{character.Name} has died.");
-        ShowDeathInfo(character.Name);
-
-
+        EventManager.Trigger("OnCharacterDied", character); // Character death broadcast
+        
         // Notify PassiveManager (Ra, Avarice, Trex, etc.)
         PassiveManager.OnCharacterDeath(character);
 
@@ -216,53 +205,8 @@ public class BattleManager : MonoBehaviour
         TurnManager.Instance.AdvanceTurn();
     }
 
-    public void SetInfoText(string message)
-    {
-        //if (infoOverrideActive) return; // don't overwrite death message
-        if (infoText != null)
-            infoText.text = message;
-    }
-
-    public void ShowDeathInfo(string name)
-    {
-        StartCoroutine(BriefDeathInfoRoutine($"{name} has died."));
-    }
-
-    private IEnumerator BriefDeathInfoRoutine(string message)
-    {
-        briefText.text = message;
-        StartCoroutine(PopText(briefText));
-        yield return new WaitForSeconds(3f);
-        briefText.text = "";
-    }
-    public IEnumerator DelayedInfoAndAdvance()
-    {
-        yield return new WaitForSeconds(3f);
-
-        GameCharacter next = TurnManager.Instance.PeekNextCharacter();
-        if (next != null)
-            SetInfoText($"{next.Name} is choosing a move.");
-
-        TurnManager.Instance.AdvanceTurn();
-    }
-
-    public IEnumerator PopText(TextMeshProUGUI text, float duration = 0.3f)
-    {
-        Vector3 originalScale = Vector3.one;
-        Vector3 poppedScale = originalScale * 1.4f;
-
-        text.transform.localScale = poppedScale;
-
-        float elapsed = 0f;
-        while (elapsed < duration)
-        {
-            text.transform.localScale = Vector3.Lerp(poppedScale, originalScale, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        text.transform.localScale = originalScale;
-    }
+    
+    
 
     private void HandleImmediateAbilityEffects(Ability ability, GameCharacter user, List<GameCharacter> targets)
     {
@@ -283,7 +227,7 @@ public class BattleManager : MonoBehaviour
                 ally.StatusEffects.RemoveAll(e => e.IsDebuff);
             }
 
-            SetInfoText($"{user.Name} empowered the team with Constellian Command!");
+            GameUI.Announce($"{user.Name} empowered the team with Constellian Command!");
         }
 
         if (ability.Name == "Fully Stable Runic Array")

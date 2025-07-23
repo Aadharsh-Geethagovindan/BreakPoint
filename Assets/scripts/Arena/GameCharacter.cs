@@ -123,8 +123,8 @@ public class GameCharacter
         Shield += amount;
         SoundManager.Instance.PlaySFX("shield");
         PopupManager.Instance.ShowPopup(PopupType.Shield); 
-        Debug.Log($"{Name} gained a shield of {amount}. Total Shield: {Shield}");
-        Logger.Instance.PostLog($"{Name} gained a shield of {amount}. Total Shield: {Shield}", LogType.Shield);
+        //Debug.Log($"{Name} gained a shield of {amount}. Total Shield: {Shield}");
+        Logger.Instance.PostLog($"{Name} gained a shield of {amount}. Total Shield: {Shield} (SS)", LogType.Shield);
     }
 
      public int Heal(int amount)
@@ -267,8 +267,13 @@ public class GameCharacter
                                         }
                                     }
 
-        StatusEffects.Add(effect);
 
+
+        StatusEffects.Add(effect);
+        EventManager.Trigger("OnStatusEffectApplied", new GameEventData()
+            .Set("Target", this)
+            .Set("Effect", effect)
+        );
     }
 
     public void deathStatus(bool hasDied)

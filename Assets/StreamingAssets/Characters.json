@@ -167,7 +167,7 @@
     },
     {
       "name": "Constellian Trooper",
-      "hp": 320,
+      "hp": 20,
       "speed": 36,
       "rarity": "C",
       "SigChargeReq": 70,

@@ -147,7 +147,7 @@ public class Ability
                     var applied = new StatusEffect(effect.Name, effect.Type, effect.Duration, effect.Value, user, effect.DamageType, effect.IsDebuff, effect.ApplyChance, toDisplay: effect.ToDisplay, targetingMode: effect.DurationTargeting)
                     { AffectedAbilityType = effect.AffectedAbilityType, CooldownChangeAmount = effect.CooldownChangeAmount };
                     target.AddStatusEffect(applied);
-                    Debug.Log($"{effect.Name} applied to {target.Name} with chance {effect.ApplyChance}");
+                    //Debug.Log($"{effect.Name} applied to {target.Name} with chance {effect.ApplyChance}");
                     Logger.Instance.PostLog($"{effect.Name} applied to {target.Name} with chance {effect.ApplyChance}", LogType.Status);
                 }
                 else
@@ -183,8 +183,8 @@ public class Ability
 
         user.HasActedThisTurn = true;
 
-        Debug.Log($"{user.Name} used {Name} on {targets.Count} target(s).");
-        Logger.Instance.PostLog($"{user.Name} used {Name} on {targets.Count} target(s).", LogType.Info);
+       // Debug.Log($"{user.Name} used {Name} on {targets.Count} target(s).");
+        //Logger.Instance.PostLog($"{user.Name} used {Name} on {targets.Count} target(s).", LogType.Info);
     }
 
     public void SetDamage(int amount)

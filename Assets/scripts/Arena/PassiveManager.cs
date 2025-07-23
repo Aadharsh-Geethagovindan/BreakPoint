@@ -296,7 +296,7 @@ public static class PassiveManager
             character.IncreaseCharge(Mathf.RoundToInt(character.SignatureAbility.ChargeRequirement * 0.5f));
             character.MarkOneTimePassive();
 
-            BattleManager.Instance.SetInfoText($"{character.Name}'s Overdrive Matrix activates! +50% Signature Charge");
+            
             Logger.Instance.PostLog($"{character.Name}'s Overdrive Matrix activates! +50% Signature Charge", LogType.Passive);
         }
 

@@ -31,6 +31,27 @@ public class Logger : MonoBehaviour
         Instance = this;
     }
 
+    void OnEnable()
+    {
+        EventManager.Subscribe("OnAbilityUsed", HandleAbilityUsed);
+        EventManager.Subscribe("OnDamageDealt", HandleDamageDealt);
+        EventManager.Subscribe("OnHealed", HandleHealed);
+        EventManager.Subscribe("OnShielded", HandleShielded);
+        EventManager.Subscribe("OnStatusApplied", HandleStatusApplied);
+        EventManager.Subscribe("OnCharacterDied", HandleCharacterDied);
+    }
+
+    void OnDisable()
+    {
+        EventManager.Unsubscribe("OnAbilityUsed", HandleAbilityUsed);
+        EventManager.Unsubscribe("OnAbilityUsed", HandleAbilityUsed);
+        EventManager.Unsubscribe("OnDamageDealt", HandleDamageDealt);
+        EventManager.Unsubscribe("OnHealed", HandleHealed);
+        EventManager.Unsubscribe("OnShielded", HandleShielded);
+        EventManager.Unsubscribe("OnStatusApplied", HandleStatusApplied);
+        EventManager.Unsubscribe("OnCharacterDied", HandleCharacterDied);
+    }
+
     public void PostLog(string message, LogType type)
     {
         //GameObject entry = Instantiate(logEntryPrefab, logContainer.transform);
@@ -81,7 +102,7 @@ public class Logger : MonoBehaviour
             LogType.Buff => Color.yellow,
             LogType.Debuff => new Color(1f, 0.4f, 0f),
             LogType.Miss => Color.gray,
-            LogType.Info => new Color(1f,.67f,0f),
+            LogType.Info => new Color(1f, .67f, 0f),
             LogType.Status => Color.magenta,
             LogType.Passive => new Color(0.6f, 0.6f, 1f),
             LogType.Death => new Color(0.7f, 0f, 0f),
@@ -89,7 +110,7 @@ public class Logger : MonoBehaviour
             _ => Color.white
         };
     }
-    
+
     public void SetAllTransparency(float alpha)
     {
         foreach (var entry in logQueue)
@@ -104,5 +125,62 @@ public class Logger : MonoBehaviour
     {
         UpdateTransparency(); // Restore dynamic fade
     }
+
+    void HandleAbilityUsed(object data)
+    {
+        GameEventData evt = data as GameEventData;
+        if (evt == null) return;
+
+        GameCharacter user = evt.Get<GameCharacter>("User");
+        Ability ability = evt.Get<Ability>("Ability");
+        List<GameCharacter> targets = evt.Get<List<GameCharacter>>("Targets");
+
+        string log = $"SUBSCRIBER {user.Name} used {ability.Name} on ";
+        log += string.Join(", ", targets.ConvertAll(t => t.Name));
+
+        PostLog(log, LogType.Info);
+    }
+    private void HandleDamageDealt(object eventData)
+    {
+        if (eventData is object[] args && args.Length >= 3 &&
+            args[0] is GameCharacter source && args[1] is GameCharacter target && args[2] is int amount)
+        {
+            Logger.Instance.PostLog($"{target.Name} took {amount} damage from {source.Name}", LogType.Damage);
+        }
+    }
+    private void HandleHealed(object eventData)
+    {
+        if (eventData is object[] args && args.Length >= 3 &&
+            args[0] is GameCharacter source && args[1] is GameCharacter target && args[2] is int amount)
+        {
+            Logger.Instance.PostLog($"{target.Name} was healed for {amount} by {source.Name}", LogType.Heal);
+        }
+        }
+    private void HandleShielded(object eventData)
+    {
+        if (eventData is object[] args && args.Length >= 3 &&
+            args[0] is GameCharacter source && args[1] is GameCharacter target && args[2] is int amount)
+        {
+            Logger.Instance.PostLog($"{target.Name} gained a shield of {amount} from {source.Name}", LogType.Shield);
+        }
+    }
+    private void HandleStatusApplied(object eventData)
+    {
+        if (eventData is object[] args && args.Length >= 3 &&
+            args[0] is GameCharacter source && args[1] is GameCharacter target && args[2] is StatusEffect effect)
+        {
+            Logger.Instance.PostLog($"{target.Name} gained {effect.Name} from {source.Name} for {effect.Duration} turn(s)", LogType.Status);
+        }
+    }
+    private void HandleCharacterDied(object eventData)
+    {
+        if (eventData is GameCharacter character)
+        {
+            Logger.Instance.PostLog($"{character.Name} has died!", LogType.Death);
+        }
+    }
+
+
+
 
 }

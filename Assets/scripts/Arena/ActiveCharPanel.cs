@@ -227,7 +227,8 @@ public class ActiveCharPanel : MonoBehaviour
                 Debug.LogWarning("Invalid move index.");
                 return;
         }
-        BattleManager.Instance.SetInfoText($"{currentGameCharacter.Name} selected {selectedAbility.Name}. Max Targets: {selectedAbility.MaxTargets}");
+        GameUI.Announce($"{currentGameCharacter.Name} selected {selectedAbility.Name}. Max Targets: {selectedAbility.MaxTargets}");
+
 
         //Debug.Log($"Selected move: {selectedAbility.Name} ({selectedAbility.AbilityType})");
         // 🔥 Start target selection
