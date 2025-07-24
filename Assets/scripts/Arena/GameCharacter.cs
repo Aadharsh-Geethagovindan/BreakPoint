@@ -111,7 +111,7 @@ public class GameCharacter
             HP -= finalDamage;
             if (HP < 0) HP = 0;
             Debug.Log($"{Name} took {finalDamage} {type} damage. HP: {HP}/{MaxHP}");
-            Logger.Instance.PostLog($"{Name} took {finalDamage} {type} damage. HP: {HP}/{MaxHP}", LogType.Damage);
+            //Logger.Instance.PostLog($"{Name} took {finalDamage} {type} damage. HP: {HP}/{MaxHP}", LogType.Damage);
         }
          SetHasBeenAttackedThisTurn(true);
          LastDamageTaken = totDamage;
@@ -124,7 +124,7 @@ public class GameCharacter
         SoundManager.Instance.PlaySFX("shield");
         PopupManager.Instance.ShowPopup(PopupType.Shield); 
         //Debug.Log($"{Name} gained a shield of {amount}. Total Shield: {Shield}");
-        Logger.Instance.PostLog($"{Name} gained a shield of {amount}. Total Shield: {Shield} (SS)", LogType.Shield);
+        
     }
 
      public int Heal(int amount)
@@ -293,14 +293,20 @@ public class GameCharacter
     {
         Charge += amount;
         Debug.Log($"{Name} gained {amount} charge. Current: {Charge}/{SignatureAbility.ChargeRequirement}");
-        Logger.Instance.PostLog($"{Name} gained {amount} charge. Current: {Charge}/{SignatureAbility.ChargeRequirement}", LogType.Buff);
+        EventManager.Trigger("OnChargeIncreased", new GameEventData()
+            .Set("Character", this)
+            .Set("Amount", amount)
+            );
     }
 
     public void ReduceCharge(int amount)
     {
         Charge -= amount;
         Debug.Log($"{Name} lost {amount} charge. Current: {Charge}/{SignatureAbility.ChargeRequirement}");
-        Logger.Instance.PostLog($"{Name} lost {amount} charge. Current: {Charge}/{SignatureAbility.ChargeRequirement}", LogType.Debuff);
+        EventManager.Trigger("OnChargeDecreased", new GameEventData()
+                .Set("Character", this)
+                .Set("Amount", amount)
+            );
     }
     public void ResetCharge()
     {

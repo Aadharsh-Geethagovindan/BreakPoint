@@ -170,7 +170,10 @@ public class BattleManager : MonoBehaviour
         }
 
         character.deathStatus(true);
-        EventManager.Trigger("OnCharacterDied", character); // Character death broadcast
+        EventManager.Trigger("OnCharacterDied", new GameEventData()
+                .Set("Character", character)
+            );
+
         
         // Notify PassiveManager (Ra, Avarice, Trex, etc.)
         PassiveManager.OnCharacterDeath(character);
@@ -266,6 +269,10 @@ public class BattleManager : MonoBehaviour
                 toRevive.Heal(reviveHP);
                 toRevive.deathStatus(false);
                 Debug.Log($"Avarice revived {toRevive.Name} with {reviveHP} HP.");
+
+                EventManager.Trigger("OnCharacterRevived", new GameEventData()
+                        .Set("Character", toRevive)
+                    );
             }
             else
             {

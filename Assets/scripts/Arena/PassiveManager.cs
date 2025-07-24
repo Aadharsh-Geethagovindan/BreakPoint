@@ -446,9 +446,8 @@ public static class PassiveManager
     public static void OnCharacterDeath(GameCharacter deadCharacter)
     {
         deadCharacter.deathStatus(true);
-        Debug.Log($"{deadCharacter.Name} marked as dead.");
-        Logger.Instance.PostLog($"{deadCharacter.Name} marked as dead.", LogType.Death);
-
+        //Debug.Log($"{deadCharacter.Name} marked as dead.");
+        
         if (deadCharacter.Name == "Skirvex")
         {
             Debug.Log("Skirvex death case being checked");

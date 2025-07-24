@@ -214,13 +214,19 @@ public class TurnManager : MonoBehaviour
         {
             effect.TickDuration();
             if (effect.IsExpired())
+            {
                 expired.Add(effect);
+            }
         }
 
         foreach (var effect in expired)
         {
             character.RemoveStatusEffect(effect);
             Debug.Log($"{character.Name}'s {effect.Name} expired.");
+            EventManager.Trigger("OnStatusEffectExpired", new GameEventData()
+                .Set("Target", character)
+                .Set("Effect", effect)
+            );
         }
     }
 

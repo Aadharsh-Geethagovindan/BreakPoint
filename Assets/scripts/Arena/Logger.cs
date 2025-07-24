@@ -39,17 +39,26 @@ public class Logger : MonoBehaviour
         EventManager.Subscribe("OnShielded", HandleShielded);
         EventManager.Subscribe("OnStatusApplied", HandleStatusApplied);
         EventManager.Subscribe("OnCharacterDied", HandleCharacterDied);
+        EventManager.Subscribe("OnCharacterRevived", HandleCharacterRevived);
+        EventManager.Subscribe("OnStatusEffectExpired", HandleStatusExpired);
+        EventManager.Subscribe("OnPassiveTriggered", HandlePassiveTriggered);
+        EventManager.Subscribe("OnChargeIncreased", HandleChargeIncreased);
+        EventManager.Subscribe("OnChargeDecreased", HandleChargeDecreased);
     }
 
     void OnDisable()
     {
-        EventManager.Unsubscribe("OnAbilityUsed", HandleAbilityUsed);
         EventManager.Unsubscribe("OnAbilityUsed", HandleAbilityUsed);
         EventManager.Unsubscribe("OnDamageDealt", HandleDamageDealt);
         EventManager.Unsubscribe("OnHealed", HandleHealed);
         EventManager.Unsubscribe("OnShielded", HandleShielded);
         EventManager.Unsubscribe("OnStatusApplied", HandleStatusApplied);
         EventManager.Unsubscribe("OnCharacterDied", HandleCharacterDied);
+        EventManager.Unsubscribe("OnCharacterRevived", HandleCharacterRevived);
+        EventManager.Unsubscribe("OnStatusEffectExpired", HandleStatusExpired);
+        EventManager.Unsubscribe("OnPassiveTriggered", HandlePassiveTriggered);
+        EventManager.Unsubscribe("OnChargeIncreased", HandleChargeIncreased);
+        EventManager.Unsubscribe("OnChargeDecreased", HandleChargeDecreased);
     }
 
     public void PostLog(string message, LogType type)
@@ -126,6 +135,9 @@ public class Logger : MonoBehaviour
         UpdateTransparency(); // Restore dynamic fade
     }
 
+    //*******************************************************************************************************************
+    // Broadcast UI Methods
+    //*******************************************************************************************************************
     void HandleAbilityUsed(object data)
     {
         GameEventData evt = data as GameEventData;
@@ -135,50 +147,154 @@ public class Logger : MonoBehaviour
         Ability ability = evt.Get<Ability>("Ability");
         List<GameCharacter> targets = evt.Get<List<GameCharacter>>("Targets");
 
-        string log = $"SUBSCRIBER {user.Name} used {ability.Name} on ";
+        string log = $" {user.Name} used {ability.Name} on ";
         log += string.Join(", ", targets.ConvertAll(t => t.Name));
 
         PostLog(log, LogType.Info);
     }
     private void HandleDamageDealt(object eventData)
     {
-        if (eventData is object[] args && args.Length >= 3 &&
-            args[0] is GameCharacter source && args[1] is GameCharacter target && args[2] is int amount)
+        
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        var source = evt.Get<GameCharacter>("Source");
+        var target = evt.Get<GameCharacter>("Target");
+        var amount = evt.Get<int>("Amount");
+
+        if (source != null && target != null)
         {
-            Logger.Instance.PostLog($"{target.Name} took {amount} damage from {source.Name}", LogType.Damage);
+            PostLog($"{target.Name} took {amount} damage from {source.Name}", LogType.Damage);
         }
     }
-    private void HandleHealed(object eventData)
+   private void HandleHealed(object eventData)
     {
-        if (eventData is object[] args && args.Length >= 3 &&
-            args[0] is GameCharacter source && args[1] is GameCharacter target && args[2] is int amount)
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        var source = evt.Get<GameCharacter>("Source");
+        var target = evt.Get<GameCharacter>("Target");
+        var amount = evt.Get<int>("Amount");
+
+        if (source != null && target != null)
         {
-            Logger.Instance.PostLog($"{target.Name} was healed for {amount} by {source.Name}", LogType.Heal);
+            PostLog($"{target.Name} was healed for {amount} by {source.Name}", LogType.Heal);
         }
-        }
+    }
+
     private void HandleShielded(object eventData)
     {
-        if (eventData is object[] args && args.Length >= 3 &&
-            args[0] is GameCharacter source && args[1] is GameCharacter target && args[2] is int amount)
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        var source = evt.Get<GameCharacter>("Source");
+        var target = evt.Get<GameCharacter>("Target");
+        var amount = evt.Get<int>("Amount");
+
+        if (source != null && target != null)
         {
-            Logger.Instance.PostLog($"{target.Name} gained a shield of {amount} from {source.Name}", LogType.Shield);
+            PostLog($"{target.Name} gained a shield of {amount} from {source.Name}", LogType.Shield);
         }
     }
+
     private void HandleStatusApplied(object eventData)
     {
-        if (eventData is object[] args && args.Length >= 3 &&
-            args[0] is GameCharacter source && args[1] is GameCharacter target && args[2] is StatusEffect effect)
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        var source = evt.Get<GameCharacter>("Source");
+        var target = evt.Get<GameCharacter>("Target");
+        var effect = evt.Get<StatusEffect>("Effect");
+
+        if (source != null && target != null && effect != null)
         {
-            Logger.Instance.PostLog($"{target.Name} gained {effect.Name} from {source.Name} for {effect.Duration} turn(s)", LogType.Status);
+            PostLog($"{target.Name} gained {effect.Name} from {source.Name} for {effect.Duration} turn(s)", LogType.Status);
         }
     }
+
     private void HandleCharacterDied(object eventData)
     {
-        if (eventData is GameCharacter character)
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        var character = evt.Get<GameCharacter>("Character");
+
+        if (character != null)
         {
-            Logger.Instance.PostLog($"{character.Name} has died!", LogType.Death);
+            PostLog($"{character.Name} has died!", LogType.Death);
         }
     }
+
+    private void HandleCharacterRevived(object eventData)
+    {
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        var character = evt.Get<GameCharacter>("Character");
+
+        if (character != null)
+        {
+            PostLog($"{character.Name} was revived!", LogType.Heal);
+        }
+    }
+
+    private void HandleStatusExpired(object eventData)
+    {
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        var target = evt.Get<GameCharacter>("Target");
+        var effect = evt.Get<StatusEffect>("Effect");
+
+        if (target != null && effect != null)
+        {
+            PostLog($"{effect.Name} expired on {target.Name}", LogType.Status);
+        }
+    }
+
+    private void HandlePassiveTriggered(object eventData)
+    {
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        var source = evt.Get<GameCharacter>("Source");
+        var description = evt.Get<string>("Description");
+
+        if (source != null && !string.IsNullOrEmpty(description))
+        {
+            PostLog($"Passive triggered for {source.Name}: {description}", LogType.Passive);
+        }
+    }
+
+    private void HandleChargeIncreased(object eventData)
+    {
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        var character = evt.Get<GameCharacter>("Character");
+        var amount = evt.Get<int>("Amount");
+
+        if (character != null)
+        {
+            PostLog($"{character.Name} gained {amount} signature charge", LogType.Buff);
+        }
+    }
+
+    private void HandleChargeDecreased(object eventData)
+    {
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        var character = evt.Get<GameCharacter>("Character");
+        var amount = evt.Get<int>("Amount");
+
+        if (character != null)
+        {
+            PostLog($"{character.Name} lost {amount} signature charge", LogType.Debuff);
+        }
+    }
+
+
 
 
 

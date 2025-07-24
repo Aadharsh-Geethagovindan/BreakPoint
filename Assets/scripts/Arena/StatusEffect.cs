@@ -181,7 +181,7 @@ public class StatusEffect
         switch (Type)
         {
             case StatusEffectType.DamageOverTime:
-                Debug.Log($"{DamageType.ToString().ToLower()}");
+                //Debug.Log($"{DamageType.ToString().ToLower()}");
                 return $"{DamageType.ToString().ToLower()}";  // e.g., "dot_fire"
             case StatusEffectType.HealingOverTime:
                 return "hot";

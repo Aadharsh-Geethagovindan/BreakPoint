@@ -114,6 +114,14 @@ public class Ability
             {
                 int dmg = Mathf.RoundToInt(baseDamage * user.GetModifiedDamageMultiplier());
                 dmg = target.TakeDamage(dmg, DamageType);
+
+                EventManager.Trigger("OnDamageDealt", new GameEventData()
+                                .Set("Source", user)
+                                .Set("Target", target)
+                                .Set("Amount", dmg)
+                                .Set("Type", DamageType)
+                            );
+
                 SoundManager.Instance.PlaySFX("hit");
                 PopupManager.Instance.ShowPopup(PopupType.Hit);
                 ActiveCharPanel panel = UnityEngine.Object.FindFirstObjectByType<ActiveCharPanel>();
@@ -130,6 +138,12 @@ public class Ability
             {
                 target.Heal(Healing);
                 totalEffectValue += Healing;
+
+                EventManager.Trigger("OnHealed", new GameEventData()
+                    .Set("Source", user)
+                    .Set("Target", target)
+                    .Set("Amount", Healing)
+                );
             }
 
             // Apply Shield
@@ -137,6 +151,12 @@ public class Ability
             {
                 target.AddShield(Shielding);
                 totalEffectValue += Shielding;
+
+                EventManager.Trigger("OnShielded", new GameEventData()
+                    .Set("Source", user)
+                    .Set("Target", target)
+                    .Set("Amount", Shielding)
+                );
             }
             // Apply Status Effects
             foreach (var effect in StatusEffectsApplied)
@@ -148,7 +168,11 @@ public class Ability
                     { AffectedAbilityType = effect.AffectedAbilityType, CooldownChangeAmount = effect.CooldownChangeAmount };
                     target.AddStatusEffect(applied);
                     //Debug.Log($"{effect.Name} applied to {target.Name} with chance {effect.ApplyChance}");
-                    Logger.Instance.PostLog($"{effect.Name} applied to {target.Name} with chance {effect.ApplyChance}", LogType.Status);
+                    EventManager.Trigger("OnStatusApplied", new GameEventData()
+                            .Set("Source", user)
+                            .Set("Target", target)
+                            .Set("Effect", applied)
+                        );
                 }
                 else
                 {
