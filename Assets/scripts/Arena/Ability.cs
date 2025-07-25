@@ -101,7 +101,11 @@ public class Ability
                 if (roll > hitChance)
                 {
                     Debug.Log($"{user.Name}'s {Name} missed {target.Name}!");
-                    Logger.Instance.PostLog($"{user.Name}'s {Name} missed {target.Name}!", LogType.Miss);
+                    var missEvent = new GameEventData();
+                        missEvent.Set("User", user);
+                        missEvent.Set("Target", target);
+                        missEvent.Set("Ability", this);
+                    EventManager.Trigger("OnMiss", missEvent);
                     SoundManager.Instance.PlaySFX("miss"); // play sound
                     PopupManager.Instance.ShowPopup(PopupType.Miss); // show visual MISS effect
                     continue; // Skip to next target

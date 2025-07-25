@@ -147,7 +147,7 @@ public class Logger : MonoBehaviour
         Ability ability = evt.Get<Ability>("Ability");
         List<GameCharacter> targets = evt.Get<List<GameCharacter>>("Targets");
 
-        string log = $" {user.Name} used {ability.Name} on ";
+        string log = $"{user.Name} used {ability.Name} on ";
         log += string.Join(", ", targets.ConvertAll(t => t.Name));
 
         PostLog(log, LogType.Info);
@@ -262,7 +262,7 @@ public class Logger : MonoBehaviour
 
         if (source != null && !string.IsNullOrEmpty(description))
         {
-            PostLog($"Passive triggered for {source.Name}: {description}", LogType.Passive);
+            PostLog($"{source.Name} passive: {description}", LogType.Passive);
         }
     }
 

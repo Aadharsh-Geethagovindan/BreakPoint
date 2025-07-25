@@ -194,6 +194,11 @@ public class BattleManager : MonoBehaviour
         if (character.Allies.TrueForAll(a => a.IsDead))
         {
             int winner = GameData.SelectedCharactersP1.Exists(c => c.name == character.Name) ? 2 : 1;
+
+            var evt = new GameEventData();
+            evt.Set("Winner", winner);
+            EventManager.Trigger("OnGameEnded", evt); // <-- Add this trigger
+
             PlayerPrefs.SetInt("Winner", winner);
             SceneManager.LoadScene("EndGame");
         }

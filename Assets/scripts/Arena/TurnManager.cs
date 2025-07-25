@@ -66,13 +66,14 @@ public class TurnManager : MonoBehaviour
         
 
         //  Apply one-time passives
-            PassiveManager.OnGameStart(charactersInOrder);
+        PassiveManager.OnGameStart(charactersInOrder);
         StartNewRound(); // Begin first round
     }
 
     private void StartNewRound()
     {
         Debug.Log($"===== ROUND {currentRound} START =====");
+        EventManager.Trigger("OnRoundStarted", currentRound);
 
         foreach (var character in charactersInOrder)
         {
@@ -82,15 +83,15 @@ public class TurnManager : MonoBehaviour
                 if (ability != null && ability.CurrentCooldown > 0)
                     ability.CurrentCooldown--;
             }
-        
+
             CharacterCardUI card = activeCharPanel.FindCardForCharacter(character);
             if (card != null)
             {
                 Debug.Log($"Refreshing icons for {character.Name} ");
                 card.RefreshStatusEffects(character);
             }
-        
-            
+
+
         }
         PassiveManager.ClearResurrectionTracker();
         PassiveManager.OnRoundStart(charactersInOrder, currentRound);
@@ -151,13 +152,13 @@ public class TurnManager : MonoBehaviour
         }
         
 
-        activeCharPanel?.DisplayCharacter(currentCharacter);
+        //activeCharPanel?.DisplayCharacter(currentCharacter);
 
         if (currentCharacter.HasStatusEffect(StatusEffectType.Stun))
         {
             GameUI.Announce($"{currentCharacter.Name} is stunned and cannot act.");
             UIAnnouncer.Instance.DelayedAnnounceAndAdvance($"{TurnManager.Instance.PeekNextCharacter().Name} is choosing a move.");
-
+            EventManager.Trigger("OnTurnSkipped", currentCharacter); 
             return;
         }
 
@@ -165,6 +166,7 @@ public class TurnManager : MonoBehaviour
 
     public void AdvanceTurn()
     {
+        EventManager.Trigger("OnTurnEnded", currentCharacter);
         TickAndExpireStatusEffects(currentCharacter);
         CharacterCardUI card = activeCharPanel.FindCardForCharacter(currentCharacter);
             if (card != null)

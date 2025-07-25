@@ -36,6 +36,17 @@ public class ActiveCharPanel : MonoBehaviour
     //private CharacterData currentCharacter;
     private Ability selectedAbility;
 
+    private void OnEnable()
+    {
+        EventManager.Subscribe("OnTurnStarted", HandleTurnStarted);
+        EventManager.Subscribe("OnTurnEnded", HandleTurnEnded);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Unsubscribe("OnTurnStarted", HandleTurnStarted);
+    }
+
     private void Start()
     {
         //Debug.Log("Panel height: " + GetComponent<RectTransform>().rect.height);
@@ -45,6 +56,18 @@ public class ActiveCharPanel : MonoBehaviour
         reselectButton.onClick.RemoveAllListeners();
         reselectButton.onClick.AddListener(OnReselectClicked);
 
+    }
+
+    private void HandleTurnStarted(object data)
+    {
+        var character = data as GameCharacter;
+        if (character != null)
+            DisplayCharacter(character);
+    }
+
+    private void HandleTurnEnded(object data)
+    {
+        ClearTargetingState(); 
     }
 
     public void DisplayCharacter(GameCharacter character)
@@ -93,7 +116,7 @@ public class ActiveCharPanel : MonoBehaviour
             sigChargeBar.value = character.Charge;
             sigChargeText.text = $"{character.Charge}/{character.SigChargeReq}";
         }
-    
+
 
         // === MOVE DESCRIPTIONS (SPLIT) ===
         if (matchingData.moves != null && matchingData.moves.Length == 4)
@@ -145,7 +168,7 @@ public class ActiveCharPanel : MonoBehaviour
         // Example for Normal ability button
         int normalCD = character.NormalAbility.CurrentCooldown;
         move1Button.GetComponentInChildren<TextMeshProUGUI>().text = (normalCD == 0) ? "USE" : normalCD.ToString();
-        
+
         // === SKILL BUTTON ===
         int skillCD = character.SkillAbility.CurrentCooldown;
         TextMeshProUGUI skillText = move2Button.GetComponentInChildren<TextMeshProUGUI>();
@@ -183,7 +206,7 @@ public class ActiveCharPanel : MonoBehaviour
             sigText.color = Color.red;
             sigImage.color = new Color(0.6f, 0.4f, 0.6f, 0.6f); // Slightly dimmed purple tone
         }
-        
+
         /*
         int skillCD = character.SkillAbility.CurrentCooldown;
         move2Button.GetComponentInChildren<TextMeshProUGUI>().text = (skillCD == 0) ? "USE" : skillCD.ToString();
@@ -239,6 +262,11 @@ public class ActiveCharPanel : MonoBehaviour
 
     private void BeginTargetSelection()
     {
+        var evt = new GameEventData();
+        evt.Set("Ability", selectedAbility);
+        evt.Set("Source", currentGameCharacter);
+        EventManager.Trigger("OnTargetingStarted", evt);
+
         selectedTargets.Clear();
         validTargets.Clear();
 
@@ -368,6 +396,11 @@ public class ActiveCharPanel : MonoBehaviour
             Debug.LogWarning("No ability or targets selected.");
             return;
         }
+        var evt = new GameEventData();
+            evt.Set("Ability", selectedAbility);
+            evt.Set("Source", currentGameCharacter);
+            evt.Set("Targets", selectedTargets); // Optional
+        EventManager.Trigger("OnTargetingEnded", evt);
 
         BattleManager.Instance.ExecuteAbility(currentGameCharacter, selectedAbility, selectedTargets);
         ClearTargetingState();
