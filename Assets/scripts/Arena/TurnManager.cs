@@ -87,7 +87,7 @@ public class TurnManager : MonoBehaviour
             CharacterCardUI card = activeCharPanel.FindCardForCharacter(character);
             if (card != null)
             {
-                Debug.Log($"Refreshing icons for {character.Name} ");
+                //Debug.Log($"Refreshing icons for {character.Name} ");
                 card.RefreshStatusEffects(character);
             }
 
@@ -119,7 +119,6 @@ public class TurnManager : MonoBehaviour
         CharacterCardUI card = activeCharPanel.FindCardForCharacter(currentCharacter);
         if (card != null)
         {
-            Debug.Log("Calling refresh from turn manager");
             card.RefreshStatusEffects(currentCharacter);
         }
         StatusEffect.ApplyTurnEffects(currentCharacter);
@@ -171,7 +170,7 @@ public class TurnManager : MonoBehaviour
         CharacterCardUI card = activeCharPanel.FindCardForCharacter(currentCharacter);
             if (card != null)
             {
-                Debug.Log($"Refreshing icons for {currentCharacter.Name} ");
+                //Debug.Log($"Refreshing icons for {currentCharacter.Name} ");
                 card.RefreshStatusEffects(currentCharacter);
             }
         do

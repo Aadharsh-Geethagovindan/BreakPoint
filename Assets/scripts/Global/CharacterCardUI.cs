@@ -5,8 +5,9 @@ using System;
 using System.Collections;
 public class CharacterCardUI : MonoBehaviour
 {
-    public Image outlineImage;           // Drag the TargetingImage here
-    public Button cardButton;            // Drag the Button component here
+    public Image outlineImage;
+    public Image targetedImage;
+    public Button cardButton;            
     private GameCharacter characterRef;
     private Action<GameCharacter> onClickAction;
 
@@ -24,6 +25,13 @@ public class CharacterCardUI : MonoBehaviour
     {
         if (outlineImage != null)
             outlineImage.enabled = enable;
+    }
+
+    public void SetTargetedHighlight(bool enable)
+    {
+        
+        if (targetedImage != null)
+            targetedImage.enabled = enable;
     }
 
     public void SetClickable(bool clickable, Action<GameCharacter> clickCallback)

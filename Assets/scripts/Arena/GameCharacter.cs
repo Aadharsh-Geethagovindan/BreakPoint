@@ -120,17 +120,18 @@ public class GameCharacter
 
     public void AddShield(int amount)
     {
+        var evt = new GameEventData();evt.Set("Target", this);evt.Set("Amount", amount);
+        EventManager.Trigger("OnShielded", evt);
+
         Shield += amount;
-        SoundManager.Instance.PlaySFX("shield");
-        PopupManager.Instance.ShowPopup(PopupType.Shield); 
-        //Debug.Log($"{Name} gained a shield of {amount}. Total Shield: {Shield}");
         
     }
 
      public int Heal(int amount)
     {
-        SoundManager.Instance.PlaySFX("heal");
-        PopupManager.Instance.ShowPopup(PopupType.Heal); // show visual HEAL effect
+        
+        var evt = new GameEventData();evt.Set("Target", this);evt.Set("Amount", amount);
+        EventManager.Trigger("OnHealed", evt);
 
                                 //******************************************************************************************************
                                 //Character specific conditions

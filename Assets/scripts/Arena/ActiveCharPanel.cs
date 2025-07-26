@@ -361,20 +361,19 @@ public class ActiveCharPanel : MonoBehaviour
             return;
 
         selectedTargets.Add(target);
-        //Debug.Log($"Target selected: {target.Name}");
+
 
         // If max targets reached, auto-confirm or wait for manual confirmation
         if (selectedTargets.Count >= selectedAbility.MaxTargets)
         {
-            //Debug.Log("Max targets selected.");
-            // Optional: Auto-enable confirm button here
+
             foreach (GameCharacter selectedTarget in validTargets)
             {
                 // Disable clicking on all remaining targets
                 CharacterCardUI cardUI = FindCardForCharacter(selectedTarget);
                 if (cardUI != null)
                 {
-                    //Debug.Log("Disabling non clicked characters");
+
                     cardUI.SetClickable(false, null);
                 }
 
@@ -382,6 +381,10 @@ public class ActiveCharPanel : MonoBehaviour
                 {
                     //Debug.Log("Setting non clicked characters to dimmed");
                     cardUI?.SetOutlineDimmed(true); // visually dim only the non selected characters
+                }
+                else
+                {
+                    cardUI?.SetTargetedHighlight(true);
                 }
             }
 
@@ -430,6 +433,7 @@ public class ActiveCharPanel : MonoBehaviour
             if (cardUI != null)
             {
                 cardUI.SetTargetHighlight(false);
+                cardUI.SetTargetedHighlight(false);
                 cardUI.SetClickable(false, null);
                 cardUI.SetOutlineDimmed(false);
             }

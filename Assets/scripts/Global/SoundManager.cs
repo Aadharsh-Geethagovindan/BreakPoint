@@ -28,6 +28,25 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        EventManager.Subscribe("OnDamageDealt", PlayHitSFX);
+        EventManager.Subscribe("OnMiss", PlayMissSFX);
+        EventManager.Subscribe("OnShielded", PlayShieldSFX);
+        EventManager.Subscribe("OnHealed", PlayHealSFX);
+        EventManager.Subscribe("OnBuffApplied", PlayBuffSFX);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Unsubscribe("OnDamageDealt", PlayHitSFX);
+        EventManager.Unsubscribe("OnMiss", PlayMissSFX);
+        EventManager.Unsubscribe("OnShielded", PlayShieldSFX);
+        EventManager.Unsubscribe("OnHealed", PlayHealSFX);
+        EventManager.Unsubscribe("OnBuffApplied", PlayBuffSFX);
+    }
+
+
     private void InitializeDictionaries()
     {
         sfxDict = new Dictionary<string, AudioClip>();
@@ -63,6 +82,39 @@ public class SoundManager : MonoBehaviour
     }
 
     public void StopMusic() => musicSource.Stop();
+
+
+    //*******************************************************************************************************************
+    // HANDLERS*******************************************************************************************************************
+    //*******************************************************************************************************************
+    
+    private void PlayHitSFX(object eventData)
+    {
+        PlaySFX("hit");
+    }
+
+    private void PlayMissSFX(object eventData)
+    {
+        PlaySFX("miss");
+    }
+
+    private void PlayShieldSFX(object eventData)
+    {
+        PlaySFX("shield");
+    }
+
+    private void PlayHealSFX(object eventData)
+    {
+        PlaySFX("heal");
+    }
+
+    private void PlayBuffSFX(object eventData)
+    {
+        PlaySFX("buff");
+    }
+
+
+
 }
 
 [System.Serializable]

@@ -35,8 +35,9 @@ public class Logger : MonoBehaviour
     {
         EventManager.Subscribe("OnAbilityUsed", HandleAbilityUsed);
         EventManager.Subscribe("OnDamageDealt", HandleDamageDealt);
-        EventManager.Subscribe("OnHealed", HandleHealed);
-        EventManager.Subscribe("OnShielded", HandleShielded);
+        EventManager.Subscribe("OnMiss", HandleMissed);
+        EventManager.Subscribe("OnHealApplied", HandleHealed);
+        EventManager.Subscribe("OnShieldApplied", HandleShielded);
         EventManager.Subscribe("OnStatusApplied", HandleStatusApplied);
         EventManager.Subscribe("OnCharacterDied", HandleCharacterDied);
         EventManager.Subscribe("OnCharacterRevived", HandleCharacterRevived);
@@ -50,8 +51,8 @@ public class Logger : MonoBehaviour
     {
         EventManager.Unsubscribe("OnAbilityUsed", HandleAbilityUsed);
         EventManager.Unsubscribe("OnDamageDealt", HandleDamageDealt);
-        EventManager.Unsubscribe("OnHealed", HandleHealed);
-        EventManager.Unsubscribe("OnShielded", HandleShielded);
+        EventManager.Unsubscribe("OnHealApplied", HandleHealed);
+        EventManager.Unsubscribe("OnShieldApplied", HandleShielded);
         EventManager.Unsubscribe("OnStatusApplied", HandleStatusApplied);
         EventManager.Unsubscribe("OnCharacterDied", HandleCharacterDied);
         EventManager.Unsubscribe("OnCharacterRevived", HandleCharacterRevived);
@@ -165,6 +166,21 @@ public class Logger : MonoBehaviour
         if (source != null && target != null)
         {
             PostLog($"{target.Name} took {amount} damage from {source.Name}", LogType.Damage);
+        }
+    }
+    private void HandleMissed(object eventData)
+    {
+        
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        var source = evt.Get<GameCharacter>("Source");
+        var target = evt.Get<GameCharacter>("Target");
+        var ability = evt.Get<Ability>("Ability");
+
+        if (source != null && target != null)
+        {
+            PostLog($"{source.Name} missed {target.Name} with {ability.Name}", LogType.Damage);
         }
     }
    private void HandleHealed(object eventData)

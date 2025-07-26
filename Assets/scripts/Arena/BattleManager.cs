@@ -146,7 +146,7 @@ public class BattleManager : MonoBehaviour
            CharacterCardUI card = charPanel.FindCardForCharacter(target);
             if (card != null)
             {
-                Debug.Log("Calling refresh from battle manager");
+                
                 card.RefreshStatusEffects(target);
             }
         }

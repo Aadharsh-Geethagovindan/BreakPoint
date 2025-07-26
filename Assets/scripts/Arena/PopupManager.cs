@@ -32,6 +32,14 @@ public class PopupManager : MonoBehaviour
         Instance = this;
     }
 
+    void OnEnable()
+    {
+        EventManager.Subscribe("OnDamageDealt", ShowDamagePopup);
+        EventManager.Subscribe("OnHealed", ShowHealPopup);
+        EventManager.Subscribe("OnShielded", ShowShieldPopup);
+        EventManager.Subscribe("OnMiss", ShowMissPopup);
+        EventManager.Subscribe("OnBuffApplied", ShowBuffPopup);
+    }
     public void ShowPopup(PopupType type)
     {
         if (centerAnchor == null)
@@ -50,7 +58,7 @@ public class PopupManager : MonoBehaviour
         GameObject popup = Instantiate(prefab, centerAnchor.position, Quaternion.identity, centerAnchor);
         Debug.Log("Showing popup");
         Destroy(popup, 2f);
-}
+    }
 
 
     private GameObject GetPopupPrefab(PopupType type)
@@ -64,5 +72,33 @@ public class PopupManager : MonoBehaviour
             case PopupType.Shield: return shieldPopupPrefab;
             default: return null;
         }
+    }
+
+    private void ShowDamagePopup(object eventData)
+    {
+        var evt = eventData as GameEventData;
+        var target = evt?.Get<GameCharacter>("Target");
+
+        if (target != null)
+            ShowPopup(PopupType.Hit);
+    }
+
+    private void ShowHealPopup(object eventData)
+    {
+        ShowPopup(PopupType.Heal);
+    }
+    private void ShowMissPopup(object eventData)
+    {
+        ShowPopup(PopupType.Miss);
+    }
+
+    private void ShowShieldPopup(object eventData)
+    {
+        ShowPopup(PopupType.Shield);
+    }
+
+    private void ShowBuffPopup(object eventData)
+    {
+        ShowPopup(PopupType.Buff);
     }
 }

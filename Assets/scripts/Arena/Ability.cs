@@ -102,12 +102,11 @@ public class Ability
                 {
                     Debug.Log($"{user.Name}'s {Name} missed {target.Name}!");
                     var missEvent = new GameEventData();
-                        missEvent.Set("User", user);
+                        missEvent.Set("Source", user);
                         missEvent.Set("Target", target);
                         missEvent.Set("Ability", this);
                     EventManager.Trigger("OnMiss", missEvent);
-                    SoundManager.Instance.PlaySFX("miss"); // play sound
-                    PopupManager.Instance.ShowPopup(PopupType.Miss); // show visual MISS effect
+                    
                     continue; // Skip to next target
                 }
             }
@@ -126,14 +125,9 @@ public class Ability
                                 .Set("Type", DamageType)
                             );
 
-                SoundManager.Instance.PlaySFX("hit");
-                PopupManager.Instance.ShowPopup(PopupType.Hit);
-                ActiveCharPanel panel = UnityEngine.Object.FindFirstObjectByType<ActiveCharPanel>();
-                CharacterCardUI card = panel?.FindCardForCharacter(target);
-                if (card != null)
-                {
-                    card.Shake(); // 🌀 Trigger the shake animation
-                }
+               
+                
+                
                 totalEffectValue += dmg;
             }
 
@@ -143,7 +137,7 @@ public class Ability
                 target.Heal(Healing);
                 totalEffectValue += Healing;
 
-                EventManager.Trigger("OnHealed", new GameEventData()
+                EventManager.Trigger("OnHealApplied", new GameEventData()
                     .Set("Source", user)
                     .Set("Target", target)
                     .Set("Amount", Healing)
@@ -156,7 +150,7 @@ public class Ability
                 target.AddShield(Shielding);
                 totalEffectValue += Shielding;
 
-                EventManager.Trigger("OnShielded", new GameEventData()
+                EventManager.Trigger("OnShieldApplied", new GameEventData()
                     .Set("Source", user)
                     .Set("Target", target)
                     .Set("Amount", Shielding)
@@ -190,8 +184,11 @@ public class Ability
                                         effect.Type == StatusEffectType.ResistanceModifier ||
                                         effect.Type == StatusEffectType.Shield))
                 {
-                    SoundManager.Instance.PlaySFX("buff"); // play sound
-                    PopupManager.Instance.ShowPopup(PopupType.Buff);
+                    var buffEvt = new GameEventData();
+                    buffEvt.Set("Target", target); // or "Source", if that's more appropriate
+                    buffEvt.Set("Effect", effect);
+                    EventManager.Trigger("OnBuffApplied", buffEvt);
+                    
                 }
             }
         }
@@ -211,8 +208,7 @@ public class Ability
 
         user.HasActedThisTurn = true;
 
-       // Debug.Log($"{user.Name} used {Name} on {targets.Count} target(s).");
-        //Logger.Instance.PostLog($"{user.Name} used {Name} on {targets.Count} target(s).", LogType.Info);
+       
     }
 
     public void SetDamage(int amount)
