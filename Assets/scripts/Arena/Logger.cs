@@ -45,6 +45,8 @@ public class Logger : MonoBehaviour
         EventManager.Subscribe("OnPassiveTriggered", HandlePassiveTriggered);
         EventManager.Subscribe("OnChargeIncreased", HandleChargeIncreased);
         EventManager.Subscribe("OnChargeDecreased", HandleChargeDecreased);
+        EventManager.Subscribe("OnBurnDownDMG", HandleBurnDownDMG);
+
     }
 
     void OnDisable()
@@ -227,6 +229,21 @@ public class Logger : MonoBehaviour
             PostLog($"{target.Name} gained {effect.Name} from {source.Name} for {effect.Duration} turn(s)", LogType.Status);
         }
     }
+
+    private void HandleBurnDownDMG(object eventData)
+    {
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        var target = evt.Get<GameCharacter>("Target");
+        var damage = evt.Get<int>("Damage");
+
+        if (target != null)
+        {
+            PostLog($"{target.Name} suffers {damage} burndown damage!",LogType.Status);
+        }
+    }
+
 
     private void HandleCharacterDied(object eventData)
     {

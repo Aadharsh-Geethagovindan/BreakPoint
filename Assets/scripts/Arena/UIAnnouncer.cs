@@ -22,6 +22,8 @@ public class UIAnnouncer : MonoBehaviour
         EventManager.Subscribe("OnCharacterDied", ShowBriefDeathInfo);
         EventManager.Subscribe("OnTurnStarted", ShowTurnStartMessage);
         EventManager.Subscribe("OnStatusEffectApplied", ShowStatusEffectText);
+        EventManager.Subscribe("OnBurnDownDMG", ShowBurnDownDMG);
+
 
     }
 
@@ -89,6 +91,23 @@ public class UIAnnouncer : MonoBehaviour
         if (target == null || effect == null) return;
 
         string msg = $"{target.Name} is affected by {effect.Name}.";
+        StartCoroutine(ShowBriefMessage(msg));
+
+    }
+
+    private void ShowBurnDownDMG(object data)
+    {
+        var evt = data as GameEventData;
+        if (evt == null) return;
+
+        float percent = evt.Get<float>("Percent");
+        bool useMaxHP = evt.Get<bool>("UseMaxHP");
+
+        string basis = useMaxHP ? "Max HP" : "Current HP";
+
+        
+
+        string msg = $"All characters took {percent*100}% of {basis} burndown damage!";
         StartCoroutine(ShowBriefMessage(msg));
 
     }

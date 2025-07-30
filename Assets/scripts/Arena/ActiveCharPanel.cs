@@ -31,6 +31,9 @@ public class ActiveCharPanel : MonoBehaviour
     public Transform characterHolder; // Drag the holder from scene
     private Dictionary<GameCharacter, CharacterCardUI> cardLookup = new Dictionary<GameCharacter, CharacterCardUI>();
 
+    private CharacterCardUI cardUI;
+    public Button skipTurnButton;
+
 
 
     //private CharacterData currentCharacter;
@@ -56,6 +59,8 @@ public class ActiveCharPanel : MonoBehaviour
         reselectButton.onClick.RemoveAllListeners();
         reselectButton.onClick.AddListener(OnReselectClicked);
 
+        skipTurnButton.onClick.AddListener(OnSkipTurnClicked);
+
     }
 
     private void HandleTurnStarted(object data)
@@ -67,13 +72,13 @@ public class ActiveCharPanel : MonoBehaviour
 
     private void HandleTurnEnded(object data)
     {
-        ClearTargetingState(); 
+        ClearTargetingState();
     }
 
     public void DisplayCharacter(GameCharacter character)
     {
-        //Debug.Log($"Displaying character: {character.Name}");
 
+        skipTurnButton.interactable = true;
         // Store live reference
         currentGameCharacter = character;
 
@@ -232,10 +237,10 @@ public class ActiveCharPanel : MonoBehaviour
 
     private void UseMove(int index)
     {
-         SoundManager.Instance.PlaySFX("click");
-         ClearTargetingState();
-         
-         switch (index)
+        SoundManager.Instance.PlaySFX("click");
+        ClearTargetingState();
+
+        switch (index)
         {
             case 0:
                 selectedAbility = currentGameCharacter.NormalAbility;
@@ -283,6 +288,19 @@ public class ActiveCharPanel : MonoBehaviour
                 validTargets = currentGameCharacter.Enemies
                     .Where(c => !c.IsDead)
                     .ToList();
+
+                // Auto-select all enemies if they are <= MaxTargets
+                if (validTargets.Count <= selectedAbility.MaxTargets)
+                {
+                    selectedTargets = new List<GameCharacter>(validTargets);
+
+                    // Visuals for auto-selected targets
+                    foreach (var target in selectedTargets)
+                    {
+                        var card = FindCardForCharacter(target);
+                        card?.SetTargetedHighlight(true);
+                    }
+                }
                 break;
 
             case TargetType.Ally:
@@ -298,21 +316,59 @@ public class ActiveCharPanel : MonoBehaviour
                     validTargets = currentGameCharacter.Allies
                         .Where(c => !c.IsDead)
                         .ToList();
+
+                    if (validTargets.Count <= selectedAbility.MaxTargets)
+                    {
+                        selectedTargets = new List<GameCharacter>(validTargets);
+
+                        foreach (var target in selectedTargets)
+                        {
+                            var card = FindCardForCharacter(target);
+                            card?.SetTargetedHighlight(true);
+                        }
+                    }
                 }
                 break;
             case TargetType.AllyOrSelf:
-            validTargets = currentGameCharacter.Allies
-                .Where(c => !c.IsDead)
-                .ToList();
+                validTargets = currentGameCharacter.Allies
+                    .Where(c => !c.IsDead)
+                    .ToList();
 
-            if (!currentGameCharacter.IsDead && !validTargets.Contains(currentGameCharacter))
-            {
-                validTargets.Add(currentGameCharacter);
-            }
-            break;
+                if (!currentGameCharacter.IsDead && !validTargets.Contains(currentGameCharacter))
+                {
+                    validTargets.Add(currentGameCharacter);
+                    if (validTargets.Count <= selectedAbility.MaxTargets)
+                    {
+                        selectedTargets = new List<GameCharacter>(validTargets);
+
+                        foreach (var target in selectedTargets)
+                        {
+                            var card = FindCardForCharacter(target);
+                            card?.SetTargetedHighlight(true);
+                        }
+                    }
+                }
+                break;
             case TargetType.Self:
-                // Only add self if not dead
-                validTargets = currentGameCharacter.IsDead ? new List<GameCharacter>() : new List<GameCharacter> { currentGameCharacter };
+
+                if (!currentGameCharacter.IsDead)
+                {
+                    validTargets = new List<GameCharacter> { currentGameCharacter };
+                    selectedTargets = new List<GameCharacter> { currentGameCharacter };
+
+                    // Optional: Set visual feedback
+                    cardUI = FindCardForCharacter(currentGameCharacter);
+                    if (cardUI != null)
+                    {
+                        cardUI.SetTargetedHighlight(true);
+                    }
+
+
+                }
+                else
+                {
+                    validTargets = new List<GameCharacter>();
+                }
                 break;
 
             case TargetType.All:
@@ -328,7 +384,7 @@ public class ActiveCharPanel : MonoBehaviour
         // Highlight UI of valid targets
         foreach (GameCharacter target in validTargets)
         {
-            CharacterCardUI cardUI = FindCardForCharacter(target);
+            cardUI = FindCardForCharacter(target);
             if (cardUI != null)
             {
                 cardUI.SetTargetHighlight(true);  // e.g., glow or outline effect
@@ -370,7 +426,7 @@ public class ActiveCharPanel : MonoBehaviour
             foreach (GameCharacter selectedTarget in validTargets)
             {
                 // Disable clicking on all remaining targets
-                CharacterCardUI cardUI = FindCardForCharacter(selectedTarget);
+                cardUI = FindCardForCharacter(selectedTarget);
                 if (cardUI != null)
                 {
 
@@ -400,9 +456,9 @@ public class ActiveCharPanel : MonoBehaviour
             return;
         }
         var evt = new GameEventData();
-            evt.Set("Ability", selectedAbility);
-            evt.Set("Source", currentGameCharacter);
-            evt.Set("Targets", selectedTargets); // Optional
+        evt.Set("Ability", selectedAbility);
+        evt.Set("Source", currentGameCharacter);
+        evt.Set("Targets", selectedTargets); // Optional
         EventManager.Trigger("OnTargetingEnded", evt);
 
         BattleManager.Instance.ExecuteAbility(currentGameCharacter, selectedAbility, selectedTargets);
@@ -412,7 +468,7 @@ public class ActiveCharPanel : MonoBehaviour
     {
         SoundManager.Instance.PlaySFX("click");
 
-         // ✅ Preserve ability and character before clearing
+        // ✅ Preserve ability and character before clearing
         var preservedAbility = selectedAbility;
         var preservedCharacter = currentGameCharacter;
         ClearTargetingState();
@@ -429,7 +485,7 @@ public class ActiveCharPanel : MonoBehaviour
     {
         foreach (GameCharacter target in validTargets)
         {
-            CharacterCardUI cardUI = FindCardForCharacter(target);
+            cardUI = FindCardForCharacter(target);
             if (cardUI != null)
             {
                 cardUI.SetTargetHighlight(false);
@@ -442,7 +498,7 @@ public class ActiveCharPanel : MonoBehaviour
         selectedTargets.Clear();
         validTargets.Clear();
         selectedAbility = null;
-        
+
     }
 
 
@@ -455,5 +511,19 @@ public class ActiveCharPanel : MonoBehaviour
         accuracyText.text = "";
         damageMultiplierText.text = "";
     }
+
+    private void OnSkipTurnClicked()
+    {
+        SoundManager.Instance.PlaySFX("click");
+        skipTurnButton.interactable = false;
+
+        var evt = new GameEventData();
+        evt.Set("Character", currentGameCharacter);
+        EventManager.Trigger("OnTurnSkipped", evt);
+
+        TurnManager.Instance.AdvanceTurn(); // This should be your normal turn-end logic
+    }
+
+
 }
 

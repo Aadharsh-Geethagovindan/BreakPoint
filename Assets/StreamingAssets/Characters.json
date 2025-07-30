@@ -16,7 +16,7 @@
         {
           "name": "Airburst",
           "description": "Arkhe shoots a gust of air dealing 30 air damage. Affected enemies have a 15% chance of being stunned next turn.",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Elemental Support",
@@ -49,7 +49,7 @@
         {
           "name": "God Blow",
           "description": "Avarice deals 30 water damage",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Blessing",
@@ -82,7 +82,7 @@
         {
           "name": "Psionic Scream",
           "description": "Deals 40 psychic damage to 1 enemy",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Abandon Hope",
@@ -115,7 +115,7 @@
         {
           "name": "Ignition Flare",
           "description": "Deals 18 fire damage to 1 enemy",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Firecracker Bombard",
@@ -148,7 +148,7 @@
         {
           "name": "Shield Bash",
           "description": "The Captain slams his shield and does 20 physical damage.",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Ricochet",
@@ -181,7 +181,7 @@
         {
           "name": "Rifle Shot",
           "description": "Deals 20 energy damage to 1 enemy",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Scoped Rifle Shot",
@@ -214,7 +214,7 @@
         {
           "name": "Silver Sword Slash",
           "description": "Faru attacks with his greatsword for 25 physical damage.",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Flaming Sword Strike",
@@ -247,7 +247,7 @@
         {
           "name": "Scorch Ray",
           "description": "Huron fires a blast dealing 50 energy damage",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Solar Cover",
@@ -280,7 +280,7 @@
         {
           "name": "Blaster Rifle",
           "description": "Jack shoots his rifle, dealing 20 energy damage.",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Targeted Strike",
@@ -313,7 +313,7 @@
         {
           "name": "Cinder Stream",
           "description": "KAS slashes the enemy in a flurry of strikes, dealing 40 physical damage.",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Dual Wield Precision",
@@ -346,7 +346,7 @@
         {
           "name": "Riftbreaker Axe",
           "description": "Krakoa attacks with his axe and deals 35 Ice damage.",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "WarFrost",
@@ -379,7 +379,7 @@
         {
           "name": "Bolter Strike",
           "description": "Deals 16 earth damage to 1 enemy",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Seismic Blow",
@@ -412,7 +412,7 @@
         {
           "name": "Saber Slice",
           "description": "The Mizca slices with his rift weapon, dealing 40 energy damage.",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Saber Quake",
@@ -445,7 +445,7 @@
         {
           "name": "Whirlwind",
           "description": "Nou shoots a cyclone dealing 30 Air damage at two enemies",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Dust Storm",
@@ -478,7 +478,7 @@
         {
           "name": "Ocular Blaster",
           "description": "Olthar shoots an enery blast from his eyes, dealing 35 energy damage.",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Concussive Wave",
@@ -511,7 +511,7 @@
         {
           "name": "Zapper",
           "description": "Deals 10 lightning damage",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Confusion Tactics",
@@ -544,7 +544,7 @@
         {
           "name": "Claw",
           "description": "Raish strikes dealing 20 poison damage",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Venomous Strike",
@@ -577,7 +577,7 @@
         {
           "name": "Katana Strike",
           "description": "Rei attacks with her lightning katana, dealing 40 lightning damage",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Burst Charge",
@@ -610,7 +610,7 @@
         {
           "name": "Arc Bore",
           "description": "rellins modified boring arc deals 30 lightning damage",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Plasma Capacitor",
@@ -643,7 +643,7 @@
         {
           "name": "Wire Whip",
           "description": "Deals 20 physical damage with a 10% chance to apply Bleed(15 Physical DoT) for 1 turn",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Incision",
@@ -676,7 +676,7 @@
         {
           "name": "Heat Vision",
           "description": "Sedra shoots lasers out her eyes and deals 40 Energy Damage.",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Nova Lash",
@@ -709,7 +709,7 @@
         {
           "name": "Rabid Strike",
           "description": "Skirvex strikes for 10 poison damage, 20% chance to apply Venom(20 Poison DoT)",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Vapid Bite",
@@ -742,7 +742,7 @@
         {
           "name": "Snap Flush",
           "description": "Deals 15 water damage to 1 enemy",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Aetherion Halo",
@@ -777,7 +777,7 @@
         {
           "name": "CHOMP",
           "description": "Trex bites dealing 40 physical damage",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Rift-Hardened Hide",
@@ -808,7 +808,7 @@
         {
           "name": "Acid Shot",
           "description": "Deals 18 poison damage",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Venom Strike",
@@ -841,7 +841,7 @@
         {
           "name": "Wind Gust",
           "description": "Ulmika deals 15 air dmg",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Arcane Blessing",
@@ -874,7 +874,7 @@
         {
           "name": "Jet Stream",
           "description": "Vas shoots a stream of compressed water for 10 damage",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Mostly Stable Runic Blessing",
@@ -907,7 +907,7 @@
         {
           "name": "Poisoned Chalice",
           "description": "Enemy is dealt 20 poison damage",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Disruption Tactics",
@@ -940,7 +940,7 @@
         {
           "name": "Icicle Hit",
           "description": "Shoots a large icicle at an opponent dealing 15 ice damage",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Frozen Aegis",
@@ -973,7 +973,7 @@
         {
           "name": "Spear Strike",
           "description": "VyGar attacks dealing 30 physical damage",
-          "cooldown": 1
+          "cooldown": 0
         },
         {
           "name": "Meteor Strike",

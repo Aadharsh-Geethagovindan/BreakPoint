@@ -24,8 +24,8 @@ public class TurnManager : MonoBehaviour
         Instance = this;
         SoundManager.Instance.PlayMusic("arena"); // play background song
 
-        
-        
+
+
 
     }
 
@@ -63,7 +63,7 @@ public class TurnManager : MonoBehaviour
             Debug.LogError("ActiveCharPanel not found.");
             yield break;
         }
-        
+
 
         //  Apply one-time passives
         PassiveManager.OnGameStart(charactersInOrder);
@@ -74,6 +74,8 @@ public class TurnManager : MonoBehaviour
     {
         Debug.Log($"===== ROUND {currentRound} START =====");
         EventManager.Trigger("OnRoundStarted", currentRound);
+
+        ApplyBurndown();
 
         foreach (var character in charactersInOrder)
         {
@@ -122,7 +124,7 @@ public class TurnManager : MonoBehaviour
             card.RefreshStatusEffects(currentCharacter);
         }
         StatusEffect.ApplyTurnEffects(currentCharacter);
-        
+
 
         foreach (var effect in currentCharacter.StatusEffects.ToList()) // Copy to prevent modification while iterating
         {
@@ -142,14 +144,14 @@ public class TurnManager : MonoBehaviour
         }
 
         PassiveManager.OnTurnStart(currentCharacter);
-       
+
         if (currentCharacter.HP <= 0)
         {
             BattleManager.Instance.HandleDeath(currentCharacter);
             AdvanceTurn(); // Skip to next alive character
             return;
         }
-        
+
 
         //activeCharPanel?.DisplayCharacter(currentCharacter);
 
@@ -157,7 +159,7 @@ public class TurnManager : MonoBehaviour
         {
             GameUI.Announce($"{currentCharacter.Name} is stunned and cannot act.");
             UIAnnouncer.Instance.DelayedAnnounceAndAdvance($"{TurnManager.Instance.PeekNextCharacter().Name} is choosing a move.");
-            EventManager.Trigger("OnTurnSkipped", currentCharacter); 
+            EventManager.Trigger("OnTurnSkipped", currentCharacter);
             return;
         }
 
@@ -168,11 +170,11 @@ public class TurnManager : MonoBehaviour
         EventManager.Trigger("OnTurnEnded", currentCharacter);
         TickAndExpireStatusEffects(currentCharacter);
         CharacterCardUI card = activeCharPanel.FindCardForCharacter(currentCharacter);
-            if (card != null)
-            {
-                //Debug.Log($"Refreshing icons for {currentCharacter.Name} ");
-                card.RefreshStatusEffects(currentCharacter);
-            }
+        if (card != null)
+        {
+            //Debug.Log($"Refreshing icons for {currentCharacter.Name} ");
+            card.RefreshStatusEffects(currentCharacter);
+        }
         do
         {
             currentCharacterIndex = (currentCharacterIndex + 1) % charactersInOrder.Count;
@@ -247,4 +249,48 @@ public class TurnManager : MonoBehaviour
 
         return null; // All characters dead (shouldn’t happen unless game over)
     }
+    
+    private void ApplyBurndown()
+    {
+        int phase = currentRound - 12;
+        if (phase < 0 || phase > 5) return;
+
+        float damagePercent = 0f;
+
+        switch (phase)
+        {
+            case 0: damagePercent = 0.05f; break; // 5% current HP
+            case 1: damagePercent = 0.10f; break; // 10% current HP
+            case 2: damagePercent = 0.20f; break; // 20% current HP
+            case 3: damagePercent = 0.20f; break; // 20% MAX HP
+            case 4: damagePercent = 0.30f; break; // 30% MAX HP
+            case 5: damagePercent = 0.40f; break; // 40% MAX HP
+        }
+
+        foreach (GameCharacter character in charactersInOrder)
+        {
+            if (character.IsDead) continue;
+
+            int damage = (phase <= 2)
+                ? Mathf.CeilToInt(character.HP * damagePercent)
+                : Mathf.CeilToInt(character.MaxHP * damagePercent);
+
+            character.TakeDamage(damage, DamageType.True);
+            float percent = damagePercent;
+            bool useMaxHP = phase >= 4;
+
+            var evt = new GameEventData();
+            evt.Set("Source", null);
+            evt.Set("Target", character);
+            evt.Set("Damage", damage);
+            evt.Set("Type", DamageType.True);
+            evt.Set("Percent", percent);
+            evt.Set("UseMaxHP", useMaxHP);
+            
+            EventManager.Trigger("OnBurnDownDMG", evt);
+
+            
+        }
+    }
+
 }
