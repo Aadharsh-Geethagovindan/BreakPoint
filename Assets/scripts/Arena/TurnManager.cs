@@ -67,15 +67,20 @@ public class TurnManager : MonoBehaviour
 
         //  Apply one-time passives
         PassiveManager.OnGameStart(charactersInOrder);
-        StartNewRound(); // Begin first round
+        StartCoroutine(StartNewRound()); // Begin first round
     }
 
-    private void StartNewRound()
+    private IEnumerator  StartNewRound()
     {
         Debug.Log($"===== ROUND {currentRound} START =====");
         EventManager.Trigger("OnRoundStarted", currentRound);
 
         ApplyBurndown();
+
+        RecalculateTurnOrder();
+
+        yield return StartCoroutine(AnimationManager.Instance.AnimateCardRepositioning(charactersInOrder));
+
 
         foreach (var character in charactersInOrder)
         {
@@ -184,7 +189,7 @@ public class TurnManager : MonoBehaviour
         if (currentCharacterIndex == 0)
         {
             currentRound++;
-            StartNewRound(); // Round complete
+            StartCoroutine(StartNewRound()); // Round complete
         }
         else
         {
@@ -249,6 +254,30 @@ public class TurnManager : MonoBehaviour
 
         return null; // All characters dead (shouldn’t happen unless game over)
     }
+
+    private void RecalculateTurnOrder()
+    {
+        List<GameCharacter> allAlive = charactersInOrder.Where(c => !c.IsDead).ToList();
+
+        var rollResults = new Dictionary<GameCharacter, float>();
+
+        foreach (var character in allAlive)
+        {
+            int roll = UnityEngine.Random.Range(1, 21); // d20
+            float modifier = character.Speed / 4f;
+            float total = roll + modifier;
+            rollResults[character] = total;
+
+            Debug.Log($"{character.Name} rolled {roll} + {modifier:F1} = {total:F1}");
+        }
+
+        charactersInOrder = rollResults
+            .OrderByDescending(pair => pair.Value)
+            .Select(pair => pair.Key)
+            .ToList();
+}
+
+
     
     private void ApplyBurndown()
     {

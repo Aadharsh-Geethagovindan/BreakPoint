@@ -185,6 +185,8 @@ public class ArenaCharacterLoader : MonoBehaviour
                 statsBlock.gameObject.SetActive(false);
             // Register with targeting system
             CharacterCardUI cardUI = cardObj.GetComponent<CharacterCardUI>();
+            cardUI.ClockPosition = position;
+            cardUI.HPBar = hpBarRect;
             cardUI.SetCharacter(character);
             panel.RegisterCard(character, cardUI);
         }

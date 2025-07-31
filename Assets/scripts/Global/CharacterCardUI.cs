@@ -7,11 +7,13 @@ public class CharacterCardUI : MonoBehaviour
 {
     public Image outlineImage;
     public Image targetedImage;
-    public Button cardButton;            
+    public Button cardButton;
     private GameCharacter characterRef;
     private Action<GameCharacter> onClickAction;
-
+    public Vector2 ClockPosition { get; set; }
     public Slider shieldSlider; // Reference to the shield slider
+    public RectTransform HPBar { get; set; }
+
 
     public StatusEffectDisplay statusEffectDisplay;
 
@@ -29,7 +31,7 @@ public class CharacterCardUI : MonoBehaviour
 
     public void SetTargetedHighlight(bool enable)
     {
-        
+
         if (targetedImage != null)
             targetedImage.enabled = enable;
     }
@@ -112,7 +114,7 @@ public class CharacterCardUI : MonoBehaviour
 
         transform.localPosition = originalPos;
     }
-    
+
     public void RefreshStatusEffects(GameCharacter character)
     {
         if (setRecent)
@@ -128,5 +130,40 @@ public class CharacterCardUI : MonoBehaviour
             statusEffectDisplay.UpdateStatusEffectDisplay(character);
         }
     }
+    
+    public IEnumerator MoveToPosition(Vector2 targetPos, float duration)
+    {
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        Vector2 start = rectTransform.anchoredPosition;
+        float time = 0f;
 
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            float t = time / duration;
+            rectTransform.anchoredPosition = Vector2.Lerp(start, targetPos, t);
+            yield return null;
+        }
+
+        rectTransform.anchoredPosition = targetPos;
+    }
+
+}
+
+public static class UIAnimationUtils
+{
+    public static IEnumerator MoveToPosition(this RectTransform rectTransform, Vector2 target, float duration)
+    {
+        Vector2 start = rectTransform.anchoredPosition;
+        float t = 0f;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration;
+            rectTransform.anchoredPosition = Vector2.Lerp(start, target, t);
+            yield return null;
+        }
+
+        rectTransform.anchoredPosition = target;
+    }
 }
