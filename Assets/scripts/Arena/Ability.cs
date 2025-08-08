@@ -21,16 +21,10 @@ public enum TargetType
 public enum DamageType
 {
     None,
-    Physical,
-    Fire,
-    Water,
-    Ice,
-    Air,
-    Earth,
-    Lightning,
-    Energy,
-    Poison,
-    Psychic,
+    Arcane,
+    Elemental,
+    Force,
+    Corrupt,
     True // Bypasses resistances
 }
 

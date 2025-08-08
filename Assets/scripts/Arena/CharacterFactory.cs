@@ -100,19 +100,19 @@ public static class CharacterFactory
         };
 
         var normal = new Ability(moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-                                30, 0, 0, 0, TargetType.Enemy, 1, airburstEffects, DamageType.Air);
+                                30, 0, 0, 0, TargetType.Enemy, 1, airburstEffects, DamageType.Elemental);
 
         
         var skill = new Ability(moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
                                 0, 30, 15, 0, TargetType.AllyOrSelf, 1);
 
         var sig = new Ability(moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-                            100, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, null, DamageType.Fire);
+                            100, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, null, DamageType.Elemental);
 
         var arkhe = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive,data.imageName, data.affiliation, data.lore, data.species);
 
         // Optional: Give arkhe moderate air resistance
-        arkhe.Resistances[DamageType.Air] = 0.2f;
+        arkhe.Resistances[DamageType.Elemental] = 0.2f;
 
         return arkhe;
     }
@@ -124,7 +124,7 @@ public static class CharacterFactory
         var passive = new Ability(moves[0].name, moves[0].description, AbilityType.Passive, 0, 0, 0, 0, 0, TargetType.Self, 1);
 
         var normal = new Ability(moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-                                30, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Water);
+                                30, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Elemental);
 
         var skill = new Ability(moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
                                 0, 75, 0, 0, TargetType.AllyOrSelf, 1);
@@ -134,10 +134,6 @@ public static class CharacterFactory
 
         var Avarice = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
 
-        // Optional: Avarice is resistant to Water and Ice, weak to Fire
-        Avarice.Resistances[DamageType.Water] = 0.3f;
-        Avarice.Resistances[DamageType.Ice] = 0.3f;
-        Avarice.Resistances[DamageType.Fire] = -0.2f;
 
         return Avarice;
     }
@@ -148,9 +144,9 @@ public static class CharacterFactory
         var passive = new Ability(moves[0].name, moves[0].description, AbilityType.Passive, 0, 0, 0, 0, 0, TargetType.Self, 1);
         // Passive handled in PassiveManager: reduce all enemy accuracy by 15% at game start
 
-        var normal = new Ability(moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown, 40, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Psychic);
+        var normal = new Ability(moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown, 40, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Arcane);
 
-        var skill = new Ability(moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown, 20, 0, 0, 0, TargetType.Enemy, 2, null, DamageType.Psychic);
+        var skill = new Ability(moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown, 20, 0, 0, 0, TargetType.Enemy, 2, null, DamageType.Arcane);
         skill.CustomDamageOverride = (user, target) =>
         {
             int debuffCount = target.StatusEffects.Count(e => e.IsDebuff && e.ToDisplay);
@@ -158,7 +154,7 @@ public static class CharacterFactory
         };
 
         var stun = new StatusEffect("Stun", StatusEffectType.Stun, 1, 0, null, isDebuff: true, applyChance: 0.5f);
-        var sig = new Ability(moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown, 80, 0, 0, data.SigChargeReq, TargetType.Enemy, 2, new List<StatusEffect> { stun }, DamageType.Psychic);
+        var sig = new Ability(moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown, 80, 0, 0, data.SigChargeReq, TargetType.Enemy, 2, new List<StatusEffect> { stun }, DamageType.Arcane);
 
         GameCharacter bessil = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
         return bessil;
@@ -169,29 +165,29 @@ public static class CharacterFactory
         List<MoveData> moves = new List<MoveData>(data.moves);
 
         // Passive: fire resistance to all allies
-        var fireRes = new StatusEffect("Insulated Lining", StatusEffectType.ResistanceModifier, 5, 0.15f, null, DamageType.Fire, isDebuff: false);
+        var fireRes = new StatusEffect("Insulated Lining", StatusEffectType.ResistanceModifier, 5, 0.15f, null, DamageType.Elemental, isDebuff: false);
         var passive = new Ability(moves[0].name, moves[0].description, AbilityType.Passive, 0, 0, 0, 0, 0, TargetType.AllyOrSelf, 3, new List<StatusEffect> { fireRes });
 
         // Normal
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            18, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Fire
+            18, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Elemental
         );
 
         // Skill
         var accuracyDebuff = new StatusEffect("Blinded", StatusEffectType.AccuracyModifier, 1, -0.10f, null, isDebuff: true);
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            10, 0, 0, 0, TargetType.Enemy, 2, new List<StatusEffect> { accuracyDebuff }, DamageType.Fire
+            10, 0, 0, 0, TargetType.Enemy, 2, new List<StatusEffect> { accuracyDebuff }, DamageType.Elemental
         );
 
         // Signature
-        var burn = new StatusEffect("Burn", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Fire, isDebuff: true);
-        var afterburn = new StatusEffect("Afterburn", StatusEffectType.ResistanceModifier, 3, -0.20f, null, DamageType.Fire, isDebuff: true, applyChance: 0.30f);
+        var burn = new StatusEffect("Burn", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Elemental, isDebuff: true);
+        var afterburn = new StatusEffect("Afterburn", StatusEffectType.ResistanceModifier, 3, -0.20f, null, DamageType.Elemental, isDebuff: true, applyChance: 0.30f);
         var sigEffects = new List<StatusEffect> { burn, afterburn };
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            10, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, sigEffects, DamageType.Fire
+            10, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, sigEffects, DamageType.Elemental
         );
 
         GameCharacter breacher = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive,
@@ -207,12 +203,12 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            20, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Physical
+            20, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Force
         );
 
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            15, 0, 0, 0, TargetType.Enemy, 2, null, DamageType.Physical
+            15, 0, 0, 0, TargetType.Enemy, 2, null, DamageType.Force
         );
 
         var sig = new Ability(
@@ -231,11 +227,11 @@ public static class CharacterFactory
         var passive = new Ability(moves[0].name, moves[0].description,AbilityType.Passive, 0, 0, 0, 0, 0,TargetType.Self, 1);
         // Passive logic handled in PassiveManager: Bonus damage scaling with CAF-affiliated allies
 
-        var normal = new Ability(moves[1].name, moves[1].description,AbilityType.Normal, moves[1].cooldown,20, 0, 0, 0, TargetType.Enemy, 1,null, DamageType.Energy);
+        var normal = new Ability(moves[1].name, moves[1].description,AbilityType.Normal, moves[1].cooldown,20, 0, 0, 0, TargetType.Enemy, 1,null, DamageType.Force);
 
-        var skill = new Ability(moves[2].name, moves[2].description,AbilityType.Skill, moves[2].cooldown,35, 0, 0, 0, TargetType.Enemy, 1,null, DamageType.Energy);
+        var skill = new Ability(moves[2].name, moves[2].description,AbilityType.Skill, moves[2].cooldown,35, 0, 0, 0, TargetType.Enemy, 1,null, DamageType.Force);
 
-        var sig = new Ability(moves[3].name, moves[3].description,AbilityType.Signature, moves[3].cooldown,22, 0, 0, data.SigChargeReq, TargetType.Enemy, 3,null, DamageType.Energy);
+        var sig = new Ability(moves[3].name, moves[3].description,AbilityType.Signature, moves[3].cooldown,22, 0, 0, data.SigChargeReq, TargetType.Enemy, 3,null, DamageType.Force);
 
         GameCharacter trooper = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq,normal, skill, sig, passive,data.imageName, data.affiliation, data.lore, data.species);
 
@@ -250,21 +246,21 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            25, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Physical
+            25, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Force
         );
 
-        var burnEffect = new StatusEffect("Burn", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Fire,isDebuff: true,applyChance: .60f);
+        var burnEffect = new StatusEffect("Burn", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Elemental,isDebuff: true,applyChance: .60f);
         var fireSwingEffects = new List<StatusEffect> { burnEffect };
 
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            45, 0, 0, 0, TargetType.Enemy, 1, fireSwingEffects, DamageType.Fire
+            45, 0, 0, 0, TargetType.Enemy, 1, fireSwingEffects, DamageType.Elemental
         );
         // 60% chance to apply Burn — note for BattleManager handling
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            60, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, null, DamageType.Physical
+            60, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, null, DamageType.Force
         );
 
         // Custom damage override: +30 per active non-debuff effect
@@ -287,7 +283,7 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            50, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Energy
+            50, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Arcane
         );
 
         var solarFlareEffects = new List<StatusEffect>
@@ -296,12 +292,12 @@ public static class CharacterFactory
         };
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            18, 0, 0, 0, TargetType.Enemy, 3, solarFlareEffects, DamageType.Energy
+            18, 0, 0, 0, TargetType.Enemy, 3, solarFlareEffects, DamageType.Arcane
         );
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            160, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, null, DamageType.Energy
+            160, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, null, DamageType.Arcane
         );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
@@ -316,7 +312,7 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            20, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Energy
+            20, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Corrupt
         );
 
         var mockedEffect = new List<StatusEffect>
@@ -326,7 +322,7 @@ public static class CharacterFactory
 
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            0, 0, 0, 0, TargetType.Enemy, 1, mockedEffect
+            0, 0, 0, 0, TargetType.Enemy, 1, mockedEffect,DamageType.Corrupt
         );
 
         var psychEffects = new List<StatusEffect>
@@ -353,13 +349,13 @@ public static class CharacterFactory
         // Normal: Starburst Stream
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            40, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Physical
+            40, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Arcane
         );
 
         // Skill: Dual Wield Precision (2 targets)
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            25, 0, 0, 0, TargetType.Enemy, 2, null, DamageType.Physical
+            25, 0, 0, 0, TargetType.Enemy, 2, null, DamageType.Arcane
         );
 
         // Signature: Sword Skill: Eclipse (100 dmg + 10 shield to self)
@@ -370,7 +366,7 @@ public static class CharacterFactory
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            100, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, sigEffects, DamageType.Energy
+            100, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, sigEffects, DamageType.Arcane
         );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
@@ -385,13 +381,13 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            35, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Ice
+            35, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Elemental
         );
 
-        var burnEffect = new StatusEffect("Chilled", StatusEffectType.DamageOverTime, 2, 20, null, DamageType.Ice, isDebuff: true);
+        var burnEffect = new StatusEffect("Chilled", StatusEffectType.DamageOverTime, 2, 20, null, DamageType.Elemental, isDebuff: true);
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            30, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { burnEffect }, DamageType.Ice
+            30, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { burnEffect }, DamageType.Elemental
         );
 
         var rageEffect = new StatusEffect("Enraged", StatusEffectType.DamageModifier, 2, 1f, null);
@@ -418,10 +414,10 @@ public static class CharacterFactory
         var passive = new Ability(moves[0].name, moves[0].description,AbilityType.Passive, 0, 0, 0, 0, 0,TargetType.Self, 1);
         // Passive will require BattleManager hook: trigger shield once when HP drops below 30%
 
-        var normal = new Ability(moves[1].name, moves[1].description,AbilityType.Normal, moves[1].cooldown,16, 0, 0, 0, TargetType.Enemy, 1,null, DamageType.Earth);
+        var normal = new Ability(moves[1].name, moves[1].description,AbilityType.Normal, moves[1].cooldown,16, 0, 0, 0, TargetType.Enemy, 1,null, DamageType.Force);
 
-        var rupture = new StatusEffect("Rupture", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Earth, isDebuff: true, applyChance: 0.5f);
-        var skill = new Ability(moves[2].name, moves[2].description,AbilityType.Skill, moves[2].cooldown,20, 0, 0, 0, TargetType.Enemy, 1,new List<StatusEffect> { rupture }, DamageType.Earth);
+        var rupture = new StatusEffect("Rupture", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Force, isDebuff: true, applyChance: 0.5f);
+        var skill = new Ability(moves[2].name, moves[2].description,AbilityType.Skill, moves[2].cooldown,20, 0, 0, 0, TargetType.Enemy, 1,new List<StatusEffect> { rupture }, DamageType.Force);
 
         var empower = new StatusEffect("Empowered", StatusEffectType.DamageModifier, 2, 0.2f, null, isDebuff: false);
         var fortify = new Ability(moves[3].name, moves[3].description,AbilityType.Signature, moves[3].cooldown,0, 0, 40, data.SigChargeReq, TargetType.Self, 1,new List<StatusEffect> { empower }, DamageType.None);
@@ -441,7 +437,7 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            40, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Energy
+            40, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Corrupt
         );
 
         var saberQuakeEffects = new List<StatusEffect>
@@ -451,12 +447,12 @@ public static class CharacterFactory
 
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            20, 0, 0, 0, TargetType.Enemy, 2, saberQuakeEffects, DamageType.Earth
+            20, 0, 0, 0, TargetType.Enemy, 2, saberQuakeEffects, DamageType.Corrupt
         );
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            55, 0, 0, data.SigChargeReq, TargetType.Enemy, 2, null, DamageType.Earth
+            55, 0, 0, data.SigChargeReq, TargetType.Enemy, 2, null, DamageType.Force
         );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
@@ -471,22 +467,22 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            30, 0, 0, 0, TargetType.Enemy, 2, null, DamageType.Air
+            30, 0, 0, 0, TargetType.Enemy, 2, null, DamageType.Elemental
         );
 
         var coveredEffect = new StatusEffect("Covered", StatusEffectType.AccuracyModifier, 1, -0.5f, null,isDebuff: true);
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            20, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { coveredEffect }, DamageType.Air
+            20, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { coveredEffect }, DamageType.Elemental
         );
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            60, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, null, DamageType.Air
+            60, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, null, DamageType.Elemental
         );
 
         GameCharacter nut = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
-        nut.Resistances[DamageType.Air] = 1f;
+        
         return nut;
     }
 
@@ -499,18 +495,18 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            35, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Energy
+            35, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Arcane
         );
 
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            20, 0, 0, 0, TargetType.Enemy, 3, null, DamageType.Air
+            20, 0, 0, 0, TargetType.Enemy, 3, null, DamageType.Force
         );
 
-        var dotEffect = new StatusEffect("Energy Burn", StatusEffectType.DamageOverTime, 2, 15, null, DamageType.Energy,isDebuff: true);
+        var dotEffect = new StatusEffect("Energy Burn", StatusEffectType.DamageOverTime, 2, 15, null, DamageType.Arcane,isDebuff: true);
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            60, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, new List<StatusEffect> { dotEffect }, DamageType.Energy
+            60, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, new List<StatusEffect> { dotEffect }, DamageType.Arcane
         );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
@@ -528,24 +524,24 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            10, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Lightning
+            10, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Corrupt
         );
 
         var debuffEffect = new StatusEffect("Confused", StatusEffectType.AccuracyModifier, 1, -0.15f, null,isDebuff: true);
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            15, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { debuffEffect }, DamageType.Physical
+            15, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { debuffEffect }, DamageType.Corrupt
         );
 
         var resistanceDebuffs = new List<StatusEffect>
         {
-            new StatusEffect(name: "Weakened Lightning",type: StatusEffectType.ResistanceModifier,duration: 2,value: -0.3f,source: null,damageType: DamageType.Lightning,isDebuff: true,applyChance: 1f,toDisplay: false),
-            new StatusEffect("Weakened Energy", StatusEffectType.ResistanceModifier, 2, -0.3f, null,damageType: DamageType.Energy,isDebuff: true)
+            new StatusEffect(name: "Hacked Corrupt",type: StatusEffectType.ResistanceModifier,duration: 2,value: -0.3f,source: null,damageType: DamageType.Corrupt,isDebuff: true,applyChance: 1f,toDisplay: false),
+            new StatusEffect("Hacked Elemental", StatusEffectType.ResistanceModifier, 2, -0.3f, null,damageType: DamageType.Elemental,isDebuff: true)
         };
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            0, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, resistanceDebuffs
+            15, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, resistanceDebuffs,DamageType.Corrupt
         );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
@@ -563,17 +559,17 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            20, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Poison
+            20, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Corrupt
         );
 
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            30, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Poison
+            30, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Corrupt
         );
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            0, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, null, DamageType.Poison
+            0, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, null, DamageType.Corrupt
         );
 
         sig.CustomDamageOverride = (user, target) =>
@@ -595,15 +591,15 @@ public static class CharacterFactory
             baseCooldown: data.moves[1].cooldown,
             damage: 40, healing: 0, shielding: 0, chargeReq: 0,
             targetType: TargetType.Enemy, maxTargets: 1,
-            damageType: DamageType.Lightning
+            damageType: DamageType.Arcane
         );
 
         // Electroshock
         var electroshockEffects = new List<StatusEffect>
         {
-            new StatusEffect(name:"Electroshock - Lightning Res Down",type: StatusEffectType.ResistanceModifier, duration: 2, value: -0.2f,source: null, damageType: DamageType.Lightning, isDebuff: true, toDisplay: false),
-            new StatusEffect("Electroshock - Water Res Down", StatusEffectType.ResistanceModifier, 2, -0.2f, null,damageType: DamageType.Water, isDebuff: true, toDisplay: false),
-            new StatusEffect("Electroshock", StatusEffectType.DamageOverTime, 2, 10f, null, DamageType.Lightning, isDebuff: true)
+            new StatusEffect(name:"Electroshock - Lightning Res Down",type: StatusEffectType.ResistanceModifier, duration: 2, value: -0.2f,source: null, damageType: DamageType.Arcane, isDebuff: true, toDisplay: false),
+           
+            new StatusEffect("Electroshock", StatusEffectType.DamageOverTime, 2, 10f, null, DamageType.Arcane, isDebuff: true)
         };
        
         var skill = new Ability(
@@ -612,7 +608,7 @@ public static class CharacterFactory
             damage: 35, healing: 0, shielding: 0, chargeReq: 0,
             targetType: TargetType.Enemy, maxTargets: 1,
             statusEffectsApplied: electroshockEffects,
-            damageType: DamageType.Lightning
+            damageType: DamageType.Arcane
         );
 
         // Signature - 40% chance to stun
@@ -627,15 +623,14 @@ public static class CharacterFactory
             damage: 140, healing: 0, shielding: 0, chargeReq: data.SigChargeReq,
             targetType: TargetType.Enemy, maxTargets: 1,
             statusEffectsApplied: sigEffects,
-            damageType: DamageType.Lightning
+            damageType: DamageType.Arcane
         );
 
         var rei = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq,
                                     normal, skill, signature, passive, data.imageName, data.affiliation, data.lore, data.species);
 
-        // Flag for override logic in PassiveManager
-        //PassiveManager.MarkSpecialOverride("Rei");
-        rei.Resistances[DamageType.Lightning] = 1f;
+        
+        //rei.Resistances[DamageType.Lightning] = 1f;
 
         return rei;
     }
@@ -652,19 +647,19 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            30, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Lightning
+            30, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Elemental
         );
 
-        var staticDot = new StatusEffect("Static", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Lightning, isDebuff: true);
+        var staticDot = new StatusEffect("Static", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Elemental, isDebuff: true);
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            25, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { staticDot }, DamageType.Lightning
+            25, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { staticDot }, DamageType.Elemental
         );
 
-        var shocked = new StatusEffect("Shocked", StatusEffectType.ResistanceModifier, 2, -0.15f, null, DamageType.Lightning, isDebuff: true);
+        var shocked = new StatusEffect("Shocked", StatusEffectType.ResistanceModifier, 2, -0.15f, null, DamageType.Elemental, isDebuff: true);
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            85, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, new List<StatusEffect> { shocked }, DamageType.Lightning
+            85, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, new List<StatusEffect> { shocked }, DamageType.Elemental
         );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
@@ -680,21 +675,21 @@ public static class CharacterFactory
         );
         // PassiveManager will handle checking for 2+ DoTs, reducing duration, and granting damage buff.
 
-        var bleedChance = new StatusEffect("Bleed", StatusEffectType.DamageOverTime, 1, 15, null, DamageType.Physical, isDebuff: true, applyChance: 0.1f);
+        var bleedChance = new StatusEffect("Bleed", StatusEffectType.DamageOverTime, 1, 15, null, DamageType.Force, isDebuff: true, applyChance: 0.1f);
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            20, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { bleedChance }, DamageType.Physical
+            20, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { bleedChance }, DamageType.Force
         );
 
-        var bleed = new StatusEffect("Bleed", StatusEffectType.DamageOverTime, 2, 15, null, DamageType.Physical, isDebuff: true);
+        var bleed = new StatusEffect("Bleed", StatusEffectType.DamageOverTime, 2, 15, null, DamageType.Corrupt, isDebuff: true);
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            25, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { bleed }, DamageType.Physical
+            25, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { bleed }, DamageType.Corrupt
         );
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            60, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, null, DamageType.Physical
+            60, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, null, DamageType.Corrupt
         );
         sig.CustomDamageOverride = (user, target) =>
         {
@@ -717,18 +712,18 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            40, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Energy
+            40, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Force
         );
 
-        var burnEffect = new StatusEffect("Solar Wind", StatusEffectType.DamageOverTime, 2, 20, null, DamageType.Energy, isDebuff: true);
+        var burnEffect = new StatusEffect("Solar Wind", StatusEffectType.DamageOverTime, 2, 20, null, DamageType.Arcane, isDebuff: true);
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            40, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { burnEffect }, DamageType.Energy
+            40, 0, 0, 0, TargetType.Enemy, 1, new List<StatusEffect> { burnEffect }, DamageType.Arcane
         );
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            50, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, null, DamageType.Energy
+            50, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, null, DamageType.Arcane
         );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
@@ -748,9 +743,9 @@ public static class CharacterFactory
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
             10, 0, 0, 0, TargetType.Enemy, 1,
             new List<StatusEffect> {
-                new StatusEffect("Venom", StatusEffectType.DamageOverTime, 2, 20, null, DamageType.Poison, isDebuff: true, applyChance: 0.2f)
+                new StatusEffect("Venom", StatusEffectType.DamageOverTime, 2, 20, null, DamageType.Corrupt, isDebuff: true, applyChance: 0.2f)
             },
-            DamageType.Poison
+            DamageType.Corrupt
         );
 
         var skill = new Ability(
@@ -759,16 +754,16 @@ public static class CharacterFactory
             new List<StatusEffect> {
                 new StatusEffect("Decaying", StatusEffectType.DamageModifier, 2, -0.2f, null, DamageType.True, isDebuff: true, applyChance: 0.35f)
             },
-            DamageType.Poison
+            DamageType.Corrupt
         );
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            0, 0, 0, data.SigChargeReq, TargetType.Enemy, 3,
+            30, 0, 0, data.SigChargeReq, TargetType.Enemy, 3,
             new List<StatusEffect> {
-                new StatusEffect("Necrosis", StatusEffectType.ResistanceModifier, 2, -0.2f, null, DamageType.Poison, isDebuff: true)
+                new StatusEffect("Necrosis", StatusEffectType.ResistanceModifier, 2, -0.2f, null, DamageType.Corrupt, isDebuff: true)
             },
-            DamageType.Poison
+            DamageType.Corrupt
         );
         // Special-case: Expires HoTs on each target in BattleManager
 
@@ -782,16 +777,15 @@ public static class CharacterFactory
         var passive = new Ability(moves[0].name, moves[0].description, AbilityType.Passive, 0, 0, 0, 0, 0, TargetType.Self, 1);
         
 
-        var normal = new Ability(moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown, 15, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Water);
+        var normal = new Ability(moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown, 15, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Elemental);
 
-        var halo = new StatusEffect("Halo", StatusEffectType.ResistanceModifier, 2, 0.2f, null, DamageType.Water, isDebuff: false);
-        var halo2 = new StatusEffect("Halo (ice)", StatusEffectType.ResistanceModifier, 2, 0.2f, null, DamageType.Ice, isDebuff: false, toDisplay: false);
-        var halo3 = new StatusEffect("Halo (psychic)", StatusEffectType.ResistanceModifier, 2, 0.2f, null, DamageType.Psychic, isDebuff: false, toDisplay: false);
+        var halo = new StatusEffect("Halo", StatusEffectType.ResistanceModifier, 2, 0.2f, null, DamageType.Arcane, isDebuff: false);
+        var halo2 = new StatusEffect("Halo (ice)", StatusEffectType.ResistanceModifier, 2, 0.2f, null, DamageType.Elemental, isDebuff: false, toDisplay: false);
         var clarity = new StatusEffect("Clarity", StatusEffectType.AccuracyModifier, 1, 0.15f, null, isDebuff: false, applyChance: 0.4f);
-        var skill = new Ability(moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown, 0, 0, 0, 0, TargetType.Ally, 1, new List<StatusEffect> { halo, halo2, halo3, clarity }, DamageType.None);
+        var skill = new Ability(moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown, 0, 0, 0, 0, TargetType.Ally, 1, new List<StatusEffect> { halo, halo2, clarity }, DamageType.None);
 
         var blind = new StatusEffect("Blinding", StatusEffectType.AccuracyModifier, 1, -0.2f, null, isDebuff: true);
-        var sig = new Ability(moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown, 50, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, new List<StatusEffect> { blind }, DamageType.Water);
+        var sig = new Ability(moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown, 50, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, new List<StatusEffect> { blind }, DamageType.Elemental);
 
         GameCharacter guard = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
         return guard;
@@ -808,7 +802,7 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            40, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Physical
+            40, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Corrupt
         );
 
         var hardenedHideEffects = new List<StatusEffect>
@@ -822,10 +816,10 @@ public static class CharacterFactory
         );
 
 
-        var poisonEffect = new StatusEffect("Poisoned", StatusEffectType.DamageOverTime, 2, 20, null, DamageType.Poison, isDebuff: true);
+        var poisonEffect = new StatusEffect("Poisoned", StatusEffectType.DamageOverTime, 2, 20, null, DamageType.Corrupt, isDebuff: true);
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            50, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, new List<StatusEffect> { poisonEffect }, DamageType.Physical
+            50, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, new List<StatusEffect> { poisonEffect }, DamageType.Corrupt
         );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
@@ -843,25 +837,25 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            18, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Poison
+            18, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Corrupt
         );
 
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            15, 0, 0, 0, TargetType.Enemy, 3, null, DamageType.Poison
+            15, 0, 0, 0, TargetType.Enemy, 3, null, DamageType.Corrupt
         );
 
-        var burn = new StatusEffect("Burn", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Fire, true, 0.2f);
-        var poison = new StatusEffect("Poisoned", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Poison, true, 0.2f);
-        var shock = new StatusEffect("Shock", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Energy, true, 0.2f);
+        var burn = new StatusEffect("Burn", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Elemental, true, 0.2f);
+        var poison = new StatusEffect("Poisoned", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Corrupt, true, 0.2f);
+        var shock = new StatusEffect("Concussed", StatusEffectType.DamageOverTime, 1, 20, null, DamageType.Force, true, 0.2f);
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
             20, 0, 0, data.SigChargeReq, TargetType.Enemy, 1,
-            new List<StatusEffect> { burn, poison, shock }, DamageType.Energy
+            new List<StatusEffect> { burn, poison, shock }, DamageType.Elemental
         );
 
         var Trustless = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
-        Trustless.Resistances[DamageType.Poison] = .20f;
+        Trustless.Resistances[DamageType.Corrupt] = .20f;
         return Trustless;
     }
 
@@ -877,7 +871,7 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            15, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Air
+            15, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Arcane
         );
 
         var skill = new Ability(
@@ -888,7 +882,7 @@ public static class CharacterFactory
         var flamingWardEffects = new List<StatusEffect>
         {
             new StatusEffect("Evasion Buff", StatusEffectType.DodgeModifier, 2, 0.20f, null, isDebuff: false, toDisplay: false),
-            new StatusEffect("Flame Ward", StatusEffectType.ResistanceModifier, 2, 0.40f, null, isDebuff: false, damageType: DamageType.Fire)
+            new StatusEffect("Flame Ward", StatusEffectType.ResistanceModifier, 2, 0.40f, null, isDebuff: false, damageType: DamageType.Corrupt)
         };
 
         var sig = new Ability(
@@ -911,7 +905,7 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            10, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Water
+            10, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Arcane
         );
 
         var haste = new StatusEffect("Haste", StatusEffectType.DodgeModifier, 1, .15f, null, DamageType.True, isDebuff: false, applyChance: 0.4f);
@@ -930,7 +924,7 @@ public static class CharacterFactory
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,0, 0, 0, data.SigChargeReq,TargetType.Ally, 1,
-            new List<StatusEffect> { recover, reduceSkillCD },DamageType.Water
+            new List<StatusEffect> { recover, reduceSkillCD },DamageType.Arcane
         );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
@@ -948,18 +942,18 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            20, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Poison
+            20, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Corrupt
         );
 
         var debuff = new StatusEffect("Dazed", StatusEffectType.AccuracyModifier, 1, -0.25f, null, isDebuff: true);
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            15, 0, 0, 0, TargetType.Enemy, 2, new List<StatusEffect> { debuff }
+            15, 0, 0, 0, TargetType.Enemy, 2, new List<StatusEffect> { debuff }, DamageType.Corrupt
         );
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            25, 0, 0, data.SigChargeReq, TargetType.Enemy, 2, null, DamageType.Psychic
+            25, 0, 0, data.SigChargeReq, TargetType.Enemy, 2, null, DamageType.Corrupt
         );
         // Special-case: Signature reduces each target’s sig charge by 30%
 
@@ -977,19 +971,19 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            15, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Ice
+            15, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Elemental
         );
 
-         var iceRes = new StatusEffect("Frozen Aegis", StatusEffectType.ResistanceModifier, 2, 0.2f, null, DamageType.Ice);
-    var skill = new Ability(
-        moves[2].name,
-        moves[2].description,
-        AbilityType.Skill,
-        moves[2].cooldown,
-        0, 0, 25, 0,
-        TargetType.Ally,
-        1,
-        new List<StatusEffect> { iceRes }
+        var iceRes = new StatusEffect("Frozen Aegis", StatusEffectType.ResistanceModifier, 2, 0.2f, null, DamageType.Elemental);
+        var skill = new Ability(
+            moves[2].name,
+            moves[2].description,
+            AbilityType.Skill,
+            moves[2].cooldown,
+            0, 0, 25, 0,
+            TargetType.Ally,
+            1,
+            new List<StatusEffect> { iceRes }
     );
 
     var dmgBuff = new StatusEffect("Glacial Bloom", StatusEffectType.DamageModifier, 2, 0.15f, null,isDebuff: false);
@@ -1008,22 +1002,20 @@ public static class CharacterFactory
 
         var rockBuffs = new List<StatusEffect>
         {
-            new StatusEffect("Rock Protection", StatusEffectType.ResistanceModifier, 999, 0.1f, null, DamageType.Physical),
-            new StatusEffect("Rock Protection (Poison)", StatusEffectType.ResistanceModifier, 999, 0.1f, null, DamageType.Poison,toDisplay: false),
-            new StatusEffect("Rock Protection (Earth)", StatusEffectType.ResistanceModifier, 999, 0.1f, null, DamageType.Earth,toDisplay: false),
-            new StatusEffect("Rock Protection (Air)", StatusEffectType.ResistanceModifier, 999, 0.1f, null, DamageType.Air,toDisplay: false)
+            new StatusEffect("Elemental Prot", StatusEffectType.ResistanceModifier, 999, 0.1f, null, DamageType.Elemental,toDisplay: false),
+            new StatusEffect("Force Prot", StatusEffectType.ResistanceModifier, 999, 0.1f, null, DamageType.Force,toDisplay: false),
         };
         var passive = new Ability(moves[0].name, moves[0].description, AbilityType.Passive, 0, 0, 0, 0, 0,TargetType.AllyOrSelf, 3, rockBuffs);
         // PassiveManager applies resistances to all allies at start.
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            25, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Physical
+            25, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Force
         );
 
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            15, 0, 0, 0, TargetType.Enemy, 3, null, DamageType.Earth
+            15, 0, 0, 0, TargetType.Enemy, 3, null, DamageType.Force
         );
 
         var sig = new Ability(
@@ -1033,10 +1025,10 @@ public static class CharacterFactory
 
         var VyGar = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
 
-        VyGar.Resistances[DamageType.Physical] = .10f;
-        VyGar.Resistances[DamageType.Air] = .10f;
-        VyGar.Resistances[DamageType.Earth] = .10f;
-        VyGar.Resistances[DamageType.Poison] = .10f;
+        
+        VyGar.Resistances[DamageType.Elemental] = .10f;
+        VyGar.Resistances[DamageType.Force] = .10f;
+        
         return VyGar;
     }
 

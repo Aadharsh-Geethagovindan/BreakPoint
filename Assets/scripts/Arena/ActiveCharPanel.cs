@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
 using System.Linq;
-
+using System.Text.RegularExpressions;
 public class ActiveCharPanel : MonoBehaviour
 {
     [Header("UI Components")]
@@ -122,6 +122,7 @@ public class ActiveCharPanel : MonoBehaviour
             sigChargeText.text = $"{character.Charge}/{character.SigChargeReq}";
         }
 
+        float mult = currentGameCharacter.GetModifiedDamageMultiplier(); 
 
         // === MOVE DESCRIPTIONS (SPLIT) ===
         if (matchingData.moves != null && matchingData.moves.Length == 4)
@@ -129,6 +130,21 @@ public class ActiveCharPanel : MonoBehaviour
             if (passiveDisplayText != null)
                 passiveDisplayText.text = $"{matchingData.moves[0].name}: {matchingData.moves[0].description}";
 
+            var n = matchingData.moves[1];
+            var nMech = MechanicsFormatter.ApplyDamageMultiplier(n.mechanics, mult);
+            if (normalDisplayText != null)
+                normalDisplayText.text = $"{n.name}: {n.description}. {nMech} (Cooldown: {n.cooldown})";
+
+            var s = matchingData.moves[2];
+            var sMech = MechanicsFormatter.ApplyDamageMultiplier(s.mechanics, mult);
+            if (skillDisplayText != null)
+                skillDisplayText.text = $"{s.name}: {s.description}. {sMech} (Cooldown: {s.cooldown})";
+
+            var g = matchingData.moves[3];
+            var gMech = MechanicsFormatter.ApplyDamageMultiplier(g.mechanics, mult);
+            if (sigDisplayText != null)
+                sigDisplayText.text = $"{g.name}: {g.description}. {gMech} (Cooldown: {g.cooldown})";
+            /*
             if (normalDisplayText != null)
                 normalDisplayText.text = $"{matchingData.moves[1].name}: {matchingData.moves[1].description} (Cooldown: {matchingData.moves[1].cooldown})";
 
@@ -136,7 +152,7 @@ public class ActiveCharPanel : MonoBehaviour
                 skillDisplayText.text = $"{matchingData.moves[2].name}: {matchingData.moves[2].description} (Cooldown: {matchingData.moves[2].cooldown})";
 
             if (sigDisplayText != null)
-                sigDisplayText.text = $"{matchingData.moves[3].name}: {matchingData.moves[3].description} (Cooldown: {matchingData.moves[3].cooldown})";
+                sigDisplayText.text = $"{matchingData.moves[3].name}: {matchingData.moves[3].description} (Cooldown: {matchingData.moves[3].cooldown})";*/
         }
 
         // === ACCURACY / DMG MULT ===
@@ -527,3 +543,24 @@ public class ActiveCharPanel : MonoBehaviour
 
 }
 
+
+public static class MechanicsFormatter
+{
+    // Matches: Deals 30 elemental damage / Deals 60 Arcane damage
+    // Ignores: (15 Arcane DoT), 20%, etc.
+    private static readonly Regex DealsDamage =
+        new Regex(@"Deals\s+(\d+)\s+([A-Za-z]+)\s+damage", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    public static string ApplyDamageMultiplier(string mechanics, float dmgMult)
+    {
+        if (string.IsNullOrEmpty(mechanics)) return mechanics;
+
+        return DealsDamage.Replace(mechanics, m =>
+        {
+            int baseAmt = int.Parse(m.Groups[1].Value);
+            string type = m.Groups[2].Value; // keep original casing
+            int scaled = Mathf.RoundToInt(baseAmt * dmgMult);
+            return $"Deals {scaled} {type} damage";
+        });
+    }
+}

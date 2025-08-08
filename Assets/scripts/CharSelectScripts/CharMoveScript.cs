@@ -6,6 +6,7 @@ public class MoveData
 {
     public string name;
     public string description;
+    public string mechanics;
     public int cooldown;
 }
 

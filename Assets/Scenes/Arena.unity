@@ -4066,6 +4066,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 840f302595c50664d93c1fac04c081d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  centerPosition: {x: 0, y: 0}
+  projectileParent: {fileID: 1049386163}
+  projectileUIPrefab: {fileID: 6216143449885087512, guid: e64450c91c672784c92e8504609a8f33, type: 3}
+  elementalSprite: {fileID: 3091372865856092369, guid: 345884cab4307d047aa3086ca8090f53, type: 3}
+  arcaneSprite: {fileID: 2075497998981635588, guid: a64f72f1ffadffe489b926b88089bda1, type: 3}
+  forceSprite: {fileID: -4815331354715453880, guid: 99567cab1910cbe4babe5ca6f1dd96f4, type: 3}
+  corruptSprite: {fileID: 2789568800841878960, guid: 54fe9de5a5b25e8448088a54d2bcb6e6, type: 3}
+  trueSprite: {fileID: -5564248608999137188, guid: b30c77571efe2774cadf6280ae9298d9, type: 3}
+  pixelsPerSecond: 500
+  arcPixels: 120
 --- !u!1 &1049386162
 GameObject:
   m_ObjectHideFlags: 0
@@ -4846,7 +4856,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 853805735}
   m_HandleRect: {fileID: 853805734}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -5421,7 +5431,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -113.69539, y: -5.8928986}
+  m_AnchoredPosition: {x: -113.69539, y: -5.892914}
   m_SizeDelta: {x: 227.3834, y: 308.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1398514655

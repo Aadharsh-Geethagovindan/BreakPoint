@@ -81,11 +81,11 @@ public class CharacterDisplayManager : MonoBehaviour
                 break;
             case "UR":
                 nameText.color = new Color(0.6f, 0f, 1f, 1f); // Purple
-                 Debug.Log($"{character.name}'s color is set to purple");
+                 //Debug.Log($"{character.name}'s color is set to purple");
                 break;
             case "L":
                 nameText.color = new Color(255, 192, 0, 255); // Gold
-                Debug.Log($"{character.name}'s color is set to gold");
+                //Debug.Log($"{character.name}'s color is set to gold");
                 break;
             default:
                 nameText.color = new Color(255, 255, 255, 255); // Fallback

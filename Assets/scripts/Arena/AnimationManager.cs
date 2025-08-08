@@ -1,11 +1,25 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using UnityEngine.UI;
 public class AnimationManager : MonoBehaviour
 {
+    [Header("Scene refs")]
     private ActiveCharPanel activeCharPanel;
     [SerializeField] private Vector2 centerPosition = new Vector2(0, 0); // or wherever center is
+    [SerializeField] private RectTransform projectileParent;     
+
+     [Header("Projectile visuals")]
+    [SerializeField] private GameObject projectileUIPrefab;      // a simple GameObject with Image component
+    [SerializeField] private Sprite elementalSprite;
+    [SerializeField] private Sprite arcaneSprite;
+    [SerializeField] private Sprite forceSprite;
+    [SerializeField] private Sprite corruptSprite;
+    [SerializeField] private Sprite trueSprite; 
+
+     [Header("Tuning")]
+    [SerializeField] private float pixelsPerSecond = 1600f;      // speed
+    [SerializeField] private float arcPixels = 120f;             // height of the arc (0 = straight line)
     public static AnimationManager Instance { get; private set; }
 
     private void Awake()
@@ -19,6 +33,7 @@ public class AnimationManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.Subscribe("OnDamageDealt", HandleCardShake);
+        EventManager.Subscribe("OnDamageDealt", HandleDamageDealt);
         activeCharPanel = Object.FindFirstObjectByType<ActiveCharPanel>();
     }
 
@@ -100,7 +115,81 @@ public class AnimationManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
     }
 
+     private void HandleDamageDealt(object data)
+    {
+        var evt = data as GameEventData;
+        if (evt == null) return;
 
+        var source = evt.Get<GameCharacter>("Source");
+        var target = evt.Get<GameCharacter>("Target");
+        var type   = evt.Get<DamageType>("Type");
+
+        if (source == null || target == null) return;
+
+        var srcCard = activeCharPanel.FindCardForCharacter(source);
+        var tgtCard = activeCharPanel.FindCardForCharacter(target);
+        if (srcCard == null || tgtCard == null) return;
+
+        var sprite = GetSpriteFor(type);
+        StartCoroutine(FireProjectile(srcCard.GetComponent<RectTransform>(),
+                                      tgtCard.GetComponent<RectTransform>(),
+                                      sprite));
+    }
+
+    private Sprite GetSpriteFor(DamageType type)
+    {
+        switch (type)
+        {
+            case DamageType.Elemental: return elementalSprite;
+            case DamageType.Arcane:    return arcaneSprite;
+            case DamageType.Force:     return forceSprite;
+            case DamageType.Corrupt:   return corruptSprite;
+            case DamageType.True:      return trueSprite ? trueSprite : forceSprite; // fallback
+            default:                   return forceSprite;
+        }
+    }
+
+    private IEnumerator FireProjectile(RectTransform from, RectTransform to, Sprite sprite)
+    {
+        if (projectileUIPrefab == null || projectileParent == null) yield break;
+
+        // Spawn projectile UI
+        var go = Instantiate(projectileUIPrefab, projectileParent);
+        var img = go.GetComponent<Image>();
+        var proj = go.GetComponent<RectTransform>();
+        if (img != null) img.sprite = sprite;
+
+        // Start/End in the same anchored space as cards
+        Vector2 start = from.anchoredPosition;
+        Vector2 end   = to.anchoredPosition;
+        proj.anchoredPosition = start;
+
+        // Travel time based on distance and configured speed
+        float dist = Vector2.Distance(start, end);
+        float duration = Mathf.Max(0.05f, dist / Mathf.Max(1f, pixelsPerSecond));
+
+        // Simple quadratic bezier for a nice arc
+        Vector2 mid = (start + end) * 0.5f + Vector2.up * arcPixels;
+
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration;
+            float u = 1f - Mathf.Clamp01(t);
+            // Quadratic Bezier: B(t) = u^2*P0 + 2*u*t*Pm + t^2*P1
+            Vector2 pos = (u * u) * start + (2f * u * t) * mid + (t * t) * end;
+            proj.anchoredPosition = pos;
+            yield return null;
+        }
+
+        proj.anchoredPosition = end;
+
+        // Optional: tiny impact pulse on hit card (if you have such a method)
+        // var tgtCardUI = to.GetComponent<CharacterCardUI>();
+        // tgtCardUI?.ShakeCard();
+
+        Destroy(go);
+    }
 
 
 

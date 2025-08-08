@@ -16,19 +16,7 @@ public class CharacterHPReducer : MonoBehaviour
         public List<MoveData> moves;
     }
 
-    [System.Serializable]
-    public class MoveData
-    {
-        public string name;
-        public string description;
-        public int cooldown;
-    }
-
-    [System.Serializable]
-    public class CharacterDataArray
-    {
-        public List<CharacterData> characters;
-    }
+   
 
     public string jsonFileName = "Characters.json";
     public bool writeLogFile = true;

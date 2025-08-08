@@ -101,7 +101,7 @@ public static class PassiveManager
         {
             foreach (var ally in character.Allies)
             {
-                var resist = new StatusEffect("Poison Safety", StatusEffectType.ResistanceModifier, 99, .2f, character, DamageType.Poison, isDebuff: false);
+                var resist = new StatusEffect("Poison Safety", StatusEffectType.ResistanceModifier, 99, .2f, character, DamageType.Corrupt, isDebuff: false);
                 ally.StatusEffects.Add(resist);
                 Debug.Log($"{character.Name} applied Poison Safety to {ally.Name}");
                 EventManager.Trigger("OnPassiveTriggered", new GameEventData()
@@ -165,7 +165,7 @@ public static class PassiveManager
             Debug.Log("Breacher's passive applied:Fire Protection status effects given to allies.");
             EventManager.Trigger("OnPassiveTriggered", new GameEventData()
                 .Set("Source", character)
-                .Set("Description", "Fire Protection status effects given to allies")
+                .Set("Description", "Elemental Protection status effects given to allies")
             );
         }
         if (character.Name == "Vemk Parlas")
@@ -295,7 +295,7 @@ public static class PassiveManager
                     2,
                     resistanceBonus,
                     character,
-                    DamageType.Physical
+                    DamageType.Elemental
                 );
 
                 var fireBuff = new StatusEffect(
@@ -304,16 +304,16 @@ public static class PassiveManager
                     2,
                     resistanceBonus,
                     character,
-                    DamageType.Fire
+                    DamageType.Force
                 );
 
                 character.AddStatusEffect(physBuff);
                 character.AddStatusEffect(fireBuff);
 
-                Debug.Log($"Krakoa passive applied: +{resistanceBonus * 100}% Physical & Fire resistance this turn.");
+                //Debug.Log($"Krakoa passive applied: +{resistanceBonus * 100}% Physical & Fire resistance this turn.");
                 EventManager.Trigger("OnPassiveTriggered", new GameEventData()
                     .Set("Source", character)
-                    .Set("Description", $"+{resistanceBonus * 100}% Physical & Fire resistance this turn.")
+                    .Set("Description", $"+{resistanceBonus * 100}% Elemental & Force resistance this turn.")
                 );
             }
         }
@@ -324,7 +324,7 @@ public static class PassiveManager
             {
                 character.AddShield(50);
                 character.MarkOneTimePassive();
-                Debug.Log("Legionary's passive triggered: Gained 50 shield due to low HP.");
+                //Debug.Log("Legionary's passive triggered: Gained 50 shield due to low HP.");
                 EventManager.Trigger("OnPassiveTriggered", new GameEventData()
                     .Set("Source", character)
                     .Set("Description", "Gained 50 shield due to low HP")
@@ -393,7 +393,7 @@ public static class PassiveManager
     {
         // Rei blocks weak energy attacks
         if (target.Name == "Rei" &&
-            ability.DamageType == DamageType.Energy &&
+            ability.DamageType == DamageType.Arcane &&
             ability.Damage <= 30)
         {
             ability.CustomDamageOverride = (u, t) =>
@@ -413,7 +413,7 @@ public static class PassiveManager
 
         // Captain Dinso reflects weak energy attacks
         if (target.Name == "Captain Dinso" &&
-            ability.DamageType == DamageType.Energy &&
+            ability.DamageType == DamageType.Force &&
             ability.Damage <= 40 &&
             Random.value < 0.5f)
         {
@@ -425,7 +425,7 @@ public static class PassiveManager
                     Debug.Log("Captain Dinso reflected the attack!");
                     EventManager.Trigger("OnPassiveTriggered", new GameEventData()
                         .Set("Source", target)
-                        .Set("Description", $"Reflected energy attack onto {user.Name}")
+                        .Set("Description", $"Reflected force attack onto {user.Name}")
                     ); 
                     return 0;
                 }
@@ -435,7 +435,7 @@ public static class PassiveManager
 
         // Avarice converts Water/Ice damage to healing
         if (target.Name == "Avarice" &&
-            (ability.DamageType == DamageType.Water || ability.DamageType == DamageType.Ice))
+            ability.DamageType == DamageType.Elemental)
         {
             target.Heal(ability.Damage);
             ability.CustomDamageOverride = (u, t) =>
@@ -445,7 +445,7 @@ public static class PassiveManager
                     Debug.Log("Avarice's passive: Converted Water/Ice damage into healing.");
                     EventManager.Trigger("OnPassiveTriggered", new GameEventData()
                         .Set("Source", target)
-                        .Set("Description", "Converted Water/Ice damage into healing.")
+                        .Set("Description", "Converted Elemental damage into healing.")
                     ); 
                     return 0;
                 }
@@ -454,7 +454,7 @@ public static class PassiveManager
         }
 
          if (target.Name == "Virae" &&
-            (ability.DamageType == DamageType.Ice))
+            (ability.DamageType == DamageType.Elemental))
         {
             target.AddShield(ability.Damage);
             ability.CustomDamageOverride = (u, t) =>
@@ -473,8 +473,8 @@ public static class PassiveManager
         }
         // Sedra ignores low physical damage (50% chance)
         if (target.Name == "Sedra" &&
-            ability.DamageType == DamageType.Physical &&
-            ability.Damage < 30 &&
+            ability.DamageType == DamageType.Force &&
+            ability.Damage <= 30 &&
             Random.value < 0.5f)
         {
             ability.CustomDamageOverride = (u, t) =>
@@ -484,7 +484,7 @@ public static class PassiveManager
                     Debug.Log("Sedra's passive: Ignored low physical attack.");
                     EventManager.Trigger("OnPassiveTriggered", new GameEventData()
                         .Set("Source", target)
-                        .Set("Description", $"Ignored low physical attack from {user.Name}")
+                        .Set("Description", $"Ignored low force attack from {user.Name}")
                     ); 
                     return 0;
                 }
@@ -494,14 +494,14 @@ public static class PassiveManager
 
         // Rellin gains charge from incoming lightning damage
         if (target.Name == "Rellin" &&
-            ability.DamageType == DamageType.Lightning &&
+            ability.DamageType == DamageType.Arcane &&
             target != user)
         {
             target.IncreaseCharge(ability.Damage);
             Debug.Log($"Rellin gained {ability.Damage} charge from lightning damage");
             EventManager.Trigger("OnPassiveTriggered", new GameEventData()
                 .Set("Source", target)
-                .Set("Description", $"gained {ability.Damage} charge from lightning damage")
+                .Set("Description", $"gained {ability.Damage} charge from arcane damage")
             ); 
         }
 
@@ -536,7 +536,7 @@ public static class PassiveManager
             
             foreach (var enemy in deadCharacter.Enemies)
             {
-                enemy.TakeDamage(20, DamageType.Poison);
+                enemy.TakeDamage(20, DamageType.Corrupt);
                 Debug.Log($"Skirvex's Parastic Birth dealt poison damage to {enemy.Name}");
                 EventManager.Trigger("OnPassiveTriggered", new GameEventData()
                     .Set("Source", deadCharacter)
