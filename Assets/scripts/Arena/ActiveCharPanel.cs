@@ -477,7 +477,8 @@ public class ActiveCharPanel : MonoBehaviour
         evt.Set("Targets", selectedTargets); // Optional
         EventManager.Trigger("OnTargetingEnded", evt);
 
-        BattleManager.Instance.ExecuteAbility(currentGameCharacter, selectedAbility, selectedTargets);
+        StartCoroutine(BattleManager.Instance.ExecuteAbility(currentGameCharacter, selectedAbility, selectedTargets));
+
         ClearTargetingState();
     }
     private void OnReselectClicked()

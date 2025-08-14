@@ -7,17 +7,17 @@ public class AnimationManager : MonoBehaviour
     [Header("Scene refs")]
     private ActiveCharPanel activeCharPanel;
     [SerializeField] private Vector2 centerPosition = new Vector2(0, 0); // or wherever center is
-    [SerializeField] private RectTransform projectileParent;     
+    [SerializeField] private RectTransform projectileParent;
 
-     [Header("Projectile visuals")]
+    [Header("Projectile visuals")]
     [SerializeField] private GameObject projectileUIPrefab;      // a simple GameObject with Image component
     [SerializeField] private Sprite elementalSprite;
     [SerializeField] private Sprite arcaneSprite;
     [SerializeField] private Sprite forceSprite;
     [SerializeField] private Sprite corruptSprite;
-    [SerializeField] private Sprite trueSprite; 
+    [SerializeField] private Sprite trueSprite;
 
-     [Header("Tuning")]
+    [Header("Tuning")]
     [SerializeField] private float pixelsPerSecond = 1600f;      // speed
     [SerializeField] private float arcPixels = 120f;             // height of the arc (0 = straight line)
     public static AnimationManager Instance { get; private set; }
@@ -33,7 +33,7 @@ public class AnimationManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.Subscribe("OnDamageDealt", HandleCardShake);
-        EventManager.Subscribe("OnDamageDealt", HandleDamageDealt);
+        //EventManager.Subscribe("OnDamageDealt", HandleDamageDealt);
         activeCharPanel = Object.FindFirstObjectByType<ActiveCharPanel>();
     }
 
@@ -58,7 +58,7 @@ public class AnimationManager : MonoBehaviour
         }
 
     }
-    
+
     public IEnumerator AnimateCardRepositioning(List<GameCharacter> newOrder)
     {
         ActiveCharPanel activeCharPanel = Object.FindFirstObjectByType<ActiveCharPanel>();
@@ -115,14 +115,14 @@ public class AnimationManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
     }
 
-     private void HandleDamageDealt(object data)
+    private void HandleDamageDealt(object data)
     {
         var evt = data as GameEventData;
         if (evt == null) return;
 
         var source = evt.Get<GameCharacter>("Source");
         var target = evt.Get<GameCharacter>("Target");
-        var type   = evt.Get<DamageType>("Type");
+        var type = evt.Get<DamageType>("Type");
 
         if (source == null || target == null) return;
 
@@ -141,11 +141,11 @@ public class AnimationManager : MonoBehaviour
         switch (type)
         {
             case DamageType.Elemental: return elementalSprite;
-            case DamageType.Arcane:    return arcaneSprite;
-            case DamageType.Force:     return forceSprite;
-            case DamageType.Corrupt:   return corruptSprite;
-            case DamageType.True:      return trueSprite ? trueSprite : forceSprite; // fallback
-            default:                   return forceSprite;
+            case DamageType.Arcane: return arcaneSprite;
+            case DamageType.Force: return forceSprite;
+            case DamageType.Corrupt: return corruptSprite;
+            case DamageType.True: return trueSprite ? trueSprite : forceSprite; // fallback
+            default: return forceSprite;
         }
     }
 
@@ -161,13 +161,15 @@ public class AnimationManager : MonoBehaviour
 
         // Start/End in the same anchored space as cards
         Vector2 start = from.anchoredPosition;
-        Vector2 end   = to.anchoredPosition;
+        Vector2 end = to.anchoredPosition;
         proj.anchoredPosition = start;
 
         // Travel time based on distance and configured speed
         float dist = Vector2.Distance(start, end);
         float duration = Mathf.Max(0.05f, dist / Mathf.Max(1f, pixelsPerSecond));
 
+        SoundManager.Instance.PlaySFX("projectile_fire");
+        int loopHandle = SoundManager.Instance.PlayLoopSFX("projectile_loop", proj.transform, true, volume: 0.7f);
         // Simple quadratic bezier for a nice arc
         Vector2 mid = (start + end) * 0.5f + Vector2.up * arcPixels;
 
@@ -184,12 +186,45 @@ public class AnimationManager : MonoBehaviour
 
         proj.anchoredPosition = end;
 
+        yield return StartCoroutine(SoundManager.Instance.FadeOutAndStopLoop(loopHandle, 0.06f));
+        //SoundManager.Instance.PlaySFX("projectile_impact");
+
         // Optional: tiny impact pulse on hit card (if you have such a method)
         // var tgtCardUI = to.GetComponent<CharacterCardUI>();
         // tgtCardUI?.ShakeCard();
 
         Destroy(go);
     }
+    
+    public IEnumerator PlayProjectiles(GameCharacter source, List<GameCharacter> targets, DamageType type)
+    {
+        var srcCard = activeCharPanel.FindCardForCharacter(source);
+        if (srcCard == null || targets == null || targets.Count == 0) yield break;
+
+        var from = srcCard.GetComponent<RectTransform>();
+        Sprite sprite = GetSpriteFor(type);
+
+        int remaining = 0;
+
+        // Fire one projectile per target, in parallel, then wait until all finish
+        foreach (var t in targets)
+        {
+            var tgtCard = activeCharPanel.FindCardForCharacter(t);
+            if (tgtCard == null) continue;
+
+            remaining++;
+            StartCoroutine(FireAndSignal(from, tgtCard.GetComponent<RectTransform>(), sprite, () => remaining--));
+        }
+
+        while (remaining > 0) yield return null;
+    }
+
+    private IEnumerator FireAndSignal(RectTransform from, RectTransform to, Sprite sprite, System.Action onDone)
+    {
+        yield return StartCoroutine(FireProjectile(from, to, sprite));
+        onDone?.Invoke();
+    }
+
 
 
 

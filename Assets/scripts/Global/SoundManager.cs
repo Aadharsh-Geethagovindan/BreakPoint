@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-
+using System.Collections;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
@@ -13,6 +13,13 @@ public class SoundManager : MonoBehaviour
 
     private Dictionary<string, AudioClip> sfxDict;
     private Dictionary<string, AudioClip> musicDict;
+
+    // Loop management
+    private readonly Dictionary<int, AudioSource> _activeLoops = new Dictionary<int, AudioSource>();
+    private int _nextLoopHandle = 1;
+
+    [SerializeField] private float defaultLoopFadeOut = 0.06f; // tiny fade to avoid clicks
+
 
     private void Awake()
     {
@@ -83,11 +90,19 @@ public class SoundManager : MonoBehaviour
 
     public void StopMusic() => musicSource.Stop();
 
+    private AudioClip GetSFXClip(string name)
+    {
+        if (sfxDict != null && sfxDict.TryGetValue(name, out var clip) && clip != null)
+            return clip;
+
+        Debug.LogWarning($"[SoundManager] SFX '{name}' not found.");
+        return null;
+    }
 
     //*******************************************************************************************************************
     // HANDLERS*******************************************************************************************************************
     //*******************************************************************************************************************
-    
+
     private void PlayHitSFX(object eventData)
     {
         PlaySFX("hit");
@@ -115,7 +130,79 @@ public class SoundManager : MonoBehaviour
 
 
 
-}
+    //******************************************************************************************************************************
+    /// <summary>
+    /// Starts a managed looping SFX and returns a handle you can use to stop it later.
+    /// Parent is optional; if provided, the AudioSource GO will follow its transform (useful for projectiles).
+    /// twoD=true means UI/2D sound; set false for 3D spatial.
+    /// </summary>
+    public int PlayLoopSFX(string name, Transform parent = null, bool twoD = true, float volume = 1f, float pitch = 1f)
+    {
+        var clip = GetSFXClip(name);
+        if (clip == null) return -1;
+
+        var go = new GameObject($"Loop_{name}_{_nextLoopHandle}");
+        if (parent != null) go.transform.SetParent(parent, false);
+
+        var src = go.AddComponent<AudioSource>();
+        src.playOnAwake = false;
+        src.loop = true;
+        src.clip = clip;
+        src.volume = volume;
+        src.pitch = pitch;
+        src.spatialBlend = twoD ? 0f : 1f;
+
+        src.Play();
+
+        int handle = _nextLoopHandle++;
+        _activeLoops[handle] = src;
+        return handle;
+    }
+
+    /// <summary>
+    /// Fades out and stops a managed loop; safe to yield on in coroutines.
+    /// If seconds &lt;= 0, uses defaultLoopFadeOut.
+    /// </summary>
+    public IEnumerator FadeOutAndStopLoop(int handle, float seconds = -1f)
+    {
+        if (!_activeLoops.TryGetValue(handle, out var src) || src == null)
+        {
+            _activeLoops.Remove(handle);
+            yield break;
+        }
+
+        float dur = (seconds <= 0f) ? defaultLoopFadeOut : seconds;
+        float startVol = src.volume;
+        float t = 0f;
+
+        while (t < 1f && src != null)
+        {
+            t += Time.deltaTime / Mathf.Max(dur, 0.0001f);
+            src.volume = Mathf.Lerp(startVol, 0f, t);
+            yield return null;
+        }
+
+        if (src != null)
+        {
+            src.Stop();
+            Destroy(src.gameObject);
+        }
+
+        _activeLoops.Remove(handle);
+    }
+
+    /// Immediately stops and destroys a managed loop (no fade).
+    public void StopLoopSFXNow(int handle)
+    {
+        if (_activeLoops.TryGetValue(handle, out var src) && src != null)
+        {
+            src.Stop();
+            Destroy(src.gameObject);
+        }
+        _activeLoops.Remove(handle);
+    }
+
+    }
 
 [System.Serializable]
 public class SoundClip

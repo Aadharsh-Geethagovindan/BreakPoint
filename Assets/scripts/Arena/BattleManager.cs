@@ -77,83 +77,71 @@ public class BattleManager : MonoBehaviour
 
 
 
-    public void ExecuteAbility(GameCharacter user, Ability ability, List<GameCharacter> targets)
+    public IEnumerator ExecuteAbility(GameCharacter user, Ability ability, List<GameCharacter> targets)
     {
-        // Check if ability is usable
-        if (!ability.IsUsable(user.Charge)) 
+        // Defensive copy so UI mutations don't affect us during yields
+        var targetsCopy = (targets != null) ? new List<GameCharacter>(targets) : new List<GameCharacter>();
+
+        if (!ability.IsUsable(user.Charge))
         {
             Debug.LogWarning($"{ability.Name} is not usable right now.");
-            return;
+            yield break;
         }
-        // Check Passives
-        foreach (GameCharacter target in targets)
-        {
-            // Passive override logic BEFORE applying the move
+
+        // Passive overrides BEFORE visuals/mechanics
+        foreach (var target in targetsCopy)
             PassiveManager.ApplyOverride(user, target, ability);
-        }
-        // Apply Ability, clear any overrides
-        ability.Apply(user, targets);
+
+        // VISUALS (optional) — wait for projectile(s) to land first
+        if (targetsCopy.Count > 0 && ShouldFireProjectile(ability))
+            yield return StartCoroutine(AnimationManager.Instance.PlayProjectiles(user, targetsCopy, ability.DamageType));
+
+        Debug.Log("projectile finished");
+
+        // MECHANICS — now apply the ability using the copied list
+        ability.Apply(user, targetsCopy);
         ability.CustomDamageOverride = null;
 
-        // Apply custom logic in abilities
-        HandleImmediateAbilityEffects(ability, user, targets); 
+        HandleImmediateAbilityEffects(ability, user, targetsCopy);
 
-        // Create OnAbilityUsed info payload
-        var evt = new GameEventData();
-        evt.Set("User", user);
-        evt.Set("Ability", ability);
-        evt.Set("Targets", targets);
-
+        var evt = new GameEventData()
+            .Set("User", user)
+            .Set("Ability", ability)
+            .Set("Targets", targetsCopy);
         EventManager.Trigger("OnAbilityUsed", evt);
 
-        // Check DEATH
-        foreach (var target in targets)
-        {
-            if (target.HP <= 0)
-            {
-                HandleDeath(target);
-            }
-        }
+        // Death checks
+        foreach (var t in targetsCopy)
+            if (t.HP <= 0) HandleDeath(t);
 
-        //  Special Effects (Post-death)
-        HandlePostDeathAbilityEffects(ability, user, targets);
+        HandlePostDeathAbilityEffects(ability, user, targetsCopy);
 
-
-        //  Show damage text for first valid target (or loop through all)
+        // Summary
         string summary = "";
-        foreach (var target in targets)
+        foreach (var t in targetsCopy)
         {
-            if (target.LastDamageTaken > 0)
-                summary += $"{target.Name} took {target.LastDamageTaken} damage.\n";
-            if (ability.Healing > 0)
-                summary += $"{target.Name} healed {ability.Healing} HP.\n";
-            if (ability.Shielding > 0)
-                summary += $"{target.Name} gained a shield of {ability.Shielding} \n";
-            // Optionally include shield or buff info
+            if (t.LastDamageTaken > 0) summary += $"{t.Name} took {t.LastDamageTaken} damage.\n";
+            if (ability.Healing > 0)   summary += $"{t.Name} healed {ability.Healing} HP.\n";
+            if (ability.Shielding > 0) summary += $"{t.Name} gained a shield of {ability.Shielding}\n";
         }
-
         GameUI.Announce(summary.Trim());
 
-        // Delay then advance turn
         UIAnnouncer.Instance.DelayedAnnounceAndAdvance($"{TurnManager.Instance.PeekNextCharacter().Name} is choosing a move.");
 
-
-
-        
-        //Update Status Effect Icons
-        foreach (var target in targets)
+        // Refresh status icons on the same stable list
+        foreach (var t in targetsCopy)
         {
-           CharacterCardUI card = charPanel.FindCardForCharacter(target);
-            if (card != null)
-            {
-                
-                card.RefreshStatusEffects(target);
-            }
+            CharacterCardUI card = charPanel.FindCardForCharacter(t);
+            if (card != null) card.RefreshStatusEffects(t);
         }
-        //TurnManager.Instance.AdvanceTurn();
     }
 
 
+    private bool ShouldFireProjectile(Ability ability)
+    {
+        // Simple example: only when it deals damage
+        return ability.Damage > 0;
+    }
 
     public List<GameCharacter> GetTurnOrder()
     {

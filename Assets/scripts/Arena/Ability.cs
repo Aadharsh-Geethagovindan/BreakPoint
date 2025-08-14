@@ -79,31 +79,40 @@ public class Ability
         return cooldownReady && hasCharge;
     }
 
-    public void Apply(GameCharacter user, List<GameCharacter> targets)
+    public void Apply(GameCharacter user, List<GameCharacter> targets, IReadOnlyDictionary<GameCharacter, bool> resolvedHits)
     {
+        Debug.Log($"Applying {Name}");
         foreach (GameCharacter target in targets)
         {
             bool isEnemy = user.Enemies.Contains(target);
 
-            // Hit check only if attacking an enemy with damage
-            if (Damage > 0 && isEnemy)
-            {
-                target.SetHasBeenAttackedThisTurn(true);
-                float hitChance = user.GetModifiedAccuracy() * (1f - target.GetModifiedDodgeChance());
-                float roll = UnityEngine.Random.value;
-
-                if (roll > hitChance)
+             // Decide hit using resolved results if available; otherwise fallback to old logic
+                bool willHit = true;
+                if (Damage > 0 && isEnemy)
                 {
-                    Debug.Log($"{user.Name}'s {Name} missed {target.Name}!");
-                    var missEvent = new GameEventData();
-                        missEvent.Set("Source", user);
-                        missEvent.Set("Target", target);
-                        missEvent.Set("Ability", this);
-                    EventManager.Trigger("OnMiss", missEvent);
-                    
-                    continue; // Skip to next target
+                    if (resolvedHits != null && resolvedHits.TryGetValue(target, out bool pre))
+                    {
+                        willHit = pre;
+                    }
+                    else
+                    {
+                        // Fallback to legacy check (keeps old behavior if caller didn't resolve)
+                        float hitChance = user.GetModifiedAccuracy() * (1f - target.GetModifiedDodgeChance());
+                        float roll = UnityEngine.Random.value;
+                        willHit = (roll <= hitChance);
+                    }
+
+                    if (!willHit)
+                    {
+                        // Timing is correct: Apply is called AFTER visuals
+                        var missEvent = new GameEventData()
+                            .Set("Source", user)
+                            .Set("Target", target)
+                            .Set("Ability", this);
+                        EventManager.Trigger("OnMiss", missEvent);
+                        continue; // skip damage/effects on this target
+                    }
                 }
-            }
 
             int baseDamage = GetEffectiveBaseDamage(user, target);
             // Apply Damage
@@ -111,7 +120,7 @@ public class Ability
             {
                 int dmg = Mathf.RoundToInt(baseDamage * user.GetModifiedDamageMultiplier());
                 dmg = target.TakeDamage(dmg, DamageType);
-
+                Debug.Log($"{target.Name} took {dmg} damage");
                 EventManager.Trigger("OnDamageDealt", new GameEventData()
                                 .Set("Source", user)
                                 .Set("Target", target)
@@ -119,9 +128,9 @@ public class Ability
                                 .Set("Type", DamageType)
                             );
 
-               
-                
-                
+
+
+
                 totalEffectValue += dmg;
             }
 
@@ -182,7 +191,7 @@ public class Ability
                     buffEvt.Set("Target", target); // or "Source", if that's more appropriate
                     buffEvt.Set("Effect", effect);
                     EventManager.Trigger("OnBuffApplied", buffEvt);
-                    
+
                 }
             }
         }
@@ -203,6 +212,36 @@ public class Ability
         user.HasActedThisTurn = true;
 
        
+    }
+
+    public void Apply(GameCharacter user, List<GameCharacter> targets)
+    {
+        Apply(user, targets, resolvedHits: null);
+    }
+
+    public List<HitResolution> ResolveHits(GameCharacter user, List<GameCharacter> targets)
+    {
+        var results = new List<HitResolution>(targets.Count);
+
+        foreach (var target in targets)
+        {
+            bool willHit = true;
+
+            // Only roll when it’s a damaging offensive action
+            bool isEnemy = user.Enemies.Contains(target);
+            if (Damage > 0 && isEnemy)
+            {
+                target.SetHasBeenAttackedThisTurn(true);
+
+                float hitChance = user.GetModifiedAccuracy() * (1f - target.GetModifiedDodgeChance());
+                float roll = UnityEngine.Random.value;
+                willHit = (roll <= hitChance);
+            }
+
+            results.Add(new HitResolution(target, willHit));
+        }
+
+        return results;
     }
 
     public void SetDamage(int amount)
@@ -231,5 +270,16 @@ public class Ability
     public void ReduceCooldown(int amount)
     {
         CurrentCooldown = Mathf.Max(CurrentCooldown - amount, 0);
+    }
+}
+public struct HitResolution
+{
+    public GameCharacter Target;
+    public bool WillHit;
+
+    public HitResolution(GameCharacter target, bool willHit)
+    {
+        Target = target;
+        WillHit = willHit;
     }
 }
