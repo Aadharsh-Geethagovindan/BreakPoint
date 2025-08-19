@@ -92,14 +92,20 @@ public class BattleManager : MonoBehaviour
         foreach (var target in targetsCopy)
             PassiveManager.ApplyOverride(user, target, ability);
 
-        // VISUALS (optional) — wait for projectile(s) to land first
+        // --- Resolve hits first ---
+        var resolutions = ability.ResolveHits(user, targetsCopy);
+        var resolvedDict = new Dictionary<GameCharacter, bool>(resolutions.Count);
+        foreach (var r in resolutions) resolvedDict[r.Target] = r.WillHit;
+
+        // VISUALS 
         if (targetsCopy.Count > 0 && ShouldFireProjectile(ability))
-            yield return StartCoroutine(AnimationManager.Instance.PlayProjectiles(user, targetsCopy, ability.DamageType));
+            yield return StartCoroutine(AnimationManager.Instance.PlayVolley(user, resolutions, ability.DamageType));
+
 
         Debug.Log("projectile finished");
 
         // MECHANICS — now apply the ability using the copied list
-        ability.Apply(user, targetsCopy);
+        ability.Apply(user, targetsCopy, resolvedDict);
         ability.CustomDamageOverride = null;
 
         HandleImmediateAbilityEffects(ability, user, targetsCopy);

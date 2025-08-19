@@ -10,13 +10,13 @@
       "moves": [
         {
           "name": "Valkun Tolerance",
-          "description": "Arkhe's upbringing in Valkun's reach has given him  40% resistacne to corruption damage",
+          "description": "Arkhe's upbringing in Valkun's reach has given him  40% resistance to corruption damage",
           "mechanics" : "",
           "cooldown": 0
         },
         {
           "name": "Airburst",
-          "description": "Arkhe shoots a gust of air dealing 30 elemental damage. Affected enemies have a 15% chance of being stunned next turn.",
+          "description": "Arkhe shoots a gust of air dealing 30 elemental damage.",
           "mechanics" : "Deals 30 elemental damage to 1 enemy and has a 15% chance to Stun for 1 turn",
           "cooldown": 0
         },
@@ -133,14 +133,14 @@
         },
         {
           "name": "Firecracker Bombard",
-          "description": "Projectile mode on the Breacher weapon creates balls of flame",
+          "description": "Breacher weapon's Projectile mode creates balls of flame",
           "mechanics" : "Deals 10 elemental damage to 2 enemies and applies 10% accuracy debuff for 1 turn",
           "cooldown": 2
         },
         {
           "name": "Thermal Charge",
-          "description": "No Brech Specialist leaves the base without their explosives prepped.",
-          "mechanics" : "Deals 10 elemental damage to all enemies and applies Burn(20 Elemental DoT)for 1 turn and a 30% chance to apply Afterburn (-20% elemental res) for 3 turns",
+          "description": "No Breach Specialist leaves the base without their explosives prepped",
+          "mechanics" : "Deals 10 elemental damage to 3 enemies and applies Burn(20 Elemental DoT)for 1 turn and a 30% chance to apply Afterburn (-20% elemental res) for 3 turns",
           "cooldown": 1
         }
       ],

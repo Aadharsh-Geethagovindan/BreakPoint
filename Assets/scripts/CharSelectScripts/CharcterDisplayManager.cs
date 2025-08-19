@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
 using System.Collections;
+using UnityEngine.EventSystems;  
+using UnityEngine.Events; 
 public class CharacterDisplayManager : MonoBehaviour
 {
     public CharacterLoader characterLoader;
@@ -22,6 +24,7 @@ public class CharacterDisplayManager : MonoBehaviour
     private CharacterData currentCharacterP1;
     private CharacterData currentCharacterP2;
     private bool isPlayer1Turn = true;
+    [SerializeField] private CharPreviewPanelController previewPanel;
 
     private const float CardSpacing = 220f;
 
@@ -33,6 +36,7 @@ public class CharacterDisplayManager : MonoBehaviour
 
     private void Start()
     {
+        if (previewPanel != null) previewPanel.Hide(); 
         DisplayAllCharacterCards();
         SoundManager.Instance.PlayMusic("selection");
     }
@@ -81,7 +85,6 @@ public class CharacterDisplayManager : MonoBehaviour
                 break;
             case "UR":
                 nameText.color = new Color(0.6f, 0f, 1f, 1f); // Purple
-                 //Debug.Log($"{character.name}'s color is set to purple");
                 break;
             case "L":
                 nameText.color = new Color(255, 192, 0, 255); // Gold
@@ -94,6 +97,27 @@ public class CharacterDisplayManager : MonoBehaviour
 
         Button button = card.GetComponent<Button>();
         button.onClick.AddListener(() => OnCharacterCardClicked(card, character));
+        
+        // ---------- HOVER → PREVIEW WIRING  ----------
+        var c = character;                                                 
+        var trigger = card.GetComponent<EventTrigger>()                     
+                    ?? card.AddComponent<EventTrigger>();                  
+
+        var enter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter }; 
+        enter.callback.AddListener((BaseEventData _) =>                     
+        {                                                                  
+            if (previewPanel != null) previewPanel.Show(c);                 
+        });                                                                 
+
+        var exit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };   
+        exit.callback.AddListener((BaseEventData _) =>                      
+        {                                                                  
+            if (previewPanel != null) previewPanel.Hide();                  
+        });                                                                 
+
+        trigger.triggers.Add(enter);                                        
+        trigger.triggers.Add(exit);                                         
+        
     }
 
     private void OnCharacterCardClicked(GameObject originalCard, CharacterData character)

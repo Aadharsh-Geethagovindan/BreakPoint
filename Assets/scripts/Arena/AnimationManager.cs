@@ -20,6 +20,11 @@ public class AnimationManager : MonoBehaviour
     [Header("Tuning")]
     [SerializeField] private float pixelsPerSecond = 1600f;      // speed
     [SerializeField] private float arcPixels = 120f;             // height of the arc (0 = straight line)
+    [SerializeField] private float dodgeImpactLead = 0.20f;   // dodge starts at ~80% of flight
+    [SerializeField] private float dodgeOffsetPixels = 200f;   // how far the card sidesteps
+    [SerializeField] private float dodgeOutDuration = 0.15f;  // step out
+    [SerializeField] private float dodgeReturnDuration = 0.15f; // step back
+
     public static AnimationManager Instance { get; private set; }
 
     private void Awake()
@@ -219,14 +224,89 @@ public class AnimationManager : MonoBehaviour
         while (remaining > 0) yield return null;
     }
 
+    public IEnumerator PlayVolley(GameCharacter source, List<HitResolution> resolutions, DamageType type)
+    {
+        if (resolutions == null || resolutions.Count == 0) yield break;
+
+        var srcCard = activeCharPanel.FindCardForCharacter(source);
+        if (srcCard == null) yield break;
+
+        RectTransform from = srcCard.GetComponent<RectTransform>();
+        Sprite sprite = GetSpriteFor(type);
+
+        int remaining = 0;
+
+        foreach (var res in resolutions)
+        {
+            if (res.Target == null) continue;
+
+            var tgtCard = activeCharPanel.FindCardForCharacter(res.Target);
+            if (tgtCard == null) continue;
+
+            RectTransform to = tgtCard.GetComponent<RectTransform>();
+            Debug.Log($"Volley plan → {res.Target.Name} WillHit={res.WillHit}");
+            // Fire projectile (parallel)
+            remaining++;
+            StartCoroutine(FireAndSignal(from, to, sprite, () => remaining--));
+
+            // Schedule dodge if this one is a miss
+            if (!res.WillHit)
+            {
+                remaining++;
+                // Match FireProjectile’s duration calc
+                Vector2 start = from.anchoredPosition;
+                Vector2 end   = to.anchoredPosition;
+                float dist     = Vector2.Distance(start, end);
+                float duration = Mathf.Max(0.05f, dist / Mathf.Max(1f, pixelsPerSecond));
+
+                StartCoroutine(DodgeAndSignal(tgtCard, from.anchoredPosition, to.anchoredPosition, duration, () => remaining--));
+            }
+        }
+
+        while (remaining > 0) yield return null;
+    }
     private IEnumerator FireAndSignal(RectTransform from, RectTransform to, Sprite sprite, System.Action onDone)
     {
         yield return StartCoroutine(FireProjectile(from, to, sprite));
         onDone?.Invoke();
     }
+    private IEnumerator DodgeAndSignal(CharacterCardUI targetCard, Vector2 projStart, Vector2 projEnd, float flightDuration, System.Action onDone)
+    {
+        yield return StartCoroutine(DodgeCardNearImpact(targetCard, projStart, projEnd, flightDuration));
+        onDone?.Invoke();
+    }
 
 
+    private IEnumerator DodgeCardNearImpact(CharacterCardUI targetCard, Vector2 projStart, Vector2 projEnd, float flightDuration)
+    {
+        if (targetCard == null) yield break;
+        var rect = targetCard.GetComponent<RectTransform>();
+        Vector2 original = rect.anchoredPosition;
 
+        // Wait until near "impact"
+        float wait = Mathf.Clamp01(1f - dodgeImpactLead) * flightDuration;
+        if (wait > 0f) yield return new WaitForSeconds(wait);
+
+        // Perpendicular to projectile path; dodge outward from center (simple rule)
+        Vector2 dir = (projEnd - projStart).normalized;
+        Vector2 perp = new Vector2(-dir.y, dir.x);
+        float sign = Mathf.Sign(original.x == 0 ? 1f : original.x); // push away from center
+        Vector2 dodgePos = original + perp * (dodgeOffsetPixels * sign);
+
+        // Step out, then back (reuse your existing MoveToPosition)
+        targetCard.CancelActiveMove();
+        yield return StartCoroutine(targetCard.MoveToPosition(dodgePos, dodgeOutDuration));
+        SoundManager.Instance.PlaySFX("miss");
+
+        targetCard.CancelActiveMove();
+        yield return StartCoroutine(targetCard.MoveToPosition(original, dodgeReturnDuration));
+
+        // OPTIONAL: if HP bar to follow during dodge and have card.HPBar:
+        // if (targetCard.HPBar != null) {
+        //     yield return StartCoroutine(targetCard.HPBar.MoveToPosition(dodgePos + new Vector2(0, 92f), dodgeOutDuration));
+        //     yield return StartCoroutine(targetCard.HPBar.MoveToPosition(original + new Vector2(0, 92f), dodgeReturnDuration));
+        // }
+    }
 
 
 }

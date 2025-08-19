@@ -99,7 +99,7 @@ public class Ability
                         // Fallback to legacy check (keeps old behavior if caller didn't resolve)
                         float hitChance = user.GetModifiedAccuracy() * (1f - target.GetModifiedDodgeChance());
                         float roll = UnityEngine.Random.value;
-                        willHit = (roll <= hitChance);
+                        willHit = roll <= hitChance;
                     }
 
                     if (!willHit)

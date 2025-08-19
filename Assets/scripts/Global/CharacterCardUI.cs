@@ -18,6 +18,22 @@ public class CharacterCardUI : MonoBehaviour
     public StatusEffectDisplay statusEffectDisplay;
 
     public bool setRecent = true;
+    private Coroutine _moveRoutine;
+
+    public Coroutine StartMoveExclusive(Vector2 targetPos, float duration)
+    {
+        if (_moveRoutine != null)
+            StopCoroutine(_moveRoutine);
+        _moveRoutine = StartCoroutine(MoveToPosition(targetPos, duration));
+        return _moveRoutine;
+    }
+
+    public void CancelActiveMove()
+    {
+        if (_moveRoutine != null) StopCoroutine(_moveRoutine);
+        _moveRoutine = null;
+    }
+    
     public void SetCharacter(GameCharacter character)
     {
         characterRef = character;

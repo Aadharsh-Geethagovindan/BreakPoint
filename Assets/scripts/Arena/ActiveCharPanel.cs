@@ -21,6 +21,7 @@ public class ActiveCharPanel : MonoBehaviour
     public TextMeshProUGUI normalDisplayText;
     public TextMeshProUGUI skillDisplayText;
     public TextMeshProUGUI sigDisplayText;
+    [SerializeField] private ResistanceGridUI resistanceGrid;
     public TextMeshProUGUI statusEffectsText;
     public Button confirmButton;
     public Button reselectButton;
@@ -144,15 +145,7 @@ public class ActiveCharPanel : MonoBehaviour
             var gMech = MechanicsFormatter.ApplyDamageMultiplier(g.mechanics, mult);
             if (sigDisplayText != null)
                 sigDisplayText.text = $"{g.name}: {g.description}. {gMech} (Cooldown: {g.cooldown})";
-            /*
-            if (normalDisplayText != null)
-                normalDisplayText.text = $"{matchingData.moves[1].name}: {matchingData.moves[1].description} (Cooldown: {matchingData.moves[1].cooldown})";
-
-            if (skillDisplayText != null)
-                skillDisplayText.text = $"{matchingData.moves[2].name}: {matchingData.moves[2].description} (Cooldown: {matchingData.moves[2].cooldown})";
-
-            if (sigDisplayText != null)
-                sigDisplayText.text = $"{matchingData.moves[3].name}: {matchingData.moves[3].description} (Cooldown: {matchingData.moves[3].cooldown})";*/
+          
         }
 
         // === ACCURACY / DMG MULT ===
@@ -179,6 +172,9 @@ public class ActiveCharPanel : MonoBehaviour
 
             statusEffectsText.text = statusText.TrimEnd(); // Remove last newline if needed
         }
+
+        // === ResistanceGrid === //
+        resistanceGrid?.UpdateFor(character);
 
         // === BUTTONS ===
         SetupMoveButton(move1Button, 0); // Normal
@@ -227,17 +223,6 @@ public class ActiveCharPanel : MonoBehaviour
             sigText.color = Color.red;
             sigImage.color = new Color(0.6f, 0.4f, 0.6f, 0.6f); // Slightly dimmed purple tone
         }
-
-        /*
-        int skillCD = character.SkillAbility.CurrentCooldown;
-        move2Button.GetComponentInChildren<TextMeshProUGUI>().text = (skillCD == 0) ? "USE" : skillCD.ToString();
-
-        int sigCD = character.SignatureAbility.CurrentCooldown;
-        move3Button.GetComponentInChildren<TextMeshProUGUI>().text = (sigCD == 0 && character.Charge >= character.SignatureAbility.ChargeRequirement)
-                                                                    ? "USE"
-                                                                    : $"{character.Charge}/{character.SignatureAbility.ChargeRequirement}";
-            */
-
 
     }
 
@@ -474,7 +459,7 @@ public class ActiveCharPanel : MonoBehaviour
         var evt = new GameEventData();
         evt.Set("Ability", selectedAbility);
         evt.Set("Source", currentGameCharacter);
-        evt.Set("Targets", selectedTargets); // Optional
+        evt.Set("Targets", selectedTargets); 
         EventManager.Trigger("OnTargetingEnded", evt);
 
         StartCoroutine(BattleManager.Instance.ExecuteAbility(currentGameCharacter, selectedAbility, selectedTargets));
@@ -538,7 +523,7 @@ public class ActiveCharPanel : MonoBehaviour
         evt.Set("Character", currentGameCharacter);
         EventManager.Trigger("OnTurnSkipped", evt);
 
-        TurnManager.Instance.AdvanceTurn(); // This should be your normal turn-end logic
+        TurnManager.Instance.AdvanceTurn(); 
     }
 
 

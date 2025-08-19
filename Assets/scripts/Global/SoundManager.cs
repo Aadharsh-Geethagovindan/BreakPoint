@@ -38,7 +38,7 @@ public class SoundManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.Subscribe("OnDamageDealt", PlayHitSFX);
-        EventManager.Subscribe("OnMiss", PlayMissSFX);
+        //EventManager.Subscribe("OnMiss", PlayMissSFX);
         EventManager.Subscribe("OnShielded", PlayShieldSFX);
         EventManager.Subscribe("OnHealed", PlayHealSFX);
         EventManager.Subscribe("OnBuffApplied", PlayBuffSFX);
