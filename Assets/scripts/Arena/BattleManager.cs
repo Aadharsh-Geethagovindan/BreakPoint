@@ -54,7 +54,25 @@ public class BattleManager : MonoBehaviour
                 Debug.LogError($"Could not create character: {name}");
         }
 
-        // Now assign allies and enemies for each GameCharacter
+        // --- APPLY HP SCALE ONCE, AFTER CREATION, BEFORE ORDERING ---
+        float hpScale = 1f;
+        if (GameTuning.I != null)
+        {
+            hpScale = GameTuning.I.data.hpScale;
+            //Debug.Log($"Setting HP SCALE {hpScale}");
+        }
+         //Debug.Log($"Set HP SCALE {hpScale}");
+        
+        if (!Mathf.Approximately(hpScale, 1f))
+        {
+            foreach (var c in allCharacters)
+            {
+                int scaledMax = Mathf.RoundToInt(c.MaxHP * hpScale);
+                c.SetMaxHP(Mathf.Max(1, scaledMax));
+                c.SetHP(c.MaxHP);
+            }
+        }  
+        // assign allies and enemies for each GameCharacter
         foreach (GameCharacter character in allCharacters)
         {
             foreach (GameCharacter other in allCharacters)

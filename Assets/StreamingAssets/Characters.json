@@ -16,7 +16,7 @@
         },
         {
           "name": "Airburst",
-          "description": "Arkhe shoots a gust of air dealing 30 elemental damage.",
+          "description": "Arkhe shoots a gust of air ",
           "mechanics" : "Deals 30 elemental damage to 1 enemy and has a 15% chance to Stun for 1 turn",
           "cooldown": 0
         },

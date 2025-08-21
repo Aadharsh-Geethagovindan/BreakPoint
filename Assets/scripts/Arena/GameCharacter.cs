@@ -170,6 +170,14 @@ public class GameCharacter
     //************************************MODIFIERS**********************************************************************
     //************************************MODIFIERS**********************************************************************
     //************************************MODIFIERS**********************************************************************
+    public void SetMaxHP(int value)
+    {
+        MaxHP = value;
+    }
+    public void SetHP(int value)
+    {
+        HP = value;
+    }
     public void ModifyAccuracy(float amount)
     {
         Accuracy += amount;

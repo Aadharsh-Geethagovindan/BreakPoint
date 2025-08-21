@@ -268,7 +268,7 @@ public class TurnManager : MonoBehaviour
             float total = roll + modifier;
             rollResults[character] = total;
 
-            Debug.Log($"{character.Name} rolled {roll} + {modifier:F1} = {total:F1}");
+            //Debug.Log($"{character.Name} rolled {roll} + {modifier:F1} = {total:F1}");
         }
 
         charactersInOrder = rollResults
@@ -281,45 +281,56 @@ public class TurnManager : MonoBehaviour
     
     private void ApplyBurndown()
     {
-        int phase = currentRound - 12;
-        if (phase < 0 || phase > 5) return;
+        // Pull tuning 
+        int startRound = 12;
+        int stepsPerPhase = 2; // rounds each phase lasts
+        bool flipToMax = true;
+        float[] schedule = { 0.05f, 0.10f, 0.20f, 0.20f, 0.30f, 0.40f };
 
-        float damagePercent = 0f;
-
-        switch (phase)
+        if (GameTuning.I != null)
         {
-            case 0: damagePercent = 0.05f; break; // 5% current HP
-            case 1: damagePercent = 0.10f; break; // 10% current HP
-            case 2: damagePercent = 0.20f; break; // 20% current HP
-            case 3: damagePercent = 0.20f; break; // 20% MAX HP
-            case 4: damagePercent = 0.30f; break; // 30% MAX HP
-            case 5: damagePercent = 0.40f; break; // 40% MAX HP
+            var d = GameTuning.I.data;
+            startRound   = Mathf.Max(0, d.burndownStartRound);
+            stepsPerPhase = Mathf.Max(1, d.burndownSteps); // ensure progress
+            if (d.burndownPercentSchedule != null && d.burndownPercentSchedule.Length == 6)
+                schedule = d.burndownPercentSchedule;
+            flipToMax = d.flipToMax;
         }
+
+        int roundsSinceStart = currentRound - startRound;
+        if (roundsSinceStart < 0) return;
+
+        int phaseIndex = roundsSinceStart / stepsPerPhase; // integer division
+        if (phaseIndex < 0 || phaseIndex > 5)
+        {
+            phaseIndex = 5;     // stop after all 6 phases
+        }
+        float damagePercent = Mathf.Clamp01(schedule[phaseIndex]);
+        bool useMaxHP = flipToMax && (phaseIndex >= 3);
 
         foreach (GameCharacter character in charactersInOrder)
         {
             if (character.IsDead) continue;
 
-            int damage = (phase <= 2)
-                ? Mathf.CeilToInt(character.HP * damagePercent)
-                : Mathf.CeilToInt(character.MaxHP * damagePercent);
+            int basis = useMaxHP ? character.MaxHP : character.HP;
+            int damage = Mathf.CeilToInt(basis * damagePercent);
+            if (damage <= 0) continue;
 
             character.TakeDamage(damage, DamageType.True);
-            float percent = damagePercent;
-            bool useMaxHP = phase >= 4;
 
             var evt = new GameEventData();
             evt.Set("Source", null);
             evt.Set("Target", character);
             evt.Set("Damage", damage);
             evt.Set("Type", DamageType.True);
-            evt.Set("Percent", percent);
+            evt.Set("PhaseIndex", phaseIndex);
+            evt.Set("StartRound", startRound);
+            evt.Set("Percent", damagePercent);
             evt.Set("UseMaxHP", useMaxHP);
-            
             EventManager.Trigger("OnBurnDownDMG", evt);
-
-            
         }
     }
+
+
 
 }
