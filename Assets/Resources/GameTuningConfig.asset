@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fa061bf37fafb941bbe8774c7289665, type: 3}
+  m_Name: GameTuningConfig
+  m_EditorClassIdentifier: 
+  defaults:
+    hpScale: 1
+    burndownSteps: 2
+    burndownStartRound: 12
+    flipToMax: 1
+    burndownPercentSchedule:
+    - 0.05
+    - 0.1
+    - 0.2
+    - 0.2
+    - 0.3
+    - 0.4

@@ -1,12 +1,15 @@
 using System.Data;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class CustomizationPanel : MonoBehaviour
 {
     [SerializeField] TMP_InputField hpScaleInput;
     [SerializeField] TMP_InputField burndownStepsInput;
     [SerializeField] TMP_InputField percentScheduleInput;
+
+    [SerializeField] TMP_InputField burndownStartRdInput;
+    [SerializeField] Toggle flipToMaxToggle;
 
     void OnEnable()
     {
@@ -14,7 +17,8 @@ public class CustomizationPanel : MonoBehaviour
         var d = GameTuning.I.data;
         hpScaleInput.text = d.hpScale.ToString("0.##");
         burndownStepsInput.text = d.burndownSteps.ToString();
-        
+        burndownStartRdInput.text = d.burndownStartRound.ToString();
+        flipToMaxToggle.isOn = d.flipToMax;
     }
 
     public void OnApply()
@@ -30,10 +34,15 @@ public class CustomizationPanel : MonoBehaviour
 
         if (int.TryParse(burndownStepsInput.text, out var steps))
         {
-                d.burndownSteps = Mathf.Clamp(steps, 1, 20);
-                Debug.Log($"Changed Steps value to {steps}");
+            d.burndownSteps = Mathf.Clamp(steps, 1, 20);
+            Debug.Log($"Changed Steps value to {steps}");
         }
-
+        if (int.TryParse(burndownStartRdInput.text, out var startRd))
+        {
+            d.burndownStartRound = Mathf.Clamp(startRd, 1, 30);
+            Debug.Log($"Changed Burndown Round Start to {startRd}");
+        }
+        d.flipToMax = flipToMaxToggle.isOn;
 
         if (percentScheduleInput != null)
         {
@@ -47,12 +56,6 @@ public class CustomizationPanel : MonoBehaviour
         }
     }
 
-    public void OnResetDefaults()
-    {
-        if (GameTuning.I == null) return;
-        GameTuning.I.data = new GameTuningData();
-        OnEnable();
-    }  
 
     private float[] ParseScheduleString(string text)
     {
@@ -86,5 +89,19 @@ public class CustomizationPanel : MonoBehaviour
 
         return result;
     }
+    
+    public void OnResetDefaults() 
+    {
+        if (GameTuning.I == null || GameTuning.I.config == null) return;
+
+        // Deep copy from the config defaults into the runtime data
+        var clone = JsonUtility.FromJson<GameTuningData>(
+            JsonUtility.ToJson(GameTuning.I.config.defaults));
+        GameTuning.I.data = clone;
+
+        // Refresh the UI fields so you see the reset values immediately
+        OnEnable(); // re-runs your prefill logic
+    }
+
                                                 
 }

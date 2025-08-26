@@ -13,7 +13,15 @@ public class TurnManager : MonoBehaviour
 
     private ActiveCharPanel activeCharPanel;
     private GameCharacter currentCharacter;
+    private bool gameOver = false;
     [SerializeField] private TextMeshProUGUI roundText;
+
+    void OnEnable()
+    {
+        EventManager.Subscribe("OnGameEnded", OnGameEnded);         
+    }
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -23,11 +31,8 @@ public class TurnManager : MonoBehaviour
         }
         Instance = this;
         SoundManager.Instance.PlayMusic("arena"); // play background song
-
-
-
-
     }
+
 
     private void Start()
     {
@@ -70,7 +75,7 @@ public class TurnManager : MonoBehaviour
         StartCoroutine(StartNewRound()); // Begin first round
     }
 
-    private IEnumerator  StartNewRound()
+    private IEnumerator StartNewRound()
     {
         Debug.Log($"===== ROUND {currentRound} START =====");
         EventManager.Trigger("OnRoundStarted", currentRound);
@@ -275,10 +280,10 @@ public class TurnManager : MonoBehaviour
             .OrderByDescending(pair => pair.Value)
             .Select(pair => pair.Key)
             .ToList();
-}
+    }
 
 
-    
+
     private void ApplyBurndown()
     {
         // Pull tuning 
@@ -290,7 +295,7 @@ public class TurnManager : MonoBehaviour
         if (GameTuning.I != null)
         {
             var d = GameTuning.I.data;
-            startRound   = Mathf.Max(0, d.burndownStartRound);
+            startRound = Mathf.Max(0, d.burndownStartRound);
             stepsPerPhase = Mathf.Max(1, d.burndownSteps); // ensure progress
             if (d.burndownPercentSchedule != null && d.burndownPercentSchedule.Length == 6)
                 schedule = d.burndownPercentSchedule;
@@ -308,8 +313,15 @@ public class TurnManager : MonoBehaviour
         float damagePercent = Mathf.Clamp01(schedule[phaseIndex]);
         bool useMaxHP = flipToMax && (phaseIndex >= 3);
 
+        // Take a snapshot and iterate SLOWEST → FASTEST                
+        var targets = charactersInOrder                                   
+            .Where(c => c != null && !c.IsDead)                         
+            .OrderBy(c => c.Speed)                                     
+            .ToList();                                              
+
         foreach (GameCharacter character in charactersInOrder)
         {
+            if (gameOver) break;
             if (character.IsDead) continue;
 
             int basis = useMaxHP ? character.MaxHP : character.HP;
@@ -317,6 +329,9 @@ public class TurnManager : MonoBehaviour
             if (damage <= 0) continue;
 
             character.TakeDamage(damage, DamageType.True);
+
+            CheckDeath(character);                                      
+            if (gameOver) break; 
 
             var evt = new GameEventData();
             evt.Set("Source", null);
@@ -330,6 +345,20 @@ public class TurnManager : MonoBehaviour
             EventManager.Trigger("OnBurnDownDMG", evt);
         }
     }
+    
+    private void CheckDeath(GameCharacter character)            
+    {
+        if (character == null) return;
+        if (character.IsDead) return;                           
+        if (character.HP > 0) return;                           
+        if (BattleManager.Instance != null)                             
+            BattleManager.Instance.HandleDeath(character);               
+    }
+    private void OnGameEnded(object evt)                 
+    {
+        gameOver = true;                                      
+    }
+
 
 
 
