@@ -1,3 +1,4 @@
+using System.Data;
 using TMPro;
 using UnityEngine;
 
@@ -22,16 +23,27 @@ public class CustomizationPanel : MonoBehaviour
         var d = GameTuning.I.data;
 
         if (float.TryParse(hpScaleInput.text, out var hpScale))
+        {
             d.hpScale = Mathf.Clamp(hpScale, 0.1f, 5f);
+            Debug.Log($"Changed HP value to {hpScale}");
+        }
 
         if (int.TryParse(burndownStepsInput.text, out var steps))
-            d.burndownSteps = Mathf.Clamp(steps, 1, 20);
+        {
+                d.burndownSteps = Mathf.Clamp(steps, 1, 20);
+                Debug.Log($"Changed Steps value to {steps}");
+        }
 
-        if (percentScheduleInput != null)                                 
-        {                                                                
-            var parsed = ParseScheduleString(percentScheduleInput.text);  
-            if (parsed != null && parsed.Length == 6)                     
-                d.burndownPercentSchedule = parsed;                       
+
+        if (percentScheduleInput != null)
+        {
+            var parsed = ParseScheduleString(percentScheduleInput.text);
+            if (parsed != null && parsed.Length == 6)
+            {
+                d.burndownPercentSchedule = parsed;
+                Debug.Log($"Changed Percent schedule value to {parsed}");
+            }
+
         }
     }
 
