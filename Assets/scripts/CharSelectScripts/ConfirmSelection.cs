@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-
+using System.Linq;
 public class ConfirmSelection : MonoBehaviour
 {
     public Button confirmButton;
@@ -22,12 +22,46 @@ public class ConfirmSelection : MonoBehaviour
     private void OnConfirmClicked()
     {
         SoundManager.Instance.PlaySFX("click"); // play the button sound
+
+        // --- PRE-CHECK BEFORE CONFIRM --- 
+        if (characterDisplayManager.RestrictionsEnabled()) 
+        {
+            var candidate = characterDisplayManager.PeekCurrentCharacter(); 
+            if (candidate == null)                                           
+            {                                                                
+                characterDisplayManager.SetTemporaryStatus("Select a character first."); 
+                return;                                                       
+            }                                                                
+
+            // Build current confirmed picks for the active player             
+            List<CharacterData> confirmedList = characterDisplayManager.IsPlayer1Turn() 
+                ? selectedCharactersP1
+                : selectedCharactersP2;
+
+            var rarities = confirmedList.Select(c => c.rarity).ToList();     
+            rarities.Add(candidate.rarity);                                  
+
+            if (!RestrictionEngine.IsValidTeam(rarities))                    
+            {                                                                
+                characterDisplayManager.SetTemporaryStatus("Selection violates restrictions!"); 
+
+                // Compute and apply allowed set (based on current confirmed only) 
+                var allowed = RestrictionEngine.AllowedNextRarities(         
+                    confirmedList.Select(c => c.rarity).ToList());           
+                characterDisplayManager.ApplyRestrictionVisualsForActivePlayer(allowed, confirmedList); 
+                return;                                                      
+            }
+        }
+        // --- END PRE-CHECK ---
+
         CharacterData confirmedCharacter = characterDisplayManager.ConfirmSelection();
 
         if (confirmedCharacter == null)
         {
             return;
         }
+        
+
 
         if (confirmedCharacter != null)
         {
@@ -48,6 +82,18 @@ public class ConfirmSelection : MonoBehaviour
                 }
             }
         }
+
+        // After a successful confirm, recompute allowed set for the *next* pick 
+        if (characterDisplayManager.RestrictionsEnabled())                    
+        {                                                                      
+            var confirmedList = characterDisplayManager.IsPlayer1Turn()        
+                ? selectedCharactersP2                                          
+                : selectedCharactersP1;                                         
+            var allowed = RestrictionEngine.AllowedNextRarities(               
+                confirmedList.Select(c => c.rarity).ToList());                 
+            characterDisplayManager.ApplyRestrictionVisualsForActivePlayer(allowed, confirmedList); 
+        }                                                                      
+
 
         characterDisplayManager.SwitchTurn();
         characterDisplayManager.statusText.text = characterDisplayManager.IsPlayer1Turn() ? "Player 1 selecting..." : "Player 2 selecting...";

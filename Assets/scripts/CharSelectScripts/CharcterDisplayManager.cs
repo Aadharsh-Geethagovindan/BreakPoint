@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using System.Collections;
 using UnityEngine.EventSystems;  
-using UnityEngine.Events; 
+using System.Linq;
 public class CharacterDisplayManager : MonoBehaviour
 {
     public CharacterLoader characterLoader;
@@ -32,11 +32,13 @@ public class CharacterDisplayManager : MonoBehaviour
     private Coroutine messageCoroutine;
     public TextMeshProUGUI statusText;
 
-
+    [SerializeField] private bool restrictionsEnforced = true;
+    private readonly List<GameObject> allCards = new();        // NEW
+    private readonly Dictionary<GameObject, CharacterData> cardToData = new();
 
     private void Start()
     {
-        if (previewPanel != null) previewPanel.Hide(); 
+        if (previewPanel != null) previewPanel.Hide();
         DisplayAllCharacterCards();
         SoundManager.Instance.PlayMusic("selection");
     }
@@ -97,27 +99,33 @@ public class CharacterDisplayManager : MonoBehaviour
 
         Button button = card.GetComponent<Button>();
         button.onClick.AddListener(() => OnCharacterCardClicked(card, character));
-        
+
+        if (characterSelectionArea != null && card.transform.IsChildOf(characterSelectionArea)) 
+        {                                                                                       
+            allCards.Add(card);                                                                 
+            cardToData[card] = character;                                                       
+        }   
+
         // ---------- HOVER → PREVIEW WIRING  ----------
-        var c = character;                                                 
-        var trigger = card.GetComponent<EventTrigger>()                     
-                    ?? card.AddComponent<EventTrigger>();                  
+        var c = character;
+        var trigger = card.GetComponent<EventTrigger>()
+                    ?? card.AddComponent<EventTrigger>();
 
-        var enter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter }; 
-        enter.callback.AddListener((BaseEventData _) =>                     
-        {                                                                  
-            if (previewPanel != null) previewPanel.Show(c);                 
-        });                                                                 
+        var enter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+        enter.callback.AddListener((BaseEventData _) =>
+        {
+            if (previewPanel != null) previewPanel.Show(c);
+        });
 
-        var exit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };   
-        exit.callback.AddListener((BaseEventData _) =>                      
-        {                                                                  
-            if (previewPanel != null) previewPanel.Hide();                  
-        });                                                                 
+        var exit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+        exit.callback.AddListener((BaseEventData _) =>
+        {
+            if (previewPanel != null) previewPanel.Hide();
+        });
 
-        trigger.triggers.Add(enter);                                        
-        trigger.triggers.Add(exit);                                         
-        
+        trigger.triggers.Add(enter);
+        trigger.triggers.Add(exit);
+
     }
 
     private void OnCharacterCardClicked(GameObject originalCard, CharacterData character)
@@ -138,6 +146,8 @@ public class CharacterDisplayManager : MonoBehaviour
             currentSelectionP1.GetComponent<RectTransform>().localScale = Vector3.one;
             currentSelectionP1.GetComponent<RectTransform>().anchoredPosition = new Vector2(confirmedSelectionsP1.Count * CardSpacing, 0);
             SetupCard(currentSelectionP1, character);
+            currentSelectionP1.GetComponent<CharacterCardUI>()?.SetCardDimmed(false);  // NEW
+            currentSelectionP1.GetComponent<Button>().interactable = false; 
 
             currentCharacterP1 = character;
             pendingCardP1 = originalCard; // store clicked card for disabling later
@@ -153,7 +163,8 @@ public class CharacterDisplayManager : MonoBehaviour
             currentSelectionP2.GetComponent<RectTransform>().localScale = Vector3.one;
             currentSelectionP2.GetComponent<RectTransform>().anchoredPosition = new Vector2(confirmedSelectionsP2.Count * CardSpacing, 0);
             SetupCard(currentSelectionP2, character);
-
+            currentSelectionP2.GetComponent<CharacterCardUI>()?.SetCardDimmed(false);  // NEW
+            currentSelectionP2.GetComponent<Button>().interactable = false;  
             currentCharacterP2 = character;
             pendingCardP2 = originalCard; // store clicked card for disabling later
         }
@@ -230,37 +241,86 @@ public class CharacterDisplayManager : MonoBehaviour
         yield return new WaitForSeconds(duration);
         statusText.text = originalMessage;
     }
-    
+
     public void ClearSelections()
-{
-    SoundManager.Instance.PlaySFX("click");
-
-    // Destroy confirmed visual cards
-    foreach (var card in confirmedSelectionsP1) Destroy(card);
-    foreach (var card in confirmedSelectionsP2) Destroy(card);
-    confirmedSelectionsP1.Clear();
-    confirmedSelectionsP2.Clear();
-
-    // Destroy current selections (unconfirmed)
-    if (currentSelectionP1 != null) Destroy(currentSelectionP1);
-    if (currentSelectionP2 != null) Destroy(currentSelectionP2);
-    currentSelectionP1 = null;
-    currentSelectionP2 = null;
-    currentCharacterP1 = null;
-    currentCharacterP2 = null;
-
-    foreach (Transform card in characterSelectionArea.transform)
     {
-        Button btn = card.GetComponent<Button>();
-        if (btn != null) btn.interactable = true;
+        SoundManager.Instance.PlaySFX("click");
 
-        Image img = card.GetComponent<Image>();
-        if (img != null) img.color = Color.white;
+        // Destroy confirmed visual cards
+        foreach (var card in confirmedSelectionsP1) Destroy(card);
+        foreach (var card in confirmedSelectionsP2) Destroy(card);
+        confirmedSelectionsP1.Clear();
+        confirmedSelectionsP2.Clear();
+
+        // Destroy current selections (unconfirmed)
+        if (currentSelectionP1 != null) Destroy(currentSelectionP1);
+        if (currentSelectionP2 != null) Destroy(currentSelectionP2);
+        currentSelectionP1 = null;
+        currentSelectionP2 = null;
+        currentCharacterP1 = null;
+        currentCharacterP2 = null;
+
+        foreach (Transform card in characterSelectionArea.transform)
+        {
+            Button btn = card.GetComponent<Button>();
+            if (btn != null) btn.interactable = true;
+
+            Image img = card.GetComponent<Image>();
+            if (img != null) img.color = Color.white;
+
+            // Also clear our dimming state on grid cards (uses your CharacterCardUI)  
+            var ui = card.GetComponent<CharacterCardUI>();                              
+            if (ui != null) ui.SetCardDimmed(false);    
+        }
+
+
+        // Reset turn and UI
+        isPlayer1Turn = true;
+        statusText.text = "Player 1 selecting...";
+    }
+    public bool RestrictionsEnabled() => restrictionsEnforced; // NEW
+
+    public void SetTemporaryStatus(string msg)
+    {
+        if (statusText != null) statusText.text = msg;
+    }
+    public CharacterData PeekCurrentCharacter() // NEW
+    {
+        return isPlayer1Turn ? currentCharacterP1 : currentCharacterP2;
+    }
+
+    public void ApplyRestrictionVisualsForActivePlayer(HashSet<int> allowedRanks, List<CharacterData> confirmed) // NEW
+    {
+        // Map rarity string to rank
+        int RankOf(string r) => r == "L" ? 4 : r == "UR" ? 3 : r == "R" ? 2 : r == "UC" ? 1 : 0;
+
+        var confirmedNames = new HashSet<string>(confirmed.Select(c => c.name));
+
+        foreach (var card in allCards)
+        {
+            if (!cardToData.TryGetValue(card, out var data) || data == null) continue;
+
+            // Explicitly ensure we NEVER touch P1/P2 preview cards                  
+            if ((player1Panel && card.transform.IsChildOf(player1Panel)) ||        
+                (player2Panel && card.transform.IsChildOf(player2Panel)))           
+                continue; 
+
+            // Already confirmed cards for either player should remain dim/disabled anyway
+            bool alreadyPicked = confirmedNames.Contains(data.name);
+            if (alreadyPicked) { card.GetComponent<CharacterCardUI>()?.SetCardDimmed(true); continue; }
+
+            // If restrictions are off, clear dim and move on
+            if (!restrictionsEnforced)
+            {
+                card.GetComponent<CharacterCardUI>()?.SetCardDimmed(false);
+                continue;
+            }
+
+            int rank = RankOf(data.rarity);
+            bool allowed = allowedRanks.Contains(rank);
+            card.GetComponent<CharacterCardUI>()?.SetCardDimmed(!allowed);
+        }
     }
 
 
-    // Reset turn and UI
-    isPlayer1Turn = true;
-    statusText.text = "Player 1 selecting...";
-}
 }
