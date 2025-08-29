@@ -404,6 +404,10 @@ public static class PassiveManager
                     EventManager.Trigger("OnPassiveTriggered", new GameEventData()
                         .Set("Source", target)
                         .Set("Description", $"Blocked Low damage elemental attack from {user.Name}")
+                    );
+                    EventManager.Trigger("OnImmunityTriggered", new GameEventData()
+                        .Set("Source", target)
+                        .Set("Description", $"Blocked Low damage elemental attack from {user.Name}")
                     );  
                     return 0;
                 }
@@ -426,7 +430,11 @@ public static class PassiveManager
                     EventManager.Trigger("OnPassiveTriggered", new GameEventData()
                         .Set("Source", target)
                         .Set("Description", $"Reflected force attack onto {user.Name}")
-                    ); 
+                    );
+                    EventManager.Trigger("OnImmunityTriggered", new GameEventData()
+                        .Set("Source", target)
+                        .Set("Description", $"Reflected force attack onto {user.Name}")
+                    );  
                     return 0;
                 }
                 return ability.Damage;
@@ -446,7 +454,8 @@ public static class PassiveManager
                     EventManager.Trigger("OnPassiveTriggered", new GameEventData()
                         .Set("Source", target)
                         .Set("Description", "Converted Elemental damage into healing.")
-                    ); 
+                    );
+                     
                     return 0;
                 }
                 return ability.Damage;
@@ -461,11 +470,15 @@ public static class PassiveManager
             {
                 if (t == target)
                 {
-                    Debug.Log("Virae's passive: Converted Ice damage into Shielding.");
+                    Debug.Log("Virae's passive: Converted elemental damage into Shielding.");
                     EventManager.Trigger("OnPassiveTriggered", new GameEventData()
                         .Set("Source", target)
-                        .Set("Description", "Converted Ice damage into Shielding.")
+                        .Set("Description", "Converted Elemental damage into Shielding.")
                     ); 
+                    EventManager.Trigger("OnImmunityTriggered", new GameEventData()
+                        .Set("Source", target)
+                        .Set("Description", "Converted Elemental damage into Shielding.")
+                    );
                     return 0;
                 }
                 return ability.Damage;
@@ -483,6 +496,10 @@ public static class PassiveManager
                 {
                     Debug.Log("Sedra's passive: Ignored low physical attack.");
                     EventManager.Trigger("OnPassiveTriggered", new GameEventData()
+                        .Set("Source", target)
+                        .Set("Description", $"Ignored low force attack from {user.Name}")
+                    );
+                    EventManager.Trigger("OnImmunityTriggered", new GameEventData()
                         .Set("Source", target)
                         .Set("Description", $"Ignored low force attack from {user.Name}")
                     ); 
@@ -503,6 +520,7 @@ public static class PassiveManager
                 .Set("Source", target)
                 .Set("Description", $"gained {ability.Damage} charge from arcane damage")
             ); 
+            
         }
 
         
@@ -517,7 +535,7 @@ public static class PassiveManager
                 EventManager.Trigger("OnPassiveTriggered", new GameEventData()
                     .Set("Source", target)
                     .Set("Description", $"reduced damage from Riftbeast ({u.Name}) to {reduced} for {t.Name}")
-                ); 
+                );
                 return reduced;
             };
         }

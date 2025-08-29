@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 public class ActiveCharPanel : MonoBehaviour
 {
-    [Header("UI Components")]
+    [Header("Image and info")]
     public Image characterImage;
     public Slider hpBar;
     public TextMeshProUGUI hpText;
@@ -14,6 +14,10 @@ public class ActiveCharPanel : MonoBehaviour
     public TextMeshProUGUI sigChargeText;
     public TextMeshProUGUI accuracyText;
     public TextMeshProUGUI damageMultiplierText;
+    [SerializeField] private ResistanceGridUI resistanceGrid;
+    public TextMeshProUGUI statusEffectsText;
+
+    [Header("Move Area")]
     public Button move1Button;
     public Button move2Button;
     public Button move3Button;
@@ -21,8 +25,9 @@ public class ActiveCharPanel : MonoBehaviour
     public TextMeshProUGUI normalDisplayText;
     public TextMeshProUGUI skillDisplayText;
     public TextMeshProUGUI sigDisplayText;
-    [SerializeField] private ResistanceGridUI resistanceGrid;
-    public TextMeshProUGUI statusEffectsText;
+
+   
+    [Header("Action Area")]
     public Button confirmButton;
     public Button reselectButton;
 

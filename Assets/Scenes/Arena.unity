@@ -3741,6 +3741,8 @@ MonoBehaviour:
   sigChargeText: {fileID: 1419117359}
   accuracyText: {fileID: 1721841175}
   damageMultiplierText: {fileID: 191972584}
+  resistanceGrid: {fileID: 901773154}
+  statusEffectsText: {fileID: 128401539}
   move1Button: {fileID: 1862066601}
   move2Button: {fileID: 173220072}
   move3Button: {fileID: 1353511583}
@@ -3748,8 +3750,6 @@ MonoBehaviour:
   normalDisplayText: {fileID: 2076953422}
   skillDisplayText: {fileID: 1211333669}
   sigDisplayText: {fileID: 769178927}
-  resistanceGrid: {fileID: 901773154}
-  statusEffectsText: {fileID: 128401539}
   confirmButton: {fileID: 2014092220}
   reselectButton: {fileID: 1091466980}
   characterHolder: {fileID: 1606986361}
@@ -8480,6 +8480,7 @@ MonoBehaviour:
   buffPopupPrefab: {fileID: 2237266919156946386, guid: a4b55533c6212c143b597072592e737b, type: 3}
   shieldPopupPrefab: {fileID: 3117508409302733835, guid: 40689390a8e00774f8b887388dbe33bc, type: 3}
   missPopupPrefab: {fileID: 2503858997193576404, guid: e2bd10c79a00b494283ca04256288667, type: 3}
+  immunePopupPrefab: {fileID: 3824637732938029788, guid: c5dc798524ed6aa4c9a2c7a811dedf61, type: 3}
   centerAnchor: {fileID: 1984533010}
 --- !u!1 &1984533009
 GameObject:

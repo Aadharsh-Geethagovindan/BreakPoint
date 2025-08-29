@@ -6,7 +6,8 @@ public enum PopupType
     Heal,
     Buff,
     Miss,
-    Shield
+    Shield,
+    Immune
 }
 
 public class PopupManager : MonoBehaviour
@@ -19,6 +20,7 @@ public class PopupManager : MonoBehaviour
     public GameObject buffPopupPrefab;
     public GameObject shieldPopupPrefab;
     public GameObject missPopupPrefab;
+    public GameObject immunePopupPrefab;
     public Transform centerAnchor; // Drag your PopupAnchor object here
 
 
@@ -39,9 +41,22 @@ public class PopupManager : MonoBehaviour
         EventManager.Subscribe("OnShielded", ShowShieldPopup);
         EventManager.Subscribe("OnMiss", ShowMissPopup);
         EventManager.Subscribe("OnBuffApplied", ShowBuffPopup);
+        EventManager.Subscribe("OnImmunityTriggered", ShowImmunePopup);
+    }
+
+    void OnDisable()
+    {
+        EventManager.Unsubscribe("OnDamageDealt", ShowDamagePopup);
+        EventManager.Unsubscribe("OnHealed", ShowHealPopup);
+        EventManager.Unsubscribe("OnShielded", ShowShieldPopup);
+        EventManager.Unsubscribe("OnMiss", ShowMissPopup);
+        EventManager.Unsubscribe("OnBuffApplied", ShowBuffPopup);
+        EventManager.Unsubscribe("OnImmunityTriggered", ShowImmunePopup);
     }
     public void ShowPopup(PopupType type)
     {
+        //Debug.Log($"PopupManager ShowPopup on instance {GetInstanceID()}, this==null? {this == null}, centerAnchor null? {centerAnchor == null}", this);
+
         if (centerAnchor == null)
         {
             Debug.LogWarning("PopupManager: Center anchor not assigned.");
@@ -70,6 +85,7 @@ public class PopupManager : MonoBehaviour
             case PopupType.Buff: return buffPopupPrefab;
             case PopupType.Miss: return missPopupPrefab;
             case PopupType.Shield: return shieldPopupPrefab;
+            case PopupType.Immune: return immunePopupPrefab;
             default: return null;
         }
     }
@@ -100,5 +116,10 @@ public class PopupManager : MonoBehaviour
     private void ShowBuffPopup(object eventData)
     {
         ShowPopup(PopupType.Buff);
+    }
+
+    private void ShowImmunePopup(object eventData)
+    {
+        ShowPopup(PopupType.Immune);
     }
 }

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-
+using UnityEngine;
 public static class RestrictionEngine
 {
+    private const bool DBG = false; // flip to false to silence logs
     // Map rarity string to rank (higher = rarer)
     private static readonly Dictionary<string, int> rarityRank = new Dictionary<string, int>
     {
@@ -23,14 +24,16 @@ public static class RestrictionEngine
 
     public static bool IsValidTeam(List<string> rarities)
     {
-        var ranks = rarities.Select(r => rarityRank[r]).OrderByDescending(x => x).ToList();
+        var picks = rarities.Select(r => rarityRank[r]).OrderByDescending(x => x).ToList();
+        //if (DBG) Debug.Log($"[Restrict] IsValidTeam picks={string.Join(",", picks)}");
 
-        foreach (var pattern in patterns)
+        foreach (var pat in patterns)
         {
-            var slots = pattern.OrderByDescending(x => x).ToList();
-            if (Fits(ranks, slots)) return true;
+            var slots = pat.OrderBy(x => x).ToList(); // ASC
+            var ok = BestFitAssign(picks, slots);     // mutates 'slots' to remaining
+            //if (DBG) Debug.Log($"[Restrict]  pattern={string.Join(",", pat)} fit={ok} remaining={string.Join(",", slots)}");
+            if (ok) return true;
         }
-
         return false;
     }
 
@@ -55,33 +58,38 @@ public static class RestrictionEngine
         return i == picks.Count;
     }
 
-    public static HashSet<int> AllowedNextRarities(List<string> currentPicks)
+   public static HashSet<int> AllowedNextRarities(List<string> currentPicks)
     {
-        var ranks = currentPicks.Select(r => rarityRank[r]).OrderByDescending(x => x).ToList();
+        var picks = currentPicks.Select(r => rarityRank[r]).OrderByDescending(x => x).ToList();
+        
+
         var allowed = new HashSet<int>();
 
-        foreach (var pattern in patterns)
+        foreach (var pat in patterns)
         {
-            var slots = pattern.OrderByDescending(x => x).ToList();
+            var slots = pat.OrderBy(x => x).ToList();     // ASC
+            var ok = BestFitAssign(picks, slots);         // mutates 'slots' to remaining
+            
 
-            // Try to fit current picks into this pattern
-            int i = 0, j = 0;
-            while (i < ranks.Count && j < slots.Count)
-            {
-                if (ranks[i] <= slots[j]) { i++; j++; }
-                else { j++; }
-            }
-            if (i != ranks.Count) continue; // this pattern can't fit current picks
+            if (!ok) continue;
 
-            // Collect remaining slots for this viable pattern
-            for (; j < slots.Count; j++)
-            {
-                int maxRank = slots[j];
-                for (int r = 0; r <= maxRank; r++)
+            foreach (var cap in slots)
+                for (int r = 0; r <= cap; r++)
                     allowed.Add(r);
-            }
         }
 
+        
+
         return allowed;
+    }
+     private static bool BestFitAssign(List<int> picksDesc, List<int> slotsAsc)
+    {
+        foreach (var p in picksDesc)
+        {
+            int k = slotsAsc.FindIndex(s => s >= p);   // first slot that can hold this pick
+            if (k < 0) return false;                   // no slot fits -> pattern fails
+            slotsAsc.RemoveAt(k);                      // consume that slot
+        }
+        return true;
     }
 }

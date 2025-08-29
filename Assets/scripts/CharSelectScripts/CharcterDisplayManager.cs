@@ -296,17 +296,21 @@ public class CharacterDisplayManager : MonoBehaviour
 
         var confirmedNames = new HashSet<string>(confirmed.Select(c => c.name));
 
+        //var allowedList = allowedRanks.OrderBy(x => x).Select(x => x.ToString()).ToArray();
+        //Debug.Log($"[RestrictUI] allowedRanks={string.Join(",", allowedList)} (0=C,1=UC,2=R,3=UR,4=L)");
+
         foreach (var card in allCards)
         {
             if (!cardToData.TryGetValue(card, out var data) || data == null) continue;
 
             // Explicitly ensure we NEVER touch P1/P2 preview cards                  
-            if ((player1Panel && card.transform.IsChildOf(player1Panel)) ||        
-                (player2Panel && card.transform.IsChildOf(player2Panel)))           
-                continue; 
+            if ((player1Panel && card.transform.IsChildOf(player1Panel)) ||
+                (player2Panel && card.transform.IsChildOf(player2Panel)))
+                continue;
 
             // Already confirmed cards for either player should remain dim/disabled anyway
             bool alreadyPicked = confirmedNames.Contains(data.name);
+
             if (alreadyPicked) { card.GetComponent<CharacterCardUI>()?.SetCardDimmed(true); continue; }
 
             // If restrictions are off, clear dim and move on
@@ -318,7 +322,9 @@ public class CharacterDisplayManager : MonoBehaviour
 
             int rank = RankOf(data.rarity);
             bool allowed = allowedRanks.Contains(rank);
+            //Debug.Log($"[RestrictUI] card={data.name} rarity={data.rarity} rank={rank} allowed={allowed}");
             card.GetComponent<CharacterCardUI>()?.SetCardDimmed(!allowed);
+
         }
     }
 
