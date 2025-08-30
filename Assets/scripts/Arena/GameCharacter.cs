@@ -20,7 +20,8 @@ public class GameCharacter
     public float DodgeChance { get; private set; } = 0f; // 0 = 0%
     private int totalHealed = 0;
     private int healThresholdsMet = 0;
-    
+    public int TeamId { get; private set; }
+
     private bool hasBeenAttackedThisTurn = false;
     public bool HasActedThisTurn = false;
     public bool IsDead = false;
@@ -37,13 +38,13 @@ public class GameCharacter
     private List<GameCharacter> allies = new List<GameCharacter>();
     private List<GameCharacter> enemies = new List<GameCharacter>();
 
-    public string ImageName { get; private set; } 
-    
+    public string ImageName { get; private set; }
+
 
 
 
     public GameCharacter(string name, int hp, int speed, int sigChargeReq,
-                         Ability normal, Ability skill, Ability signature, Ability passive,string imageName, string affil, string lore, string species)
+                         Ability normal, Ability skill, Ability signature, Ability passive, string imageName, string affil, string lore, string species)
     {
         Name = name;
         MaxHP = hp;
@@ -85,7 +86,7 @@ public class GameCharacter
             Debug.LogWarning($"[TakeDamage] {Name} took no damage of type {type} — potential bug?");
             Logger.Instance.PostLog($"[TakeDamage] {Name} took no damage of type {type} — potential bug?", LogType.Warning);
         }
-        float resistance = GetModifiedResistance(type); 
+        float resistance = GetModifiedResistance(type);
         float modifiedAmount = type == DamageType.True ? amount : amount * (1 - resistance);
         int finalDamage = Mathf.RoundToInt(modifiedAmount);
         int totDamage = finalDamage;
@@ -96,14 +97,14 @@ public class GameCharacter
             finalDamage -= absorbed;
         }
 
-                                //character specific trigger
-                                // 👇 Jack's passive — only once per turn
-                                if (Name == "Jack" && HP > 1 && finalDamage >= HP && !HasUsedOneTimePassive)
-                                {
-                                    finalDamage = HP - 1;
-                                    MarkOneTimePassive();
-                                    Debug.Log("Jack's passive triggered! Survived fatal damage.");
-                                }
+        //character specific trigger
+        // 👇 Jack's passive — only once per turn
+        if (Name == "Jack" && HP > 1 && finalDamage >= HP && !HasUsedOneTimePassive)
+        {
+            finalDamage = HP - 1;
+            MarkOneTimePassive();
+            Debug.Log("Jack's passive triggered! Survived fatal damage.");
+        }
 
         if (finalDamage > 0)
         {
@@ -113,51 +114,51 @@ public class GameCharacter
             Debug.Log($"{Name} took {finalDamage} {type} damage. HP: {HP}/{MaxHP}");
             //Logger.Instance.PostLog($"{Name} took {finalDamage} {type} damage. HP: {HP}/{MaxHP}", LogType.Damage);
         }
-         SetHasBeenAttackedThisTurn(true);
-         LastDamageTaken = totDamage;
-         return totDamage;
+        SetHasBeenAttackedThisTurn(true);
+        LastDamageTaken = totDamage;
+        return totDamage;
     }
 
     public void AddShield(int amount)
     {
-        var evt = new GameEventData();evt.Set("Target", this);evt.Set("Amount", amount);
+        var evt = new GameEventData(); evt.Set("Target", this); evt.Set("Amount", amount);
         EventManager.Trigger("OnShielded", evt);
 
         Shield += amount;
-        
+
     }
 
-     public int Heal(int amount)
+    public int Heal(int amount)
     {
-        
-        var evt = new GameEventData();evt.Set("Target", this);evt.Set("Amount", amount);
+
+        var evt = new GameEventData(); evt.Set("Target", this); evt.Set("Amount", amount);
         EventManager.Trigger("OnHealed", evt);
 
-                                //******************************************************************************************************
-                                //Character specific conditions
-                                if (Name == "Faru")
-                                {
-                                    amount *= 2;
-                                }
-                                if (Name == "Huron")
-                                {
-                                    int previousHP = HP;
-                                    HP += amount;
-                                    if (HP > MaxHP) HP = MaxHP;
+        //******************************************************************************************************
+        //Character specific conditions
+        if (Name == "Faru")
+        {
+            amount *= 2;
+        }
+        if (Name == "Huron")
+        {
+            int previousHP = HP;
+            HP += amount;
+            if (HP > MaxHP) HP = MaxHP;
 
-                                    int actualHealed = HP - previousHP;
-                                    totalHealed += actualHealed;
+            int actualHealed = HP - previousHP;
+            totalHealed += actualHealed;
 
-                                    while (healThresholdsMet < 3 && totalHealed >= (healThresholdsMet + 1) * 70)
-                                    {
-                                        healThresholdsMet++;
-                                        ModifyDamageMultiplier(0.25f);
-                                        Logger.Instance.PostLog($"Huron passive triggered: +25% damage (x{healThresholdsMet})", LogType.Passive);
-                                    }
+            while (healThresholdsMet < 3 && totalHealed >= (healThresholdsMet + 1) * 70)
+            {
+                healThresholdsMet++;
+                ModifyDamageMultiplier(0.25f);
+                Logger.Instance.PostLog($"Huron passive triggered: +25% damage (x{healThresholdsMet})", LogType.Passive);
+            }
 
-                                    return actualHealed;
-                                }
-                                //******************************************************************************************************
+            return actualHealed;
+        }
+        //******************************************************************************************************
 
         //actual heal
         HP += amount;
@@ -194,7 +195,7 @@ public class GameCharacter
         Logger.Instance.PostLog($"{Name}'s damage multiplier modified by {amount}. New multiplier: {DamageMultiplier}", LogType.Info);
     }
 
-     public void ModifyResistance(DamageType type, float value)
+    public void ModifyResistance(DamageType type, float value)
     {
         if (Resistances.ContainsKey(type))
             Resistances[type] += value;
@@ -205,7 +206,7 @@ public class GameCharacter
     public void ModifyDodge(float value)
     {
         DodgeChance += value;
-        DodgeChance = Mathf.Clamp(DodgeChance,0f,1f);
+        DodgeChance = Mathf.Clamp(DodgeChance, 0f, 1f);
     }
 
     public float GetModifiedDamageMultiplier()
@@ -252,29 +253,29 @@ public class GameCharacter
 
         return Mathf.Clamp(DodgeChance + totalModifier, 0f, 1f);
     }
-//*********************************************************************************************************************************************
-//*********************************************************************************************************************************************
+    //*********************************************************************************************************************************************
+    //*********************************************************************************************************************************************
 
-   
+
     public int TotalHealed => totalHealed;
     public int HealThresholdsMet => healThresholdsMet;
     public void AddStatusEffect(StatusEffect effect)
     {
-                                    if (Name == "Faru")
-                                    {
-                                        if (effect.Type == StatusEffectType.HealingOverTime || effect.Type == StatusEffectType.DamageModifier)
-                                        {
-                                            effect = new StatusEffect(
-                                                effect.Name,
-                                                effect.Type,
-                                                effect.Duration,
-                                                effect.Value * 2,
-                                                effect.Source,
-                                                effect.DamageType,
-                                                effect.IsDebuff
-                                            );
-                                        }
-                                    }
+        if (Name == "Faru")
+        {
+            if (effect.Type == StatusEffectType.HealingOverTime || effect.Type == StatusEffectType.DamageModifier)
+            {
+                effect = new StatusEffect(
+                    effect.Name,
+                    effect.Type,
+                    effect.Duration,
+                    effect.Value * 2,
+                    effect.Source,
+                    effect.DamageType,
+                    effect.IsDebuff
+                );
+            }
+        }
 
 
 
@@ -346,7 +347,7 @@ public class GameCharacter
     public void AddAlly(GameCharacter ally) => allies.Add(ally);
     public void AddEnemy(GameCharacter enemy) => enemies.Add(enemy);
 
-    
+
     public Ability GetAbilityOfType(AbilityType type)
     {
         return type switch
@@ -363,6 +364,7 @@ public class GameCharacter
     public List<GameCharacter> Enemies => enemies;
     public void ClearAllies() => allies.Clear();
     public void ClearEnemies() => enemies.Clear();
+    public void SetTeam(int teamId) => TeamId = teamId; 
 
     
 }

@@ -34,7 +34,7 @@ public class BattleManager : MonoBehaviour
     }
 
 
-
+    /*
     //Creates GameCharacter Objects for the six selected characters. Also adds them to a dictionary for target lookup
     public void InitializeBattle(CharacterDataArray allCharacterData)
     {
@@ -92,7 +92,50 @@ public class BattleManager : MonoBehaviour
         charactersInOrder = allCharacters.OrderByDescending(c => c.Speed).ToList();
        
     }
+    */
+    public void InitializeBattle(CharacterDataArray allCharacterData)
+    {
+        allCharacters = new List<GameCharacter>();
 
+        // --- Build Player 1 roster and tag TeamId=1 ---
+        foreach (var cd in GameData.SelectedCharactersP1)                                 // NEW
+        {                                                                                 // NEW
+            var gc = CharacterFactory.CreateCharacterByName(cd.name, allCharacterData);   // NEW
+            if (gc != null)                                                               // NEW
+            {                                                                             // NEW
+                gc.SetTeam(1);                                                            // NEW
+                allCharacters.Add(gc);                                                    // NEW
+                Debug.Log($"[Init] P1 -> {gc.Name} Team={gc.TeamId} hash={gc.GetHashCode()}"); // NEW
+            }                                                                             // NEW
+            else Debug.LogError($"Could not create character: {cd.name}");                // NEW
+        }                                                                                 // NEW
+
+        // --- Build Player 2 roster and tag TeamId=2 ---
+        foreach (var cd in GameData.SelectedCharactersP2)                                 // NEW
+        {                                                                                 // NEW
+            var gc = CharacterFactory.CreateCharacterByName(cd.name, allCharacterData);   // NEW
+            if (gc != null)                                                               // NEW
+            {                                                                             // NEW
+                gc.SetTeam(2);                                                            // NEW
+                allCharacters.Add(gc);                                                    // NEW
+                Debug.Log($"[Init] P2 -> {gc.Name} Team={gc.TeamId} hash={gc.GetHashCode()}"); // NEW
+            }                                                                             // NEW
+            else Debug.LogError($"Could not create character: {cd.name}");                // NEW
+        }                                                                                 // NEW
+
+        // --- Assign allies/enemies strictly by TeamId (never by name) ---
+        foreach (var c in allCharacters)                                                  // NEW
+        {                                                                                 // NEW
+            foreach (var other in allCharacters)                                          // NEW
+            {                                                                             // NEW
+                if (other == c) continue;                                                 // NEW
+                bool sameTeam = (c.TeamId == other.TeamId);                               // NEW
+                if (sameTeam) c.AddAlly(other); else c.AddEnemy(other);                   // NEW
+            }                                                                             // NEW
+        }                                                                                 // NEW
+
+        charactersInOrder = allCharacters.OrderByDescending(c => c.Speed).ToList();
+    }
 
 
     public IEnumerator ExecuteAbility(GameCharacter user, Ability ability, List<GameCharacter> targets)

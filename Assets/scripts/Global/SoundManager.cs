@@ -42,6 +42,7 @@ public class SoundManager : MonoBehaviour
         EventManager.Subscribe("OnShielded", PlayShieldSFX);
         EventManager.Subscribe("OnHealed", PlayHealSFX);
         EventManager.Subscribe("OnBuffApplied", PlayBuffSFX);
+        EventManager.Subscribe("OnImmunityTriggered", PlayImmuneSFX);
     }
 
     private void OnDisable()
@@ -51,6 +52,7 @@ public class SoundManager : MonoBehaviour
         EventManager.Unsubscribe("OnShielded", PlayShieldSFX);
         EventManager.Unsubscribe("OnHealed", PlayHealSFX);
         EventManager.Unsubscribe("OnBuffApplied", PlayBuffSFX);
+        EventManager.Unsubscribe("OnImmunityTriggered", PlayImmuneSFX);
     }
 
 
@@ -128,6 +130,10 @@ public class SoundManager : MonoBehaviour
         PlaySFX("buff");
     }
 
+    private void PlayImmuneSFX(object eventData)
+    {
+        PlaySFX("immune");
+    }
 
 
     //******************************************************************************************************************************

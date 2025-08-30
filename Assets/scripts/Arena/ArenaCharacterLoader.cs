@@ -141,10 +141,18 @@ public class ArenaCharacterLoader : MonoBehaviour
            
            
             // Determine Border color for card based on player it belongs to
-            bool isPlayer2 = GameData.SelectedCharactersP2.Any(c => c.name == character.Name);
+            bool isPlayer2 = (character.TeamId == 2);                         // NEW
+
+            // Optional safety: if TeamId wasn't set for some reason, fall back once
+            if (character.TeamId == 0)
+            {    // NEW
+                isPlayer2 = GameData.SelectedCharactersP2.Any(c => c.name == character.Name); // NEW
+                Debug.Log("CharacterID not set");
+            }
+
 
             // Change border color based on player
-            Image borderImage = cardObj.transform.Find("BorderImage").GetComponent<Image>();
+                Image borderImage = cardObj.transform.Find("BorderImage").GetComponent<Image>();
             if (borderImage != null)
             {
                 if (isPlayer2)

@@ -12,7 +12,7 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("CharacterSelection");
     }
-    
+
     public void OpenHowToPlay()
     {
         Application.OpenURL("https://breakpoint-site-three.vercel.app/");
@@ -21,5 +21,11 @@ public class MainMenu : MonoBehaviour
     public void OpenCharacterOverview()
     {
         Application.OpenURL("https://breakpoint-site-three.vercel.app/characters");
+    }
+    
+    public void ExitGame()
+    {
+        Debug.Log("Exiting game..."); 
+        Application.Quit();
     }
 }
