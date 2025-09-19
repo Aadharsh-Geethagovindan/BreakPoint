@@ -14,7 +14,10 @@ public enum StatusEffectType
     DodgeModifier,
     Stun,
     CDModifier,
-    DurationModifier
+    DurationModifier,
+    SPDModifier,
+    CritRateModifier,
+    CritDMGModifier
 }
 
 public enum DurationTargetingMode
@@ -101,14 +104,27 @@ public class StatusEffect
         switch (Type)
         {
             case StatusEffectType.DamageOverTime:
-                valueDone = target.TakeDamage(Mathf.RoundToInt(Value), DamageType);
-                if (Source != null)
-                {
-                    Debug.Log($"{Source.Name} gained {valueDone} charge");
-                    Source.IncreaseCharge(valueDone);
-                }
-                break;
+            {
+                    float dotValue = Value;
 
+                 // if the caster has "Corrupt DoT Amp", boost DoT damage
+                if (GameModeService.IsRevamped && Source != null) 
+                {                                                 
+                    float amp = 0f;                               
+                    foreach (var se in Source.StatusEffects)      
+                    {                                             
+                        if (se.Type == StatusEffectType.Custom    
+                            && se.Name == "Corrupt DoT Amp")      
+                        {                                         
+                            amp += se.Value;                       // stacks if multiple present
+                        }                                         
+                    }                                             
+                    dotValue *= 1f + amp;                       
+                }                                                 
+
+                valueDone = target.TakeDamage(Mathf.RoundToInt(dotValue), DamageType);
+                break;
+            }
             case StatusEffectType.HealingOverTime:
                 valueDone = target.Heal(Mathf.RoundToInt(Value));
                 if (Source != null)
@@ -155,7 +171,9 @@ public class StatusEffect
 
                     break;
                 }
+
             // These are now handled dynamically in GameCharacter via GetModifiedX()
+            case StatusEffectType.SPDModifier:
             case StatusEffectType.AccuracyModifier:
             case StatusEffectType.DamageModifier:
             case StatusEffectType.DodgeModifier:
@@ -195,6 +213,9 @@ public class StatusEffect
                 return IsDebuff ? "resDebuff" : "resBuff";
             case StatusEffectType.DodgeModifier:
                 return IsDebuff ? "dodgeDebuff" : "dodgeBuff";
+            case StatusEffectType.CDModifier:
+            case StatusEffectType.SPDModifier:
+                return "passiveIcon";
             default:
                 Debug.Log("Could not match");
                 return null;

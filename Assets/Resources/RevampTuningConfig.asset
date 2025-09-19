@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6b0454aebb90614d95e3f4fc60da3ec, type: 3}
+  m_Name: RevampTuningConfig
+  m_EditorClassIdentifier: 
+  singleTrackThreshold: 3
+  fusionWindowTurns: 2
+  checkFusionImmediately: 1
+  marksOnBasic: 2
+  marksOnSkill: 2
+  marksOnSignature: 3
+  bonusMarks_Stun: 2
+  bonusMarks_Dot: 1
+  bonusMarks_Buff: 1
+  bonusMarks_Debuff: 1
+  bonusMarks_Shield: 1
+  bonusMarks_Heal: 1
+  delay_Single: 0.15
+  delay_Dual: 0.25
+  delay_Triple: 0.35
+  dur_Force_Stagger: 1
+  dur_Elemental_Sustain: 2
+  dur_Arcane_Tempo: 1
+  dur_Corrupt_DoTAmp: 2
+  cataclysm_MaxHPPercentLoss: 0.15
+  elementalShieldPercent: 0.3
+  elementalHealPercent: 0

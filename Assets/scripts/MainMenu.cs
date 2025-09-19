@@ -13,6 +13,16 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("CharacterSelection");
     }
 
+    public void PlayClassic()
+    {
+        GameModeService.Set(GameMode.Classic); SceneManager.LoadScene("CharacterSelection");
+    }
+    public void PlayRevamped()
+    {
+        GameModeService.Set(GameMode.Revamped); SceneManager.LoadScene("CharacterSelection");
+    } 
+
+
     public void OpenHowToPlay()
     {
         Application.OpenURL("https://breakpoint-site-three.vercel.app/");
@@ -28,4 +38,12 @@ public class MainMenu : MonoBehaviour
         Debug.Log("Exiting game..."); 
         Application.Quit();
     }
+}
+public enum GameMode { Classic, Revamped } // NEW
+
+public static class GameModeService // NEW
+{
+    public static GameMode Mode { get; private set; } = GameMode.Classic;
+    public static void Set(GameMode mode) => Mode = mode;
+    public static bool IsRevamped => Mode == GameMode.Revamped;
 }

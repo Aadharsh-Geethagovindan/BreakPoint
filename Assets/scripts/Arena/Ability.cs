@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Breakpoint.Revamped;
 public enum AbilityType
 {
     Passive,
@@ -81,46 +82,63 @@ public class Ability
 
     public void Apply(GameCharacter user, List<GameCharacter> targets, IReadOnlyDictionary<GameCharacter, bool> resolvedHits)
     {
-        Debug.Log($"Applying {Name}");
+        OutcomeFlags outcomeFlags = OutcomeFlags.None;
+        //Debug.Log($"Applying {Name}");
         foreach (GameCharacter target in targets)
         {
             bool isEnemy = user.Enemies.Contains(target);
 
-             // Decide hit using resolved results if available; otherwise fallback to old logic
-                bool willHit = true;
-                if (Damage > 0 && isEnemy)
+            // Decide hit using resolved results if available; otherwise fallback to old logic
+            bool willHit = true;
+            if (Damage > 0 && isEnemy)
+            {
+                if (resolvedHits != null && resolvedHits.TryGetValue(target, out bool pre))
                 {
-                    if (resolvedHits != null && resolvedHits.TryGetValue(target, out bool pre))
-                    {
-                        willHit = pre;
-                    }
-                    else
-                    {
-                        // Fallback to legacy check (keeps old behavior if caller didn't resolve)
-                        float hitChance = user.GetModifiedAccuracy() * (1f - target.GetModifiedDodgeChance());
-                        float roll = UnityEngine.Random.value;
-                        willHit = roll <= hitChance;
-                    }
-
-                    if (!willHit)
-                    {
-                        // Timing is correct: Apply is called AFTER visuals
-                        var missEvent = new GameEventData()
-                            .Set("Source", user)
-                            .Set("Target", target)
-                            .Set("Ability", this);
-                        EventManager.Trigger("OnMiss", missEvent);
-                        continue; // skip damage/effects on this target
-                    }
+                    willHit = pre;
                 }
+                else
+                {
+                    // Fallback to legacy check (keeps old behavior if caller didn't resolve)
+                    float hitChance = user.GetModifiedAccuracy() * (1f - target.GetModifiedDodgeChance());
+                    float roll = UnityEngine.Random.value;
+                    willHit = roll <= hitChance;
+                }
+
+                if (!willHit)
+                {
+                    // Timing is correct: Apply is called AFTER visuals
+                    var missEvent = new GameEventData()
+                        .Set("Source", user)
+                        .Set("Target", target)
+                        .Set("Ability", this);
+                    EventManager.Trigger("OnMiss", missEvent);
+                    continue; // skip damage/effects on this target
+                }
+            }
 
             int baseDamage = GetEffectiveBaseDamage(user, target);
             // Apply Damage
             if (baseDamage > 0)
             {
-                int dmg = Mathf.RoundToInt(baseDamage * user.GetModifiedDamageMultiplier());
+                int dmg = Mathf.RoundToInt(baseDamage * user.GetModifiedDamageMultiplier()); // get damage without crit
+
+                //check for crit, if crit, modify dmg
+                float roll = UnityEngine.Random.value; // 0–1
+                bool isCrit = roll < user.CritRate;
+                if (isCrit)
+                {
+                    dmg = Mathf.CeilToInt(dmg * user.CritDMG);
+
+                    EventManager.Trigger("OnCriticalHit", new GameEventData()
+                    .Set("Source", user)
+                    .Set("Target", target)
+                    .Set("CritRate", user.CritRate)
+                    .Set("CritDamage", user.CritDMG));
+                }
+
+
                 dmg = target.TakeDamage(dmg, DamageType);
-                Debug.Log($"{target.Name} took {dmg} damage");
+                //Debug.Log($"{target.Name} took {dmg} damage");
                 EventManager.Trigger("OnDamageDealt", new GameEventData()
                                 .Set("Source", user)
                                 .Set("Target", target)
@@ -145,6 +163,8 @@ public class Ability
                     .Set("Target", target)
                     .Set("Amount", Healing)
                 );
+
+                outcomeFlags |= OutcomeFlags.Heal; 
             }
 
             // Apply Shield
@@ -158,6 +178,7 @@ public class Ability
                     .Set("Target", target)
                     .Set("Amount", Shielding)
                 );
+                outcomeFlags |= OutcomeFlags.Shield; 
             }
             // Apply Status Effects
             foreach (var effect in StatusEffectsApplied)
@@ -174,6 +195,17 @@ public class Ability
                             .Set("Target", target)
                             .Set("Effect", applied)
                         );
+                        
+                    //Set Status effect flags
+                    switch (applied.Type)
+                    {
+                        case StatusEffectType.Stun:
+                            outcomeFlags |= OutcomeFlags.Stun;
+                            break;
+                        case StatusEffectType.DamageOverTime:
+                            outcomeFlags |= OutcomeFlags.Dot;
+                            break;
+                    }
                 }
                 else
                 {
@@ -211,7 +243,14 @@ public class Ability
 
         user.HasActedThisTurn = true;
 
-       
+       EventManager.Trigger("OnAbilityResolved", new GameEventData()
+                            .Set("Source", user)                
+                            .Set("Targets", targets)            
+                            .Set("Ability", this)               
+                            .Set("Essence", this.DamageType)    
+                            .Set("Outcome", outcomeFlags)       
+                            .Set("TeamId", user.TeamId)         
+                            );
     }
 
     public void Apply(GameCharacter user, List<GameCharacter> targets)

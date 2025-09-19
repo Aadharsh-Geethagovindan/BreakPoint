@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.TextCore.Text;
 public enum LogType
 {
     Damage,
@@ -46,7 +47,7 @@ public class Logger : MonoBehaviour
         EventManager.Subscribe("OnChargeIncreased", HandleChargeIncreased);
         EventManager.Subscribe("OnChargeDecreased", HandleChargeDecreased);
         EventManager.Subscribe("OnBurnDownDMG", HandleBurnDownDMG);
-
+        EventManager.Subscribe("OnCriticalHit", HandleCritHitApplied);
     }
 
     void OnDisable()
@@ -62,6 +63,8 @@ public class Logger : MonoBehaviour
         EventManager.Unsubscribe("OnPassiveTriggered", HandlePassiveTriggered);
         EventManager.Unsubscribe("OnChargeIncreased", HandleChargeIncreased);
         EventManager.Unsubscribe("OnChargeDecreased", HandleChargeDecreased);
+        EventManager.Unsubscribe("OnCriticalHit", HandleCritHitApplied);
+
     }
 
     public void PostLog(string message, LogType type)
@@ -157,7 +160,7 @@ public class Logger : MonoBehaviour
     }
     private void HandleDamageDealt(object eventData)
     {
-        
+
         var evt = eventData as GameEventData;
         if (evt == null) return;
 
@@ -172,7 +175,7 @@ public class Logger : MonoBehaviour
     }
     private void HandleMissed(object eventData)
     {
-        
+
         var evt = eventData as GameEventData;
         if (evt == null) return;
 
@@ -185,7 +188,7 @@ public class Logger : MonoBehaviour
             PostLog($"{source.Name} missed {target.Name} with {ability.Name}", LogType.Damage);
         }
     }
-   private void HandleHealed(object eventData)
+    private void HandleHealed(object eventData)
     {
         var evt = eventData as GameEventData;
         if (evt == null) return;
@@ -240,7 +243,7 @@ public class Logger : MonoBehaviour
 
         if (target != null)
         {
-            PostLog($"{target.Name} suffers {damage} burndown damage!",LogType.Status);
+            PostLog($"{target.Name} suffers {damage} burndown damage!", LogType.Status);
         }
     }
 
@@ -327,7 +330,21 @@ public class Logger : MonoBehaviour
         }
     }
 
+    private void HandleCritHitApplied(object eventData)
+    {
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
 
+        var source = evt.Get<GameCharacter>("Source");
+        var target = evt.Get<GameCharacter>("Target");
+        var critRate = evt.Get<float>("CritRate");
+        var critDamage = evt.Get<float>("CritDamage");
+
+        if (target != null)
+        {
+            PostLog($"{source.Name} crit with a chance of {critRate*100}% and dealt {critDamage*100}% crit damage", LogType.Buff);
+        }
+    }
 
 
 

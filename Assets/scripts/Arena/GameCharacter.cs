@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Linq;
 public class GameCharacter
 {
+
+    [Header("Base Stats")]
     public string Name { get; private set; }
     public int HP { get; private set; }
     public int MaxHP { get; private set; }
@@ -11,30 +13,39 @@ public class GameCharacter
     public int Speed { get; private set; }
     public int Charge { get; private set; }
     public int SigChargeReq { get; private set; }
-    public int LastDamageTaken = 0;
-    public float DamageMultiplier { get; private set; } = 1f;
-    public string Affil { get; private set; }
     public string Lore { get; private set; }
     public string Species { get; private set; }
+
+
+    [Header("Game Specific Stats")]
+    public float DamageMultiplier { get; private set; } = 1f;
+    public string Affil { get; private set; }
     public float Accuracy { get; private set; } = 1f; // 1 = 100%
     public float DodgeChance { get; private set; } = 0f; // 0 = 0%
     private int totalHealed = 0;
     private int healThresholdsMet = 0;
     public int TeamId { get; private set; }
+    public Dictionary<DamageType, float> Resistances { get; private set; }
+    public float CritRate { get; private set; } = 0.1f;     // default 5%
+    public float CritDMG { get; private set; } = 1.5f;  // default 150% damage
 
+
+    [Header("Bool Trackers")]
+    public int LastDamageTaken = 0;
     private bool hasBeenAttackedThisTurn = false;
     public bool HasActedThisTurn = false;
     public bool IsDead = false;
     public bool HasUsedOneTimePassive { get; private set; } = false;
     public List<StatusEffect> StatusEffects { get; private set; }
 
+    [Header("Abilities")]
     public Ability NormalAbility { get; private set; }
     public Ability SkillAbility { get; private set; }
     public Ability SignatureAbility { get; private set; }
     public Ability PassiveAbility { get; private set; }
 
-    public Dictionary<DamageType, float> Resistances { get; private set; }
-
+    
+    [Header("Misc.")]
     private List<GameCharacter> allies = new List<GameCharacter>();
     private List<GameCharacter> enemies = new List<GameCharacter>();
 
@@ -111,7 +122,7 @@ public class GameCharacter
 
             HP -= finalDamage;
             if (HP < 0) HP = 0;
-            Debug.Log($"{Name} took {finalDamage} {type} damage. HP: {HP}/{MaxHP}");
+            //Debug.Log($"{Name} took {finalDamage} {type} damage. HP: {HP}/{MaxHP}");
             //Logger.Instance.PostLog($"{Name} took {finalDamage} {type} damage. HP: {HP}/{MaxHP}", LogType.Damage);
         }
         SetHasBeenAttackedThisTurn(true);
@@ -179,6 +190,16 @@ public class GameCharacter
     {
         HP = value;
     }
+
+    public void AddCritRate(float value)
+    {
+        CritRate += value;
+    }
+
+    public void AddCritDMG(float value)
+    {
+        CritDMG += value;
+    }
     public void ModifyAccuracy(float amount)
     {
         Accuracy += amount;
@@ -218,6 +239,37 @@ public class GameCharacter
                 baseMultiplier += effect.Value;
         }
         return Mathf.Clamp(baseMultiplier, 0f, 5f);
+    }
+
+    public float GetModifiedCritRate()
+    {
+        float r = CritRate; // base
+        foreach (var se in StatusEffects)
+            if (se.Type == StatusEffectType.CritRateModifier)
+                r += se.Value; // additive
+        return Mathf.Clamp01(r);
+    }
+
+    // NEW
+    public float GetModifiedCritDMG()
+    {
+        float m = CritDMG; // base (e.g., 1.5 = 150%)
+        foreach (var se in StatusEffects)
+            if (se.Type == StatusEffectType.CritDMGModifier)
+                m += se.Value; // additive to multiplier
+        return Mathf.Max(1f, m);
+    }
+
+    public int GetModifiedSpeed()
+    {
+        float mult = 1f; // 1.0 = no change
+        foreach (var effect in StatusEffects)
+        {
+            if (effect.Type == StatusEffectType.SPDModifier)
+                mult += effect.Value; // e.g., -0.25f makes mult 0.75
+        }
+        int result = Mathf.Max(1, Mathf.RoundToInt(Speed * mult));
+        return result;
     }
 
     public float GetModifiedAccuracy()
@@ -302,7 +354,7 @@ public class GameCharacter
     public void IncreaseCharge(int amount)
     {
         Charge += amount;
-        Debug.Log($"{Name} gained {amount} charge. Current: {Charge}/{SignatureAbility.ChargeRequirement}");
+        //Debug.Log($"{Name} gained {amount} charge. Current: {Charge}/{SignatureAbility.ChargeRequirement}");
         EventManager.Trigger("OnChargeIncreased", new GameEventData()
             .Set("Character", this)
             .Set("Amount", amount)

@@ -244,7 +244,7 @@ public class AnimationManager : MonoBehaviour
             if (tgtCard == null) continue;
 
             RectTransform to = tgtCard.GetComponent<RectTransform>();
-            Debug.Log($"Volley plan → {res.Target.Name} WillHit={res.WillHit}");
+            //Debug.Log($"Volley plan → {res.Target.Name} WillHit={res.WillHit}");
             // Fire projectile (parallel)
             remaining++;
             StartCoroutine(FireAndSignal(from, to, sprite, () => remaining--));

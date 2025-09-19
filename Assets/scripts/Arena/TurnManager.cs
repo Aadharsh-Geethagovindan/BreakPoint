@@ -124,6 +124,7 @@ public class TurnManager : MonoBehaviour
             currentCharacterIndex = (currentCharacterIndex + 1) % charactersInOrder.Count;
         }
         currentCharacter = charactersInOrder[currentCharacterIndex];
+        //Debug.Log($"{currentCharacter.Name} spd is {currentCharacter.GetModifiedSpeed()}");
         EventManager.Trigger("OnTurnStarted", currentCharacter);
 
 
@@ -269,7 +270,7 @@ public class TurnManager : MonoBehaviour
         foreach (var character in allAlive)
         {
             int roll = UnityEngine.Random.Range(1, 21); // d20
-            float modifier = character.Speed / 4f;
+            float modifier = character.GetModifiedSpeed() / 4f;
             float total = roll + modifier;
             rollResults[character] = total;
 

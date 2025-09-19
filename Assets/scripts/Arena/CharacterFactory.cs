@@ -104,7 +104,7 @@ public static class CharacterFactory
 
         
         var skill = new Ability(moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-                                0, 30, 15, 0, TargetType.AllyOrSelf, 1);
+                                0, 30, 15, 0, TargetType.AllyOrSelf, 1,null,DamageType.Elemental);
 
         var sig = new Ability(moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
                             100, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, null, DamageType.Elemental);
@@ -127,10 +127,10 @@ public static class CharacterFactory
                                 30, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Elemental);
 
         var skill = new Ability(moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-                                0, 75, 0, 0, TargetType.AllyOrSelf, 1);
+                                0, 75, 0, 0, TargetType.AllyOrSelf, 1,null,DamageType.Elemental);
 
         var sig = new Ability(moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-                            0, 0, 0, data.SigChargeReq, TargetType.Ally, 1);
+                            0, 0, 0, data.SigChargeReq, TargetType.Ally, 1,null,DamageType.Elemental);
 
         var Avarice = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
 
@@ -213,7 +213,7 @@ public static class CharacterFactory
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            0, 0, 0, data.SigChargeReq, TargetType.Enemy, 3
+            0, 0, 0, data.SigChargeReq, TargetType.Enemy, 3,null,DamageType.Force
         );
         // Special case: Sig applies charge and clears debuffs — handled in BattleManager
 
@@ -332,7 +332,7 @@ public static class CharacterFactory
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            0, 0, 10, data.SigChargeReq, TargetType.AllyOrSelf, 2, psychEffects
+            0, 0, 10, data.SigChargeReq, TargetType.AllyOrSelf, 2, psychEffects,DamageType.Corrupt
         );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation,data.lore,data.species);
@@ -400,7 +400,7 @@ public static class CharacterFactory
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            0, 100, 0, data.SigChargeReq, TargetType.Self, 1, healAndRage
+            0, 100, 0, data.SigChargeReq, TargetType.Self, 1, healAndRage,DamageType.Corrupt
         );
         // Signature: heals 100, and enrages Krakoa (BattleManager can restrict actions while enraged)
 
@@ -420,7 +420,7 @@ public static class CharacterFactory
         var skill = new Ability(moves[2].name, moves[2].description,AbilityType.Skill, moves[2].cooldown,20, 0, 0, 0, TargetType.Enemy, 1,new List<StatusEffect> { rupture }, DamageType.Force);
 
         var empower = new StatusEffect("Empowered", StatusEffectType.DamageModifier, 2, 0.2f, null, isDebuff: false);
-        var fortify = new Ability(moves[3].name, moves[3].description,AbilityType.Signature, moves[3].cooldown,0, 0, 40, data.SigChargeReq, TargetType.Self, 1,new List<StatusEffect> { empower }, DamageType.None);
+        var fortify = new Ability(moves[3].name, moves[3].description,AbilityType.Signature, moves[3].cooldown,0, 0, 40, data.SigChargeReq, TargetType.Self, 1,new List<StatusEffect> { empower }, DamageType.Elemental);
 
         GameCharacter legionary = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq,normal, skill, fortify, passive,data.imageName, data.affiliation, data.lore, data.species);
 
@@ -614,7 +614,7 @@ public static class CharacterFactory
         // Signature - 40% chance to stun
         var sigEffects = new List<StatusEffect>
         {
-            new StatusEffect("Stunned", StatusEffectType.Stun, 1, 0f, null, DamageType.None, isDebuff: true, applyChance: 0.4f)
+            new StatusEffect("Stunned", StatusEffectType.Stun, 1, 0f, null, DamageType.Arcane, isDebuff: true, applyChance: 0.4f)
         };
 
         var signature = new Ability(
@@ -752,7 +752,7 @@ public static class CharacterFactory
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
             25, 0, 0, 0, TargetType.Enemy, 1,
             new List<StatusEffect> {
-                new StatusEffect("Decaying", StatusEffectType.DamageModifier, 2, -0.2f, null, DamageType.True, isDebuff: true, applyChance: 0.35f)
+                new StatusEffect("Decaying", StatusEffectType.DamageModifier, 2, -0.2f, null, DamageType.Corrupt, isDebuff: true, applyChance: 0.35f)
             },
             DamageType.Corrupt
         );
@@ -782,7 +782,7 @@ public static class CharacterFactory
         var halo = new StatusEffect("Halo", StatusEffectType.ResistanceModifier, 2, 0.2f, null, DamageType.Arcane, isDebuff: false);
         var halo2 = new StatusEffect("Halo (ice)", StatusEffectType.ResistanceModifier, 2, 0.2f, null, DamageType.Elemental, isDebuff: false, toDisplay: false);
         var clarity = new StatusEffect("Clarity", StatusEffectType.AccuracyModifier, 1, 0.15f, null, isDebuff: false, applyChance: 0.4f);
-        var skill = new Ability(moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown, 0, 0, 0, 0, TargetType.Ally, 1, new List<StatusEffect> { halo, halo2, clarity }, DamageType.None);
+        var skill = new Ability(moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown, 0, 0, 0, 0, TargetType.Ally, 1, new List<StatusEffect> { halo, halo2, clarity }, DamageType.Elemental);
 
         var blind = new StatusEffect("Blinding", StatusEffectType.AccuracyModifier, 1, -0.2f, null, isDebuff: true);
         var sig = new Ability(moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown, 50, 0, 0, data.SigChargeReq, TargetType.Enemy, 1, new List<StatusEffect> { blind }, DamageType.Elemental);
@@ -812,7 +812,7 @@ public static class CharacterFactory
 
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            0, 0, 30, 0, TargetType.Self, 1, hardenedHideEffects
+            0, 0, 30, 0, TargetType.Self, 1, hardenedHideEffects,DamageType.Corrupt
         );
 
 
@@ -876,7 +876,7 @@ public static class CharacterFactory
 
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            0, 0, 25, 0, TargetType.AllyOrSelf, 2
+            0, 0, 25, 0, TargetType.AllyOrSelf, 2,null,DamageType.Arcane
         );
 
         var flamingWardEffects = new List<StatusEffect>
@@ -887,7 +887,7 @@ public static class CharacterFactory
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            0, 0, 0, data.SigChargeReq, TargetType.AllyOrSelf, 1, flamingWardEffects
+            0, 0, 0, data.SigChargeReq, TargetType.AllyOrSelf, 1, flamingWardEffects,DamageType.Arcane
         );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
@@ -908,11 +908,11 @@ public static class CharacterFactory
             10, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Arcane
         );
 
-        var haste = new StatusEffect("Haste", StatusEffectType.DodgeModifier, 1, .15f, null, DamageType.True, isDebuff: false, applyChance: 0.4f);
-        var clarity = new StatusEffect("Clarity", StatusEffectType.AccuracyModifier, 1, .15f, null, DamageType.True, isDebuff: false, applyChance: 0.4f);
+        var haste = new StatusEffect("Haste", StatusEffectType.DodgeModifier, 1, .15f, null, DamageType.Arcane, isDebuff: false, applyChance: 0.4f);
+        var clarity = new StatusEffect("Clarity", StatusEffectType.AccuracyModifier, 1, .15f, null, DamageType.Arcane, isDebuff: false, applyChance: 0.4f);
         var skill = new Ability(
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
-            0, 0, 0, 0, TargetType.AllyOrSelf, 1, new List<StatusEffect> { haste, clarity }
+            0, 0, 0, 0, TargetType.AllyOrSelf, 1, new List<StatusEffect> { haste, clarity },DamageType.Arcane
         );
 
         var recover = new StatusEffect("Recover", StatusEffectType.HealingOverTime, 2, 20, null, isDebuff: false);
@@ -976,14 +976,8 @@ public static class CharacterFactory
 
         var iceRes = new StatusEffect("Frozen Aegis", StatusEffectType.ResistanceModifier, 2, 0.2f, null, DamageType.Elemental);
         var skill = new Ability(
-            moves[2].name,
-            moves[2].description,
-            AbilityType.Skill,
-            moves[2].cooldown,
-            0, 0, 25, 0,
-            TargetType.Ally,
-            1,
-            new List<StatusEffect> { iceRes }
+            moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
+            0, 0, 25, 0,TargetType.Ally,1,new List<StatusEffect> { iceRes }
     );
 
     var dmgBuff = new StatusEffect("Glacial Bloom", StatusEffectType.DamageModifier, 2, 0.15f, null,isDebuff: false);
@@ -991,7 +985,7 @@ public static class CharacterFactory
         extendBuff.DurationTargeting = DurationTargetingMode.SingleBuff;
     var sig = new Ability(
         moves[3].name,moves[3].description,AbilityType.Signature,moves[3].cooldown,0, 0, 0,data.SigChargeReq,TargetType.Ally,1,
-        new List<StatusEffect> { dmgBuff, extendBuff }
+        new List<StatusEffect> { dmgBuff, extendBuff }, DamageType.Elemental
     );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
@@ -1020,7 +1014,7 @@ public static class CharacterFactory
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            0, 0, 120, data.SigChargeReq, TargetType.AllyOrSelf, 1
+            0, 0, 120, data.SigChargeReq, TargetType.AllyOrSelf, 1,null,DamageType.Force
         );
 
         var VyGar = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
