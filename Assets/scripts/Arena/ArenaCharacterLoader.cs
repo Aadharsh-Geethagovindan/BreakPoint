@@ -16,7 +16,7 @@ public class ArenaCharacterLoader : MonoBehaviour
 
     
 
-    private const float Radius = 280f;
+    private const float Radius = 10f;
     [SerializeField] private float yOffset = 50f; // y offset for card positioning in battleground
     [SerializeField] private float xOffset = 0f; // x offset for card positioning in battleground
 
@@ -81,44 +81,7 @@ public class ArenaCharacterLoader : MonoBehaviour
         Debug.LogWarning($"Character '{characterName}' not found in Characters.json");
         return null;
     }
-/*
-    private void ArrangeCharactersInCircle()
-    {
-        if (sortedCharacters == null || sortedCharacters.Count < 6)
-        {
-            Debug.LogError("Not enough characters to arrange. Need 6 characters.");
-            return;
-        }
 
-        float angleStep = 360f / 6f;
-
-        for (int i = 0; i < 6; i++)
-        {
-            CharacterData character = sortedCharacters[i];
-            float angle = angleStep * i;
-            Vector2 position = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * Radius;
-
-            GameObject newCard = Instantiate(characterCardPrefab, characterHolder);
-            RectTransform rectTransform = newCard.GetComponent<RectTransform>();
-            rectTransform.anchoredPosition = position;
-            rectTransform.localScale = Vector3.one;
-
-            // Set up card visuals
-            TextMeshProUGUI nameText = newCard.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
-            nameText.text = character.name;
-
-            // 🔹 Set up portrait image
-            Image portrait = newCard.transform.Find("PortraitImage").GetComponent<Image>();
-            Sprite characterSprite = Resources.Load<Sprite>($"Images/{character.imageName}");
-            
-            if (characterSprite != null)
-                portrait.sprite = characterSprite;
-            else
-                Debug.LogWarning($"Image not found for character: {character.imageName}");
-
-            // Optionally display other stats, like HP and Speed, if needed
-        }
-    }*/
 
     public void CreateCharacterCards(List<GameCharacter> characters)
     {
@@ -136,6 +99,7 @@ public class ArenaCharacterLoader : MonoBehaviour
             float angle = -angleStep * i;
             Vector2 basePosition = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * Radius;
             Vector2 position = basePosition + new Vector2(xOffset, yOffset); // shift up
+            Debug.Log($"Card {character.Name} position: {position}");
 
             GameObject cardObj = GameObject.Instantiate(characterCardPrefab, characterHolder);
            
@@ -193,10 +157,15 @@ public class ArenaCharacterLoader : MonoBehaviour
                 statsBlock.gameObject.SetActive(false);
             // Register with targeting system
             CharacterCardUI cardUI = cardObj.GetComponent<CharacterCardUI>();
-            cardUI.ClockPosition = position;
-            cardUI.HPBar = hpBarRect;
-            cardUI.SetCharacter(character);
-            panel.RegisterCard(character, cardUI);
+            if (cardUI != null)
+            {
+                cardUI.BindCharacter(character); 
+                cardUI.ClockPosition = position;
+                cardUI.HPBar = hpBarRect;
+                cardUI.SetCharacter(character);
+                panel.RegisterCard(character, cardUI);
+            }
+            
         }
     }
 

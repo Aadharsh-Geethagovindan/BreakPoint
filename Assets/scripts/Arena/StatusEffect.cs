@@ -215,6 +215,8 @@ public class StatusEffect
                 return IsDebuff ? "dodgeDebuff" : "dodgeBuff";
             case StatusEffectType.CDModifier:
             case StatusEffectType.SPDModifier:
+            case StatusEffectType.CritRateModifier:
+            case StatusEffectType.CritDMGModifier:
                 return "passiveIcon";
             default:
                 Debug.Log("Could not match");

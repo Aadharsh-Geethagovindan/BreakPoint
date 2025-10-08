@@ -100,7 +100,7 @@ namespace Breakpoint.Revamped
                 int currentRound = TurnManager.Instance.GetCurrentRound(); // use your real accessor
                 recentSingles.Add((essence, currentRound));
                 // start (or keep) the active window when the first single hits
-                if (windowStartRound < 0) windowStartRound = currentRound; 
+                if (windowStartRound < 0) windowStartRound = currentRound;
 
                 if (cfg.checkFusionImmediately)
                 {
@@ -108,6 +108,12 @@ namespace Breakpoint.Revamped
                     TryFireDualOrTriple(currentRound);
                 }
             }
+            EventManager.Trigger("OnTrackMarkAdded",
+            new GameEventData()
+                .Set("TeamId", teamId)
+                .Set("Essence", essence)
+                .Set("CurrentMarks", marks[essence])
+                .Set("Threshold", cfg.singleTrackThreshold));
         }
 
         private IEnumerator ApplySingleAfterDelay(Essence essence)

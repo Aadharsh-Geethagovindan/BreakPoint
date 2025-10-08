@@ -48,6 +48,8 @@ public class Logger : MonoBehaviour
         EventManager.Subscribe("OnChargeDecreased", HandleChargeDecreased);
         EventManager.Subscribe("OnBurnDownDMG", HandleBurnDownDMG);
         EventManager.Subscribe("OnCriticalHit", HandleCritHitApplied);
+        EventManager.Subscribe("OnBreakpointUpdated", HandleBarUpdated);
+        EventManager.Subscribe("OnBreakpointTriggered", HandleBarTriggered);
     }
 
     void OnDisable()
@@ -64,6 +66,8 @@ public class Logger : MonoBehaviour
         EventManager.Unsubscribe("OnChargeIncreased", HandleChargeIncreased);
         EventManager.Unsubscribe("OnChargeDecreased", HandleChargeDecreased);
         EventManager.Unsubscribe("OnCriticalHit", HandleCritHitApplied);
+        EventManager.Unsubscribe("OnBreakpointUpdated", HandleBarUpdated);
+        EventManager.Unsubscribe("OnBreakpointTriggered", HandleBarTriggered);
 
     }
 
@@ -113,12 +117,12 @@ public class Logger : MonoBehaviour
         {
             LogType.Damage => Color.red,
             LogType.Heal => Color.green,
-            LogType.Shield => Color.cyan,
+            LogType.Shield => new Color(1f, .67f, 0f),
             LogType.Buff => Color.yellow,
             LogType.Debuff => new Color(1f, 0.4f, 0f),
             LogType.Miss => Color.gray,
             LogType.Info => new Color(1f, .67f, 0f),
-            LogType.Status => Color.magenta,
+            LogType.Status => Color.cyan,
             LogType.Passive => new Color(0.6f, 0.6f, 1f),
             LogType.Death => new Color(0.7f, 0f, 0f),
             LogType.Warning => new Color(0.7f, .67f, .08f),
@@ -342,11 +346,27 @@ public class Logger : MonoBehaviour
 
         if (target != null)
         {
-            PostLog($"{source.Name} crit with a chance of {critRate*100}% and dealt {critDamage*100}% crit damage", LogType.Buff);
+            PostLog($"{source.Name} crit with a chance of {source.GetModifiedCritRate() * 100}% and dealt {source.GetModifiedCritDMG() * 100}% crit damage", LogType.Buff);
         }
     }
 
+    private void HandleBarUpdated(object eventData)
+    {
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        float val = evt.Get<float>("Value");
+        PostLog($"Breakpoint bar value is {val}", LogType.Status);
+    }
 
 
+    private void HandleBarTriggered(object eventData)
+    {
+        var evt = eventData as GameEventData;
+        if (evt == null) return;
+
+        int winner = evt.Get<int>("TeamId");
+        PostLog($"Team {winner} has triggered breakpoint!", LogType.Status);
+    }
 
 }

@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      speckle_0: -39368115925698791
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

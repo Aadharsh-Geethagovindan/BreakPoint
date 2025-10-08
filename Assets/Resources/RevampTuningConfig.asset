@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6b0454aebb90614d95e3f4fc60da3ec, type: 3}
   m_Name: RevampTuningConfig
   m_EditorClassIdentifier: 
-  singleTrackThreshold: 3
+  singleTrackThreshold: 6
   fusionWindowTurns: 2
   checkFusionImmediately: 1
-  marksOnBasic: 2
+  marksOnBasic: 1
   marksOnSkill: 2
   marksOnSignature: 3
   bonusMarks_Stun: 2
@@ -32,5 +32,19 @@ MonoBehaviour:
   dur_Arcane_Tempo: 1
   dur_Corrupt_DoTAmp: 2
   cataclysm_MaxHPPercentLoss: 0.15
-  elementalShieldPercent: 0.3
+  elementalShieldPercent: 0.25
   elementalHealPercent: 0
+  bp_Cap: 3
+  bp_DecayPerRound: 0
+  bp_DampPower: 0
+  bp_W_Damage: 12
+  bp_W_Heal: 8
+  bp_W_Shield: 8
+  bp_Bonus_CritAdd: 1
+  bp_Bonus_Stun: 2
+  bp_Bonus_Cleanse: 1.5
+  bp_Bonus_Spread: 1
+  bp_M_Force: 1
+  bp_M_Elemental: 1
+  bp_M_Arcane: 1
+  bp_M_Corrupt: 1

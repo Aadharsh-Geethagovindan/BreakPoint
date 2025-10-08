@@ -124,16 +124,18 @@ public class Ability
 
                 //check for crit, if crit, modify dmg
                 float roll = UnityEngine.Random.value; // 0–1
-                bool isCrit = roll < user.CritRate;
+                bool isCrit = roll < user.GetModifiedCritRate();
                 if (isCrit)
                 {
-                    dmg = Mathf.CeilToInt(dmg * user.CritDMG);
+                    dmg = Mathf.CeilToInt(dmg * user.GetModifiedCritDMG());
 
                     EventManager.Trigger("OnCriticalHit", new GameEventData()
                     .Set("Source", user)
                     .Set("Target", target)
+                    .Set("Type", DamageType)
                     .Set("CritRate", user.CritRate)
                     .Set("CritDamage", user.CritDMG));
+                    
                 }
 
 
@@ -162,6 +164,7 @@ public class Ability
                     .Set("Source", user)
                     .Set("Target", target)
                     .Set("Amount", Healing)
+                    .Set("Type", DamageType)
                 );
 
                 outcomeFlags |= OutcomeFlags.Heal; 
@@ -177,6 +180,7 @@ public class Ability
                     .Set("Source", user)
                     .Set("Target", target)
                     .Set("Amount", Shielding)
+                    .Set("Type", DamageType)
                 );
                 outcomeFlags |= OutcomeFlags.Shield; 
             }

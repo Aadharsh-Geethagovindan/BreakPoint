@@ -1,0 +1,403 @@
+fileFormatVersion: 2
+guid: 455c2aedc22287c4e99ec07b679f2c1c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8936871833928673441
+    second: CircuitOverlay_0
+  - first:
+      213: 1623570489286678582
+    second: CircuitOverlay_1
+  - first:
+      213: 6013394061244849242
+    second: CircuitOverlay_2
+  - first:
+      213: -4726802235704610059
+    second: CircuitOverlay_3
+  - first:
+      213: -6840937805629418982
+    second: CircuitOverlay_4
+  - first:
+      213: 8886474916860532751
+    second: CircuitOverlay_5
+  - first:
+      213: -1140833452180215585
+    second: CircuitOverlay_6
+  - first:
+      213: 8960753198092974089
+    second: CircuitOverlay_7
+  - first:
+      213: 6560501420025931639
+    second: CircuitOverlay_8
+  - first:
+      213: 1461395092602097253
+    second: CircuitOverlay_9
+  - first:
+      213: 4512154096077971485
+    second: CircuitOverlay_10
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: CircuitOverlay_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 567
+        width: 1024
+        height: 426
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f57dc77aa6ad9f380800000000000000
+      internalID: -8936871833928673441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CircuitOverlay_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 553
+        width: 1024
+        height: 413
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6385db902c4188610800000000000000
+      internalID: 1623570489286678582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CircuitOverlay_2
+      rect:
+        serializedVersion: 2
+        x: 522
+        y: 536
+        width: 235
+        height: 326
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5c51f2d90ed37350800000000000000
+      internalID: 6013394061244849242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CircuitOverlay_3
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 495
+        width: 417
+        height: 416
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f2fd490966076eb0800000000000000
+      internalID: -4726802235704610059
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CircuitOverlay_4
+      rect:
+        serializedVersion: 2
+        x: 627
+        y: 452
+        width: 397
+        height: 185
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a121be48f4b1011a0800000000000000
+      internalID: -6840937805629418982
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CircuitOverlay_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 387
+        width: 1024
+        height: 108
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0814e4bad9135b70800000000000000
+      internalID: 8886474916860532751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CircuitOverlay_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 245
+        width: 1024
+        height: 228
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd86ae60502fa20f0800000000000000
+      internalID: -1140833452180215585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CircuitOverlay_7
+      rect:
+        serializedVersion: 2
+        x: 285
+        y: 198
+        width: 359
+        height: 214
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 908f64cbe8dfa5c70800000000000000
+      internalID: 8960753198092974089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CircuitOverlay_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 102
+        width: 1024
+        height: 251
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 777671158459b0b50800000000000000
+      internalID: 6560501420025931639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CircuitOverlay_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 67
+        width: 441
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56e0c0b081be74410800000000000000
+      internalID: 1461395092602097253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CircuitOverlay_10
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 29
+        width: 458
+        height: 59
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d102d847e346e9e30800000000000000
+      internalID: 4512154096077971485
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      CircuitOverlay_0: -8936871833928673441
+      CircuitOverlay_1: 1623570489286678582
+      CircuitOverlay_10: 4512154096077971485
+      CircuitOverlay_2: 6013394061244849242
+      CircuitOverlay_3: -4726802235704610059
+      CircuitOverlay_4: -6840937805629418982
+      CircuitOverlay_5: 8886474916860532751
+      CircuitOverlay_6: -1140833452180215585
+      CircuitOverlay_7: 8960753198092974089
+      CircuitOverlay_8: 6560501420025931639
+      CircuitOverlay_9: 1461395092602097253
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

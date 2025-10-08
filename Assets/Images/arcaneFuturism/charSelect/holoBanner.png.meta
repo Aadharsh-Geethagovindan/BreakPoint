@@ -1,0 +1,2041 @@
+fileFormatVersion: 2
+guid: 15c461ed726a8b943b917eb696603942
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 6375389442383891747
+    second: holoBanner_0
+  - first:
+      213: -3465786760349728197
+    second: holoBanner_1
+  - first:
+      213: -2011800905244801317
+    second: holoBanner_2
+  - first:
+      213: -6414149624564139669
+    second: holoBanner_3
+  - first:
+      213: -8795050724999610099
+    second: holoBanner_4
+  - first:
+      213: -6159845272164685129
+    second: holoBanner_5
+  - first:
+      213: -4637486916345770389
+    second: holoBanner_6
+  - first:
+      213: 7906531468888533768
+    second: holoBanner_7
+  - first:
+      213: 4383173376005315165
+    second: holoBanner_8
+  - first:
+      213: -264163317772194829
+    second: holoBanner_9
+  - first:
+      213: -7875670094863845811
+    second: holoBanner_10
+  - first:
+      213: -547062970115405828
+    second: holoBanner_11
+  - first:
+      213: 4230553582617277042
+    second: holoBanner_12
+  - first:
+      213: -8676943616063105019
+    second: holoBanner_13
+  - first:
+      213: 8782484029017381673
+    second: holoBanner_14
+  - first:
+      213: -711935066349183066
+    second: holoBanner_15
+  - first:
+      213: -1986652629023138362
+    second: holoBanner_16
+  - first:
+      213: 3028139257629692825
+    second: holoBanner_17
+  - first:
+      213: -3024557619871832823
+    second: holoBanner_18
+  - first:
+      213: 8883880321351521035
+    second: holoBanner_19
+  - first:
+      213: -1847413134268092151
+    second: holoBanner_20
+  - first:
+      213: 5122567743113257552
+    second: holoBanner_21
+  - first:
+      213: -783409819365042757
+    second: holoBanner_22
+  - first:
+      213: -5395955712471296929
+    second: holoBanner_23
+  - first:
+      213: -1580901774445383671
+    second: holoBanner_24
+  - first:
+      213: -6392713909836894765
+    second: holoBanner_25
+  - first:
+      213: -3167496128750167376
+    second: holoBanner_26
+  - first:
+      213: -2843961617187428029
+    second: holoBanner_27
+  - first:
+      213: -8765286772004076792
+    second: holoBanner_28
+  - first:
+      213: 5719501282959015878
+    second: holoBanner_29
+  - first:
+      213: -8220690384127371730
+    second: holoBanner_30
+  - first:
+      213: -7162658740313159988
+    second: holoBanner_31
+  - first:
+      213: -83245689241315267
+    second: holoBanner_32
+  - first:
+      213: 4733312472358081826
+    second: holoBanner_33
+  - first:
+      213: -3897193923574170397
+    second: holoBanner_34
+  - first:
+      213: -7779383174798883440
+    second: holoBanner_35
+  - first:
+      213: -6188908562919989621
+    second: holoBanner_36
+  - first:
+      213: -6706824912373597578
+    second: holoBanner_37
+  - first:
+      213: -6202660561098532817
+    second: holoBanner_38
+  - first:
+      213: 805440177961374161
+    second: holoBanner_39
+  - first:
+      213: 3622069785841125659
+    second: holoBanner_40
+  - first:
+      213: -9007938644672376826
+    second: holoBanner_41
+  - first:
+      213: -7573541691651190121
+    second: holoBanner_42
+  - first:
+      213: -5008284975203463147
+    second: holoBanner_43
+  - first:
+      213: 8121520982945826394
+    second: holoBanner_44
+  - first:
+      213: 6480748783821391104
+    second: holoBanner_45
+  - first:
+      213: -8871963470750997491
+    second: holoBanner_46
+  - first:
+      213: -8586866626000146620
+    second: holoBanner_47
+  - first:
+      213: 2273438964832529627
+    second: holoBanner_48
+  - first:
+      213: -8657753064468847685
+    second: holoBanner_49
+  - first:
+      213: 6673287887238768459
+    second: holoBanner_50
+  - first:
+      213: -4510141805645483363
+    second: holoBanner_51
+  - first:
+      213: -8842164576043524586
+    second: holoBanner_52
+  - first:
+      213: 843346817321853936
+    second: holoBanner_53
+  - first:
+      213: 609569561781225285
+    second: holoBanner_54
+  - first:
+      213: -687719044298914426
+    second: holoBanner_55
+  - first:
+      213: -5866326195262042094
+    second: holoBanner_56
+  - first:
+      213: -5266210750327922835
+    second: holoBanner_57
+  - first:
+      213: 4105250237629538654
+    second: holoBanner_58
+  - first:
+      213: -596638838647276683
+    second: holoBanner_59
+  - first:
+      213: -3730345703439056438
+    second: holoBanner_60
+  - first:
+      213: -2536521354602616863
+    second: holoBanner_61
+  - first:
+      213: -3122723166138692534
+    second: holoBanner_62
+  - first:
+      213: 9035283219101184933
+    second: holoBanner_63
+  - first:
+      213: 3276620239228994443
+    second: holoBanner_64
+  - first:
+      213: -2571727062878445792
+    second: holoBanner_65
+  - first:
+      213: -6283192941968434305
+    second: holoBanner_66
+  - first:
+      213: 4272811320448648497
+    second: holoBanner_67
+  - first:
+      213: 447115871711281998
+    second: holoBanner_68
+  - first:
+      213: 6064483317030552125
+    second: holoBanner_69
+  - first:
+      213: -4697882697780788875
+    second: holoBanner_70
+  - first:
+      213: 6063919099265949654
+    second: holoBanner_71
+  - first:
+      213: 6676924199949875940
+    second: holoBanner_72
+  - first:
+      213: -2138983060013270762
+    second: holoBanner_73
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 61, y: 68, z: 56, w: 71}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: holoBanner_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1536
+        height: 1024
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 32d411a6beee97850800000000000000
+      internalID: 6375389442383891747
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_1
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 998
+        width: 94
+        height: 26
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b324a12dd4d07efc0800000000000000
+      internalID: -3465786760349728197
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_2
+      rect:
+        serializedVersion: 2
+        x: 590
+        y: 1008
+        width: 411
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd603145cb5a414e0800000000000000
+      internalID: -2011800905244801317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_3
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 1018
+        width: 23
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6936ab66ec5cf6a0800000000000000
+      internalID: -6414149624564139669
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_4
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 994
+        width: 102
+        height: 30
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d014bdab6f3b1f580800000000000000
+      internalID: -8795050724999610099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_5
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 991
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7ba21497c55d38aa0800000000000000
+      internalID: -6159845272164685129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_6
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 991
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6e40b4583654afb0800000000000000
+      internalID: -4637486916345770389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_7
+      rect:
+        serializedVersion: 2
+        x: 1042
+        y: 999
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80b6c88fa74a9bd60800000000000000
+      internalID: 7906531468888533768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_8
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 987
+        width: 9
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d5a1fb166f824dc30800000000000000
+      internalID: 4383173376005315165
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_9
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 976
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fbef71bcd0855cf0800000000000000
+      internalID: -264163317772194829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_10
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 975
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d46397b96cff3b290800000000000000
+      internalID: -7875670094863845811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_11
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 978
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf7408c80217868f0800000000000000
+      internalID: -547062970115405828
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_12
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 970
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 272b827a112f5ba30800000000000000
+      internalID: 4230553582617277042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_13
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 960
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 508177ce0cd459780800000000000000
+      internalID: -8676943616063105019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_14
+      rect:
+        serializedVersion: 2
+        x: 1042
+        y: 959
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 92b5f1b51b6a1e970800000000000000
+      internalID: 8782484029017381673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_15
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 962
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6afdc1344d2be16f0800000000000000
+      internalID: -711935066349183066
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_16
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 954
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cddafaa5fdfd64e0800000000000000
+      internalID: -1986652629023138362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_17
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 921
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 993de6d6c9c160a20800000000000000
+      internalID: 3028139257629692825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_18
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 898
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 905a6d89edc9606d0800000000000000
+      internalID: -3024557619871832823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_19
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 838
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b039d3d5512e94b70800000000000000
+      internalID: 8883880321351521035
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_20
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 807
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9013f8ada8bac56e0800000000000000
+      internalID: -1847413134268092151
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_21
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 198
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 052e32ac834071740800000000000000
+      internalID: 5122567743113257552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_22
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 198
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb591338be4c025f0800000000000000
+      internalID: -783409819365042757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_23
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 185
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5498665ed6bd15b0800000000000000
+      internalID: -5395955712471296929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_24
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 178
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 900f56d46328f0ae0800000000000000
+      internalID: -1580901774445383671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_25
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 166
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3dd297da1948847a0800000000000000
+      internalID: -6392713909836894765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_26
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 170
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0badb629d0bca04d0800000000000000
+      internalID: -3167496128750167376
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_27
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 150
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 349a2b42af73888d0800000000000000
+      internalID: -2843961617187428029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_28
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 158
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80344401f127b5680800000000000000
+      internalID: -8765286772004076792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_29
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 152
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cfb9271d10cf5f40800000000000000
+      internalID: 5719501282959015878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_30
+      rect:
+        serializedVersion: 2
+        x: 1042
+        y: 157
+        width: 6
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e265e9596ad3aed80800000000000000
+      internalID: -8220690384127371730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_31
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 144
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc6894833df199c90800000000000000
+      internalID: -7162658740313159988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_32
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 122
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3850b79c7048def0800000000000000
+      internalID: -83245689241315267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_33
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 86
+        width: 10
+        height: 25
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22554dd8d9a10b140800000000000000
+      internalID: 4733312472358081826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_34
+      rect:
+        serializedVersion: 2
+        x: 154
+        y: 95
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ecfc8456c26ae9c0800000000000000
+      internalID: -3897193923574170397
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_35
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 104
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 095467e28341a0490800000000000000
+      internalID: -7779383174798883440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_36
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 96
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b8ed7c7c3749c1aa0800000000000000
+      internalID: -6188908562919989621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_37
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 103
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67a3b37c6429ce2a0800000000000000
+      internalID: -6706824912373597578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_38
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 93
+        width: 7
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f2895613519bbe9a0800000000000000
+      internalID: -6202660561098532817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_39
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 75
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1d1173f039f7d2b00800000000000000
+      internalID: 805440177961374161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_40
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 81
+        width: 7
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b194cb8974d244230800000000000000
+      internalID: 3622069785841125659
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_41
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 74
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6001acd578f5df280800000000000000
+      internalID: -9007938644672376826
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_42
+      rect:
+        serializedVersion: 2
+        x: 1042
+        y: 71
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 792158135ff55e690800000000000000
+      internalID: -7573541691651190121
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_43
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 81
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 510521f995ffe7ab0800000000000000
+      internalID: -5008284975203463147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_44
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 62
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a560e58ed4075b070800000000000000
+      internalID: 8121520982945826394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_45
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 69
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0050832beae30f950800000000000000
+      internalID: 6480748783821391104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_46
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 63
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0425a1aa3470e480800000000000000
+      internalID: -8871963470750997491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_47
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 66
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44faa9f7c4255d880800000000000000
+      internalID: -8586866626000146620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_48
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 48
+        width: 8
+        height: 15
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdcef5d71b0ec8f10800000000000000
+      internalID: 2273438964832529627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_49
+      rect:
+        serializedVersion: 2
+        x: 993
+        y: 56
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb3e847657b79d780800000000000000
+      internalID: -8657753064468847685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_50
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 48
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b47a8c21af74c9c50800000000000000
+      internalID: 6673287887238768459
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_51
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 46
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d92bcdb6ce1c861c0800000000000000
+      internalID: -4510141805645483363
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_52
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 40
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 61e12677a225a4580800000000000000
+      internalID: -8842164576043524586
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_53
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 44
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0f3ecec467b24bb00800000000000000
+      internalID: 843346817321853936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_54
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 40
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5474cdb6940a57800800000000000000
+      internalID: 609569561781225285
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_55
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 39
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 685ca434c2bb476f0800000000000000
+      internalID: -687719044298914426
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_56
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 38
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21056d2186f969ea0800000000000000
+      internalID: -5866326195262042094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_57
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 42
+        width: 11
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d6f5c526939aae6b0800000000000000
+      internalID: -5266210750327922835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_58
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 30
+        width: 8
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e512fff2757c8f830800000000000000
+      internalID: 4105250237629538654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_59
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 34
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57b3a3b232058b7f0800000000000000
+      internalID: -596638838647276683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_60
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 30
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac14c11d8562b3cc0800000000000000
+      internalID: -3730345703439056438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_61
+      rect:
+        serializedVersion: 2
+        x: 1087
+        y: 25
+        width: 10
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1e7e7bd54477cccd0800000000000000
+      internalID: -2536521354602616863
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_62
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 6
+        width: 10
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4c8b6643dbd9a4d0800000000000000
+      internalID: -3122723166138692534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_63
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 22
+        width: 8
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a3f29f7736c36d70800000000000000
+      internalID: 9035283219101184933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_64
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 23
+        width: 7
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b83891f4fb4e87d20800000000000000
+      internalID: 3276620239228994443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_65
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 16
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02f1fd5acd36f4cd0800000000000000
+      internalID: -2571727062878445792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_66
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 23
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7bdabe1f4d9dc8a0800000000000000
+      internalID: -6283192941968434305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_67
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 14
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1350c93f1431c4b30800000000000000
+      internalID: 4272811320448648497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_68
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 0
+        width: 7
+        height: 11
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e434ac23489743600800000000000000
+      internalID: 447115871711281998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_69
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 9
+        width: 6
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d3283e1227f592450800000000000000
+      internalID: 6064483317030552125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_70
+      rect:
+        serializedVersion: 2
+        x: 1041
+        y: 0
+        width: 8
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 571825aa394cdceb0800000000000000
+      internalID: -4697882697780788875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_71
+      rect:
+        serializedVersion: 2
+        x: 1088
+        y: 10
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6df1472fa4e572450800000000000000
+      internalID: 6063919099265949654
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_72
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 0
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4eab83a1f2339ac50800000000000000
+      internalID: 6676924199949875940
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: holoBanner_73
+      rect:
+        serializedVersion: 2
+        x: 1089
+        y: 1
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 619b45f5d3ec052e0800000000000000
+      internalID: -2138983060013270762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 1537655665
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      holoBanner_0: 6375389442383891747
+      holoBanner_1: -3465786760349728197
+      holoBanner_10: -7875670094863845811
+      holoBanner_11: -547062970115405828
+      holoBanner_12: 4230553582617277042
+      holoBanner_13: -8676943616063105019
+      holoBanner_14: 8782484029017381673
+      holoBanner_15: -711935066349183066
+      holoBanner_16: -1986652629023138362
+      holoBanner_17: 3028139257629692825
+      holoBanner_18: -3024557619871832823
+      holoBanner_19: 8883880321351521035
+      holoBanner_2: -2011800905244801317
+      holoBanner_20: -1847413134268092151
+      holoBanner_21: 5122567743113257552
+      holoBanner_22: -783409819365042757
+      holoBanner_23: -5395955712471296929
+      holoBanner_24: -1580901774445383671
+      holoBanner_25: -6392713909836894765
+      holoBanner_26: -3167496128750167376
+      holoBanner_27: -2843961617187428029
+      holoBanner_28: -8765286772004076792
+      holoBanner_29: 5719501282959015878
+      holoBanner_3: -6414149624564139669
+      holoBanner_30: -8220690384127371730
+      holoBanner_31: -7162658740313159988
+      holoBanner_32: -83245689241315267
+      holoBanner_33: 4733312472358081826
+      holoBanner_34: -3897193923574170397
+      holoBanner_35: -7779383174798883440
+      holoBanner_36: -6188908562919989621
+      holoBanner_37: -6706824912373597578
+      holoBanner_38: -6202660561098532817
+      holoBanner_39: 805440177961374161
+      holoBanner_4: -8795050724999610099
+      holoBanner_40: 3622069785841125659
+      holoBanner_41: -9007938644672376826
+      holoBanner_42: -7573541691651190121
+      holoBanner_43: -5008284975203463147
+      holoBanner_44: 8121520982945826394
+      holoBanner_45: 6480748783821391104
+      holoBanner_46: -8871963470750997491
+      holoBanner_47: -8586866626000146620
+      holoBanner_48: 2273438964832529627
+      holoBanner_49: -8657753064468847685
+      holoBanner_5: -6159845272164685129
+      holoBanner_50: 6673287887238768459
+      holoBanner_51: -4510141805645483363
+      holoBanner_52: -8842164576043524586
+      holoBanner_53: 843346817321853936
+      holoBanner_54: 609569561781225285
+      holoBanner_55: -687719044298914426
+      holoBanner_56: -5866326195262042094
+      holoBanner_57: -5266210750327922835
+      holoBanner_58: 4105250237629538654
+      holoBanner_59: -596638838647276683
+      holoBanner_6: -4637486916345770389
+      holoBanner_60: -3730345703439056438
+      holoBanner_61: -2536521354602616863
+      holoBanner_62: -3122723166138692534
+      holoBanner_63: 9035283219101184933
+      holoBanner_64: 3276620239228994443
+      holoBanner_65: -2571727062878445792
+      holoBanner_66: -6283192941968434305
+      holoBanner_67: 4272811320448648497
+      holoBanner_68: 447115871711281998
+      holoBanner_69: 6064483317030552125
+      holoBanner_7: 7906531468888533768
+      holoBanner_70: -4697882697780788875
+      holoBanner_71: 6063919099265949654
+      holoBanner_72: 6676924199949875940
+      holoBanner_73: -2138983060013270762
+      holoBanner_8: 4383173376005315165
+      holoBanner_9: -264163317772194829
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

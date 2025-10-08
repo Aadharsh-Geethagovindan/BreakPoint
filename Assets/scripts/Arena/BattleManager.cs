@@ -297,10 +297,15 @@ public class BattleManager : MonoBehaviour
         trackerP1?.Dispose();
         trackerP2?.Dispose();
     }
-    
+
     public List<GameCharacter> GetTeam(int teamId)
     {
         return charactersInOrder.Where(c => c.TeamId == teamId).ToList(); // NEW
+    }
+
+    public List<GameCharacter> GetAllAliveCharacters()
+    {
+        return charactersInOrder.Where(c => !c.IsDead).ToList();
     }
 
 }

@@ -18,8 +18,15 @@ public class TurnManager : MonoBehaviour
 
     void OnEnable()
     {
-        EventManager.Subscribe("OnGameEnded", OnGameEnded);         
+        EventManager.Subscribe("OnGameEnded", OnGameEnded);   
+        EventManager.Subscribe("OnStatusesChanged", OnStatusesChanged);      
     }
+    void OnDisable()
+    {
+        EventManager.Unsubscribe("OnGameEnded", OnGameEnded);
+        EventManager.Unsubscribe("OnStatusesChanged", OnStatusesChanged);
+    }
+
 
 
     private void Awake()
@@ -273,7 +280,7 @@ public class TurnManager : MonoBehaviour
             float modifier = character.GetModifiedSpeed() / 4f;
             float total = roll + modifier;
             rollResults[character] = total;
-
+            EventManager.Trigger("OnSpeedRoll", new GameEventData().Set("Character", character).Set("Roll", roll).Set("Mod", modifier).Set("Total", total));
             //Debug.Log($"{character.Name} rolled {roll} + {modifier:F1} = {total:F1}");
         }
 
@@ -360,7 +367,22 @@ public class TurnManager : MonoBehaviour
         gameOver = true;                                      
     }
 
+    private void OnStatusesChanged(object _)
+    {
+        RefreshAllStatusIcons();
+    }
+    private void RefreshAllStatusIcons()
+    {
+        if (activeCharPanel == null) activeCharPanel = Object.FindFirstObjectByType<ActiveCharPanel>();
+        if (activeCharPanel == null || charactersInOrder == null) return;
 
-
+        foreach (var character in charactersInOrder)
+        {
+            if (character == null) continue;
+            var card = activeCharPanel.FindCardForCharacter(character);
+            if (card != null)
+                card.RefreshStatusEffects(character);
+        }
+    }
 
 }

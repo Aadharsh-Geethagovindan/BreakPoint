@@ -95,7 +95,7 @@ public class RevampEffectsManager : MonoBehaviour
 
     // ---------- Singles ----------
 
-    private void OnForceSingle(object payload)
+    private void OnForceSingle(object payload)//works
     {
         int team = TeamIdFrom(payload);
         var enemies = Enemies(team);
@@ -116,11 +116,11 @@ public class RevampEffectsManager : MonoBehaviour
 
             enemy.AddStatusEffect(spdDebuff);
         }
-
+        EventManager.Trigger("OnStatusesChanged");
         Log($"[Revamped] Force single — Team {team} applied SPD debuff");
     }
 
-    private void OnElementalSingle(object payload)
+    private void OnElementalSingle(object payload) //works
     {
         int team = TeamIdFrom(payload);
         var allies = Allies(team);
@@ -162,11 +162,11 @@ public class RevampEffectsManager : MonoBehaviour
 
             enemy.AddStatusEffect(cdDebuff);
         }
-
+        EventManager.Trigger("OnStatusesChanged");
         Log($"[Revamped] Arcane single — Team {team} applied skill CD debuff");
     }
 
-    private void OnCorruptSingle(object payload)
+    private void OnCorruptSingle(object payload) //works
     {
         int team = TeamIdFrom(payload);
         var allies = Allies(team);
@@ -190,13 +190,12 @@ public class RevampEffectsManager : MonoBehaviour
 
     // ---------- Duals ----------
 
-    private void OnDual_FE_Eruption(object payload)
+    private void OnDual_FE_Eruption(object payload) //works
     {
         int team = TeamIdFrom(payload);
         var enemies = Enemies(team);
 
-        // Minimal placeholder: small true damage ping so you can verify routing.
-        // Replace magnitude by a knob later.
+        
         foreach (var enemy in enemies)
         {
             if (!enemy.IsDead)
@@ -216,7 +215,7 @@ public class RevampEffectsManager : MonoBehaviour
         // TODO: Breakpoint bar reduction once bar manager exists.
     }
 
-    private void OnDual_FC_Crush(object payload)
+    private void OnDual_FC_Crush(object payload) // works
     {
         int team = TeamIdFrom(payload);
         var allies = Allies(team);
@@ -234,11 +233,11 @@ public class RevampEffectsManager : MonoBehaviour
             );
             ally.AddStatusEffect(keen);
         }
-
+        EventManager.Trigger("OnStatusesChanged");
         Log($"[Revamped] Fusion: Crush — Team {team} +20% Crit Rate (1 turn)");
     }
 
-    private void OnDual_EA_Purify(object payload)
+    private void OnDual_EA_Purify(object payload) // works
     {
         int team = TeamIdFrom(payload);
         var allies = Allies(team);
@@ -259,11 +258,11 @@ public class RevampEffectsManager : MonoBehaviour
                 );
             }
         }
-
+        EventManager.Trigger("OnStatusesChanged"); // Optimized variant would be to confirm change did happen
         Log($"[Revamped] Fusion: Purify — Team {team} cleansed all debuffs");
     }
 
-   private void OnDual_EC_Blightstorm(object payload)
+   private void OnDual_EC_Blightstorm(object payload) // works, ui icon update should happen instantly
     {
         int team = TeamIdFrom(payload);
         var enemies = Enemies(team).Where(e => !e.IsDead).ToList();
@@ -351,6 +350,10 @@ public class RevampEffectsManager : MonoBehaviour
                 .Set("Target", enemy)
                 .Set("Effect", clone));
         }
+        if (applied > 0)
+        {
+            EventManager.Trigger("OnStatusesChanged");
+        }
 
         Log(applied > 0
             ? $"[Revamped] Fusion: Blightstorm — spread '{template.Name}' to {applied} enemies"
@@ -358,7 +361,7 @@ public class RevampEffectsManager : MonoBehaviour
     }
 
 
-    private void OnDual_AC_Mindbreak(object payload)
+    private void OnDual_AC_Mindbreak(object payload) //works
     {
         int team = TeamIdFrom(payload);
         var enemies = Enemies(team);

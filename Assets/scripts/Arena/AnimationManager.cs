@@ -98,7 +98,7 @@ public class AnimationManager : MonoBehaviour
             {
                 float angleStep = 360f / newOrder.Count;
                 float angle = -angleStep * i;
-                Vector2 basePos = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * 280f;
+                Vector2 basePos = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * 200f;
                 Vector2 finalCardPos = basePos + new Vector2(0, 60f);
                 card.ClockPosition = finalCardPos;
             }

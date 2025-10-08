@@ -93,5 +93,29 @@ namespace Breakpoint.Revamped
 
         [Tooltip("Optional heal percent of MaxHP for Elemental single (0 = none).")]
         [Range(0f, 1f)] public float elementalHealPercent = 0.00f;
+
+        [Header("Breakpoint Bar — Core")]
+        public float bp_Cap = 100f;           // CAP
+        [Range(0f, 1f)] public float bp_DecayPerRound = 0.10f;   // 0–1
+        public float bp_DampPower = 1.5f;     // p in damping
+
+        [Header("Breakpoint Bar — Weights")]
+        public float bp_W_Damage = 5.0f;      // α
+        public float bp_W_Heal   = 2.6f;      // β
+        public float bp_W_Shield = 2.0f;      // γ
+
+        [Header("Breakpoint Bar — Bonuses")]
+        public float bp_Bonus_CritAdd   = 0.5f;   // flat add to G on crit, or set 0 & use mult instead
+        public float bp_Bonus_Stun      = 0.8f;   // per applied hard CC
+        public float bp_Bonus_Cleanse   = 0.6f;   // per cleanse (Purify)
+        public float bp_Bonus_Spread    = 0.5f;   // Blightstorm spread
+        // add more as needed
+
+        [Header("Breakpoint Bar — Essence Bias")]
+        public float bp_M_Force      = 1.0f;
+        public float bp_M_Elemental  = 1.0f;
+        public float bp_M_Arcane     = 1.0f;
+        public float bp_M_Corrupt    = 1.0f;
+
     }
 }

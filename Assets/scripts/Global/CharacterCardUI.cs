@@ -19,6 +19,18 @@ public class CharacterCardUI : MonoBehaviour
 
     public bool setRecent = true;
     private Coroutine _moveRoutine;
+    public TMP_Text speedRollText; // Assign in prefab/inspector
+    private GameCharacter boundCharacter;
+
+    void OnEnable()
+    {
+        EventManager.Subscribe("OnSpeedRoll", HandleSpeedRoll);
+    }
+
+    void OnDisable()
+    {
+        EventManager.Unsubscribe("OnSpeedRoll", HandleSpeedRoll);
+    }
 
     public Coroutine StartMoveExclusive(Vector2 targetPos, float duration)
     {
@@ -33,7 +45,7 @@ public class CharacterCardUI : MonoBehaviour
         if (_moveRoutine != null) StopCoroutine(_moveRoutine);
         _moveRoutine = null;
     }
-    
+
     public void SetCharacter(GameCharacter character)
     {
         characterRef = character;
@@ -146,7 +158,7 @@ public class CharacterCardUI : MonoBehaviour
             statusEffectDisplay.UpdateStatusEffectDisplay(character);
         }
     }
-    
+
     public IEnumerator MoveToPosition(Vector2 targetPos, float duration)
     {
         RectTransform rectTransform = GetComponent<RectTransform>();
@@ -162,6 +174,42 @@ public class CharacterCardUI : MonoBehaviour
         }
 
         rectTransform.anchoredPosition = targetPos;
+    }
+    
+    public void BindCharacter(GameCharacter character)
+    {
+        boundCharacter = character;
+        if (speedRollText != null) speedRollText.text = ""; // clear at bind
+    }
+
+    private void HandleSpeedRoll(object data)
+    {
+        var evt = data as GameEventData;
+        if (evt == null) return;
+
+        GameCharacter c = evt.Get<GameCharacter>("Character");
+        if (c != boundCharacter) return; // not my card
+
+        int roll = evt.Get<int>("Roll");
+        float mod = evt.Get<float>("Mod");
+        float total = evt.Get<float>("Total");
+
+        // Show the result as "15 + 6.1 = 21.1"
+        if (speedRollText != null)
+        {
+            speedRollText.text = $"{roll} + {mod:0.0} = {total:0.0}";
+            speedRollText.gameObject.SetActive(true);
+
+            // Optional: fade out after 1s
+            CancelInvoke(nameof(HideSpeedRoll));
+            Invoke(nameof(HideSpeedRoll), 5.5f);
+        }
+    }
+
+    private void HideSpeedRoll()
+    {
+        if (speedRollText != null)
+            speedRollText.gameObject.SetActive(false);
     }
 
 }

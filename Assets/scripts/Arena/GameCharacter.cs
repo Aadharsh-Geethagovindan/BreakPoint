@@ -364,6 +364,7 @@ public class GameCharacter
     public void ReduceCharge(int amount)
     {
         Charge -= amount;
+        Charge = Mathf.Clamp(Charge, 0,10000);
         Debug.Log($"{Name} lost {amount} charge. Current: {Charge}/{SignatureAbility.ChargeRequirement}");
         EventManager.Trigger("OnChargeDecreased", new GameEventData()
                 .Set("Character", this)
