@@ -371,7 +371,7 @@ public class TurnManager : MonoBehaviour
     {
         RefreshAllStatusIcons();
     }
-    private void RefreshAllStatusIcons()
+    public void RefreshAllStatusIcons()
     {
         if (activeCharPanel == null) activeCharPanel = Object.FindFirstObjectByType<ActiveCharPanel>();
         if (activeCharPanel == null || charactersInOrder == null) return;
