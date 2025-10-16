@@ -36,11 +36,12 @@ public class BreakpointChoiceUI : MonoBehaviour
 
     private void MakeChoice(string choice)
     {
-        overlay.SetActive(false);
+        /*overlay.SetActive(false);
 
         EventManager.Trigger("OnBreakpointChoiceSelected", 
             new GameEventData()
                 .Set("TeamId", currentTeamId)
-                .Set("Choice", choice));
+                .Set("Choice", choice));*/
+        Object.FindFirstObjectByType<BreakpointChoiceAnimator>().MakeChoice(choice);
     }
 }

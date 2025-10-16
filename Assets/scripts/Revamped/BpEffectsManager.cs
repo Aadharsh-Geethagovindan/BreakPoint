@@ -22,13 +22,40 @@ public class BreakpointEffectManager : MonoBehaviour
 
         int teamId = evt.Get<int>("TeamId");
         string choice = evt.Get<string>("Choice");
+        string result = evt.Get<string>("Result");
 
-        //Debug.Log($"Team is {teamId} and choice is {choice}");
+        if (string.IsNullOrEmpty(result))
+        {
+            // Fallback if the animator didn't pass the text
+            if (choice == "Buff")
+                ApplyRandomBuff(teamId);
+            else
+                ApplyRandomDebuff(teamId);
+            return;
+        }
 
-        if (choice == "Buff")
-            ApplyRandomBuff(teamId);
+        // 🔹 Normalize the result text for easier comparison
+        string key = result.ToLowerInvariant();
+
+        // 🔹 Map result string → effect
+        if (key.Contains("essence surge"))
+            EssenceSurge(teamId);
+        else if (key.Contains("barrier pulse"))
+            BarrierPulse(teamId);
+        else if (key.Contains("critical flow"))
+            CriticalFlow(teamId);
+        else if (key.Contains("sig overcharge"))
+            SigOvercharge(teamId);
+        else if (key.Contains("essence drain"))
+            EssenceDrain(teamId);
+        else if (key.Contains("withering weight"))
+            WitheringWeight(teamId);
+        else if (key.Contains("sig disrupt"))
+            SigDisrupt(teamId);
+        else if (key.Contains("weakened resolve"))
+            WeakenedResolve(teamId);
         else
-            ApplyRandomDebuff(teamId);
+            Debug.LogWarning($"[Breakpoint] No effect mapped for '{result}'");
     }
 
     private void ApplyRandomBuff(int teamId)

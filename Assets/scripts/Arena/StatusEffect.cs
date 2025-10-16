@@ -213,11 +213,14 @@ public class StatusEffect
                 return IsDebuff ? "resDebuff" : "resBuff";
             case StatusEffectType.DodgeModifier:
                 return IsDebuff ? "dodgeDebuff" : "dodgeBuff";
-            case StatusEffectType.CDModifier:
             case StatusEffectType.SPDModifier:
+                return IsDebuff ? "speedBuff" : "spdDebuff";
             case StatusEffectType.CritRateModifier:
+                return "crRate";
             case StatusEffectType.CritDMGModifier:
-                return "passiveIcon";
+                return "crDmg";
+            case StatusEffectType.CDModifier:
+                return "energy";
             default:
                 Debug.Log("Could not match");
                 return null;

@@ -70,16 +70,22 @@ public class AffinityTrackManager : MonoBehaviour
         };
     }
 
+
     private void RefreshTrack(Transform track, int team, Essence essence, int currentMarks, int threshold)
     {
+        // 🔹 Destroy all existing marks in the track
+        foreach (Transform child in track)
+            Destroy(child.gameObject);
+
         var key = (team, essence);
-        if (!marks.ContainsKey(key))
-            marks[key] = new List<Image>();
+
+        // 🔹 Always reset the cache to a clean list
+        marks[key] = new List<Image>();
 
         var list = marks[key];
 
-        // Add missing marks
-        while (list.Count < currentMarks)
+        // 🔹 Add new marks according to currentMarks
+        for (int i = 0; i < currentMarks; i++)
         {
             Image newMark = Instantiate(markPrefab, track);
             newMark.sprite = GetSprite(essence);
@@ -87,18 +93,20 @@ public class AffinityTrackManager : MonoBehaviour
             list.Add(newMark);
         }
 
-        // Adjust sizing for new threshold dynamically
+        // 🔹 Recalculate sizing based on threshold
         var layout = track.GetComponent<VerticalLayoutGroup>();
         float trackHeight = (track as RectTransform).rect.height;
-
-        // total space = height - top/bottom padding - (spacing * (threshold-1))
         float available = trackHeight - layout.padding.top - layout.padding.bottom - (layout.spacing * (threshold - 1));
         float markHeight = available / threshold;
 
         foreach (var img in list)
         {
+            if (img == null) continue; // safety
             var r = img.rectTransform;
             r.sizeDelta = new Vector2(13f, markHeight); // fixed width, dynamic height
         }
     }
+
+    
+
 }

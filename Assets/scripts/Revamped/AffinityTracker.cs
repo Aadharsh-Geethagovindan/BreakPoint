@@ -27,6 +27,9 @@ namespace Breakpoint.Revamped
 
         // Which essences triggered within the fusion window (by round index)
         private readonly List<(Essence e, int round)> recentSingles = new List<(Essence, int)>();
+        // Which round each essence was last fully activated
+        private readonly Dictionary<Essence, int> activatedRounds = new();
+        private readonly HashSet<Essence> lockedSingles = new();
 
         public AffinityTracker(int teamId, RevampTuningConfig config)
         {
@@ -34,14 +37,16 @@ namespace Breakpoint.Revamped
             this.cfg = config;
 
             // Subscribe to events only in Revamped mode
-            EventManager.Subscribe("OnAbilityResolved", OnAbilityResolved);   // NEW
-            EventManager.Subscribe("OnRoundEnded", OnRoundEnded);        // NEW
+            EventManager.Subscribe("OnRoundStarted", CheckTrackExpirations);
+            EventManager.Subscribe("OnAbilityResolved", OnAbilityResolved);   
+            EventManager.Subscribe("OnRoundEnded", OnRoundEnded);      
         }
 
         public void Dispose()
         {
-            EventManager.Unsubscribe("OnAbilityResolved", OnAbilityResolved);  // NEW
-            EventManager.Unsubscribe("OnRoundEnded", OnRoundEnded);       // NEW
+            EventManager.Unsubscribe("OnAbilityResolved", OnAbilityResolved);
+            EventManager.Unsubscribe("OnRoundEnded", OnRoundEnded);
+            EventManager.Unsubscribe("OnRoundStarted", CheckTrackExpirations);       
         }
 
         // --- Event handlers ---
@@ -88,18 +93,32 @@ namespace Breakpoint.Revamped
 
         private void AddMarks(Essence essence, int amount)
         {
+            // Don’t update locked tracks
+            if (lockedSingles.Contains(essence))
+                return;
             marks[essence] += amount;
             Debug.Log($"[Affinity] Team {teamId} +{amount} {essence} → {marks[essence]}/{cfg.singleTrackThreshold}");
 
+            if (marks[essence] > cfg.singleTrackThreshold)
+            { marks[essence] = cfg.singleTrackThreshold; }
+
+            // Always refresh UI right after increment (shows current mark count)
+            EventManager.Trigger("OnTrackMarkAdded",
+                new GameEventData()
+                    .Set("TeamId", teamId)
+                    .Set("Essence", essence)
+                    .Set("CurrentMarks", marks[essence])
+                    .Set("Threshold", cfg.singleTrackThreshold));
+
             if (marks[essence] >= cfg.singleTrackThreshold)
             {
-                marks[essence] -= cfg.singleTrackThreshold; // wrap around; spillover stays
-                CoroutineRunner.Run(ApplySingleAfterDelay(essence)); // sequence with small delay
+                lockedSingles.Add(essence); // lock
 
-                // Record this single for fusion window
-                int currentRound = TurnManager.Instance.GetCurrentRound(); // use your real accessor
+                CoroutineRunner.Run(ApplySingleAfterDelay(essence));
+
+                int currentRound = TurnManager.Instance.GetCurrentRound();
+                activatedRounds[essence] = currentRound;
                 recentSingles.Add((essence, currentRound));
-                // start (or keep) the active window when the first single hits
                 if (windowStartRound < 0) windowStartRound = currentRound;
 
                 if (cfg.checkFusionImmediately)
@@ -108,13 +127,8 @@ namespace Breakpoint.Revamped
                     TryFireDualOrTriple(currentRound);
                 }
             }
-            EventManager.Trigger("OnTrackMarkAdded",
-            new GameEventData()
-                .Set("TeamId", teamId)
-                .Set("Essence", essence)
-                .Set("CurrentMarks", marks[essence])
-                .Set("Threshold", cfg.singleTrackThreshold));
         }
+
 
         private IEnumerator ApplySingleAfterDelay(Essence essence)
         {
@@ -273,14 +287,44 @@ namespace Breakpoint.Revamped
         private int BonusMarksFrom(OutcomeFlags flags)
         {
             int add = 0;
-            if (flags.HasFlag(OutcomeFlags.Stun))   add += cfg.bonusMarks_Stun;
-            if (flags.HasFlag(OutcomeFlags.Dot))    add += cfg.bonusMarks_Dot;
-            if (flags.HasFlag(OutcomeFlags.Buff))   add += cfg.bonusMarks_Buff;
+            if (flags.HasFlag(OutcomeFlags.Stun)) add += cfg.bonusMarks_Stun;
+            if (flags.HasFlag(OutcomeFlags.Dot)) add += cfg.bonusMarks_Dot;
+            if (flags.HasFlag(OutcomeFlags.Buff)) add += cfg.bonusMarks_Buff;
             if (flags.HasFlag(OutcomeFlags.Debuff)) add += cfg.bonusMarks_Debuff;
             if (flags.HasFlag(OutcomeFlags.Shield)) add += cfg.bonusMarks_Shield;
-            if (flags.HasFlag(OutcomeFlags.Heal))   add += cfg.bonusMarks_Heal;
+            if (flags.HasFlag(OutcomeFlags.Heal)) add += cfg.bonusMarks_Heal;
             return add;
         }
+        
+        private void CheckTrackExpirations(object data)
+        {
+            if (data is not int currentRound)
+                return; // safety
+
+            var expired = new List<Essence>();
+
+            foreach (var kvp in activatedRounds)
+            {
+                if (currentRound - kvp.Value >= cfg.fusionWindowTurns)
+                    expired.Add(kvp.Key);
+            }
+
+            foreach (var essence in expired)
+            {
+                activatedRounds.Remove(essence);
+                marks[essence] = 0;
+                lockedSingles.Remove(essence); // 🔹 unlock
+                // Refresh UI
+                EventManager.Trigger("OnTrackMarkAdded",
+                    new GameEventData()
+                        .Set("TeamId", teamId)
+                        .Set("Essence", essence)
+                        .Set("CurrentMarks", 0)
+                        .Set("Threshold", cfg.singleTrackThreshold));
+            }
+        }
+
+
     }
 
     /// <summary>

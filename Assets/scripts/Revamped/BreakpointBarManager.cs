@@ -95,10 +95,9 @@ public class BreakpointBarManager : MonoBehaviour
         if (Mathf.Abs(B) >= cfg.bp_Cap - 0.0001f)
         {
             int winnerTeam = (B > 0f) ? 1 : 2;
-            // For now, auto-pick "Buff" (you can open a choice UI and feed back the choice)
+            
             EventManager.Trigger("OnBreakpointTriggered", new GameEventData()
-                .Set("TeamId", winnerTeam)
-                .Set("Choice", "Buff")); // or "Debuff"
+                .Set("TeamId", winnerTeam)); 
             // Hard reset to center (simple policy)                       //  (reset)
             B = 0f;
             EventManager.Trigger("OnBreakpointUpdated", new GameEventData()

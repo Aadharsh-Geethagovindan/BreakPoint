@@ -212,7 +212,13 @@ public class RevampEffectsManager : MonoBehaviour
     {
         int team = TeamIdFrom(payload);
         Log($"[Revamped] Fusion: Disruption (stub) — Team {team}");
-        // TODO: Breakpoint bar reduction once bar manager exists.
+        {
+            float cap = (cfg != null) ? cfg.bp_Cap : 1f;
+            float value = (team == 1) ? cap : -cap; // normalized +1 toward team side
+            EventManager.Trigger("OnBreakpointUpdated", new GameEventData()
+                .Set("Value", value)
+                .Set("Cap", cap));
+        }
     }
 
     private void OnDual_FC_Crush(object payload) // works
