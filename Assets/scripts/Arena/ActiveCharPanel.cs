@@ -12,8 +12,12 @@ public class ActiveCharPanel : MonoBehaviour
     public TextMeshProUGUI hpText;
     public Slider sigChargeBar;
     public TextMeshProUGUI sigChargeText;
+    public TextMeshProUGUI spdText;
+    public TextMeshProUGUI dodgeText;
     public TextMeshProUGUI accuracyText;
     public TextMeshProUGUI damageMultiplierText;
+    public TextMeshProUGUI crRateText;
+    public TextMeshProUGUI crDmgText;
     [SerializeField] private ResistanceGridUI resistanceGrid;
     public TextMeshProUGUI statusEffectsText;
 
@@ -154,10 +158,23 @@ public class ActiveCharPanel : MonoBehaviour
         }
 
         // === ACCURACY / DMG MULT ===
-        if (accuracyText != null && damageMultiplierText != null)
+        if (accuracyText != null && dodgeText != null)
         {
-            accuracyText.text = $"Accuracy: \n{Mathf.RoundToInt(character.GetModifiedAccuracy() * 100)}%";
-            damageMultiplierText.text = $"Dmg Multiplier: \n {character.GetModifiedDamageMultiplier()}x";
+            accuracyText.text = $"{Mathf.RoundToInt(character.GetModifiedAccuracy() * 100)}%";
+            dodgeText.text = $"{Mathf.RoundToInt(character.GetModifiedDodgeChance() * 100)}%";
+            
+        }
+
+        if (crRateText != null && crDmgText != null)
+        {
+            crRateText.text = $"{Mathf.RoundToInt(character.GetModifiedCritRate() * 100)}%";
+            crDmgText.text = $"{Mathf.RoundToInt(character.GetModifiedCritDMG() * 100)}%";
+        }
+
+        if (spdText != null && damageMultiplierText != null)
+        {
+            spdText.text = $"{character.GetModifiedSpeed()}";
+            damageMultiplierText.text = $"{character.GetModifiedDamageMultiplier()}x";
         }
 
         // === STATUS EFFECTS ==

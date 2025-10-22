@@ -1,19 +1,22 @@
 fileFormatVersion: 2
-guid: b395bd8919262594abdce005a46ef664
+guid: 9f031d72abb8ac349ae3d576966d1ba6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6785303246561300961
-    second: gStar_0
+      213: -268876893685291175
+    second: critRate_0
   - first:
-      213: -5426958220705767599
-    second: gStar_1
+      213: 8024596614781916359
+    second: critRate_1
   - first:
-      213: -4527860099686593331
-    second: gStar_2
+      213: 332422474205463640
+    second: critRate_2
   - first:
-      213: -1974051888477572479
-    second: gStar_3
+      213: -7759204275100133413
+    second: critRate_3
+  - first:
+      213: -3007941587072237852
+    second: critRate_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -57,7 +60,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -109,13 +112,79 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: gStar_0
+      name: critRate_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 429
+        width: 188
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 957e397c3e1c44cf0800000000000000
+      internalID: -268876893685291175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critRate_1
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 2
+        width: 465
+        height: 534
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c4d0e1ea181d5f60800000000000000
+      internalID: 8024596614781916359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critRate_2
+      rect:
+        serializedVersion: 2
+        x: 283
+        y: 429
+        width: 192
+        height: 112
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8548f52aa700d9400800000000000000
+      internalID: 332422474205463640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: critRate_3
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 333
-        height: 314
+        width: 182
+        height: 108
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,20 +193,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f1ea867b5a2c5d1a0800000000000000
-      internalID: -6785303246561300961
+      spriteID: bd7d6f262d4c15490800000000000000
+      internalID: -7759204275100133413
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: gStar_1
+      name: critRate_4
       rect:
         serializedVersion: 2
-        x: 297
-        y: 301
-        width: 7
-        height: 6
+        x: 322
+        y: 18
+        width: 153
+        height: 91
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -146,52 +215,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 15f52f360429fa4b0800000000000000
-      internalID: -5426958220705767599
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: gStar_2
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 9
-        width: 6
-        height: 9
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: dcc048d9a3fc921c0800000000000000
-      internalID: -4527860099686593331
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: gStar_3
-      rect:
-        serializedVersion: 2
-        x: 52
-        y: 1
-        width: 6
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 182fa133442ca94e0800000000000000
-      internalID: -1974051888477572479
+      spriteID: 4ee3f653015a146d0800000000000000
+      internalID: -3007941587072237852
       vertices: []
       indices: 
       edges: []
@@ -210,10 +235,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      gStar_0: -6785303246561300961
-      gStar_1: -5426958220705767599
-      gStar_2: -4527860099686593331
-      gStar_3: -1974051888477572479
+      critRate_0: -268876893685291175
+      critRate_1: 8024596614781916359
+      critRate_2: 332422474205463640
+      critRate_3: -7759204275100133413
+      critRate_4: -3007941587072237852
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
