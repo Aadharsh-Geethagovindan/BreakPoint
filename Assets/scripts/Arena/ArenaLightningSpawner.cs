@@ -40,7 +40,7 @@ public class ArenaLightningSpawner : MonoBehaviour
 
         GameObject bolt = Instantiate(boltPrefab, arenaArea);
         RectTransform r = bolt.GetComponent<RectTransform>();
-
+        SoundManager.Instance.PlaySFX("lightning", .4f);
         // random position within arena rect
         Vector2 randPos = new Vector2(
             Random.Range(0, arenaArea.rect.width),

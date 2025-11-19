@@ -16,15 +16,22 @@ public class TurnManager : MonoBehaviour
     private bool gameOver = false;
     [SerializeField] private TextMeshProUGUI roundText;
 
+    private bool breakpointLocked = false;
+    private bool pendingAdvance = false;
+
     void OnEnable()
     {
         EventManager.Subscribe("OnGameEnded", OnGameEnded);   
-        EventManager.Subscribe("OnStatusesChanged", OnStatusesChanged);      
+        EventManager.Subscribe("OnStatusesChanged", OnStatusesChanged);
+        EventManager.Subscribe("OnBreakpointTriggered", OnBreakpointTriggered);
+        EventManager.Subscribe("OnBreakpointResolved", OnBreakpointResolved);      
     }
     void OnDisable()
     {
         EventManager.Unsubscribe("OnGameEnded", OnGameEnded);
         EventManager.Unsubscribe("OnStatusesChanged", OnStatusesChanged);
+        EventManager.Unsubscribe("OnBreakpointTriggered", OnBreakpointTriggered);
+        EventManager.Unsubscribe("OnBreakpointResolved", OnBreakpointResolved);
     }
 
 
@@ -185,6 +192,19 @@ public class TurnManager : MonoBehaviour
 
     public void AdvanceTurn()
     {
+        if (breakpointLocked)
+        {
+            // remember that someone *wanted* to advance; we'll do it when resolved
+            pendingAdvance = true;
+            // Debug.Log("[TurnManager] AdvanceTurn requested while locked; deferring");
+            return;
+        }
+
+        DoAdvanceTurnCore();
+    }
+    private void DoAdvanceTurnCore()
+    {
+        Debug.Log("Advancing");
         EventManager.Trigger("OnTurnEnded", currentCharacter);
         TickAndExpireStatusEffects(currentCharacter);
         CharacterCardUI card = activeCharPanel.FindCardForCharacter(currentCharacter);
@@ -270,20 +290,32 @@ public class TurnManager : MonoBehaviour
 
     private void RecalculateTurnOrder()
     {
-        List<GameCharacter> allAlive = charactersInOrder.Where(c => !c.IsDead).ToList();
-
         var rollResults = new Dictionary<GameCharacter, float>();
 
-        foreach (var character in allAlive)
+        foreach (var character in charactersInOrder)
         {
+            // Dead characters get 0 total so they always end up last
+            if (character.IsDead)
+            {
+                rollResults[character] = 0f;
+                continue;
+            }
+
             int roll = UnityEngine.Random.Range(1, 21); // d20
             float modifier = character.GetModifiedSpeed() / 4f;
             float total = roll + modifier;
+
             rollResults[character] = total;
-            EventManager.Trigger("OnSpeedRoll", new GameEventData().Set("Character", character).Set("Roll", roll).Set("Mod", modifier).Set("Total", total));
-            //Debug.Log($"{character.Name} rolled {roll} + {modifier:F1} = {total:F1}");
+
+            EventManager.Trigger("OnSpeedRoll",
+                new GameEventData()
+                    .Set("Character", character)
+                    .Set("Roll", roll)
+                    .Set("Mod", modifier)
+                    .Set("Total", total));
         }
 
+        // Sort everyone (dead ones will naturally fall to the end)
         charactersInOrder = rollResults
             .OrderByDescending(pair => pair.Value)
             .Select(pair => pair.Key)
@@ -382,6 +414,23 @@ public class TurnManager : MonoBehaviour
             var card = activeCharPanel.FindCardForCharacter(character);
             if (card != null)
                 card.RefreshStatusEffects(character);
+        }
+    }
+    private void OnBreakpointTriggered(object _)
+    {
+        breakpointLocked = true;
+        // Optional debug:
+        // Debug.Log("[TurnManager] Breakpoint locked turn advancement");
+    }
+
+    private void OnBreakpointResolved(object _)
+    {
+        breakpointLocked = false;
+        // If something tried to advance while we were locked, do it now
+        if (pendingAdvance)
+        {
+            pendingAdvance = false;
+            DoAdvanceTurnCore();
         }
     }
 

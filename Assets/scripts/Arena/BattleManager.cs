@@ -175,6 +175,7 @@ public class BattleManager : MonoBehaviour
         }
 
         character.deathStatus(true);
+        character.SetSpeed(0);  // set deadcharacter speed to 0
         EventManager.Trigger("OnCharacterDied", new GameEventData()
                 .Set("Character", character)
             );
@@ -209,14 +210,6 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void EndCharacterTurn()
-    {
-        currentCharacter.HasActedThisTurn = false;
-        currentCharacter.ResetRoundFlags(); // includes hasBeenAttacked = false, etc.
-
-        //Debug.Log($"{currentCharacter.Name}'s turn has ended. Advancing...");
-        TurnManager.Instance.AdvanceTurn();
-    }
 
 
 

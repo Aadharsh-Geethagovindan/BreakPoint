@@ -38,7 +38,7 @@ public class CharacterDisplayManager : MonoBehaviour
 
     private void Start()
     {
-        if (previewPanel != null) previewPanel.Hide();
+        //if (previewPanel != null) previewPanel.Hide();
         DisplayAllCharacterCards();
         SoundManager.Instance.PlayMusic("selection");
     }
@@ -116,15 +116,15 @@ public class CharacterDisplayManager : MonoBehaviour
         {
             if (previewPanel != null) previewPanel.Show(c);
         });
-
+        /*
         var exit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
         exit.callback.AddListener((BaseEventData _) =>
         {
             if (previewPanel != null) previewPanel.Hide();
-        });
+        });*/
 
         trigger.triggers.Add(enter);
-        trigger.triggers.Add(exit);
+        //trigger.triggers.Add(exit);
 
     }
 

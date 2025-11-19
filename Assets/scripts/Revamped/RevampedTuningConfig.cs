@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using Essence = DamageType;
+using Microsoft.Unity.VisualStudio.Editor;
 namespace Breakpoint.Revamped
 {
     
@@ -115,7 +116,15 @@ namespace Breakpoint.Revamped
         public float bp_M_Force      = 1.0f;
         public float bp_M_Elemental  = 1.0f;
         public float bp_M_Arcane     = 1.0f;
-        public float bp_M_Corrupt    = 1.0f;
+        public float bp_M_Corrupt = 1.0f;
+
+        [Header("Sprites List")]
+        public Sprite forceTrackSprite;
+        public Sprite elementalTrackSprite;
+        public Sprite arcaneTrackSprite;
+        public Sprite corruptTrackSprite;
+        public Sprite defaultTrackSprite;
+
 
     }
 }

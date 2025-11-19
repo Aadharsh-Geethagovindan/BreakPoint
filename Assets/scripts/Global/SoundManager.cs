@@ -68,12 +68,18 @@ public class SoundManager : MonoBehaviour
             musicDict[track.name] = track.clip;
     }
 
-    public void PlaySFX(string name)
+    public void PlaySFX(string name, float volume = 1f)
     {
         if (sfxDict.TryGetValue(name, out var clip))
-            sfxSource.PlayOneShot(clip);
+        {
+            // Clamp so nobody accidentally blasts their speakers
+            volume = Mathf.Clamp01(volume);
+            sfxSource.PlayOneShot(clip, volume);
+        }
         else
+        {
             Debug.LogWarning($"SFX '{name}' not found.");
+        }
     }
 
     public void PlayMusic(string name, bool loop = true)

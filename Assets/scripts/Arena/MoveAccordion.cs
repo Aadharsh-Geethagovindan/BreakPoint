@@ -20,7 +20,7 @@ public class MoveAccordion : MonoBehaviour
 
     public List<MoveEntry> moves = new List<MoveEntry>();
     public float closedHeight = 60f;
-    public float openHeight = 180f;
+    public float openHeight = 170f;
 
     private MoveEntry currentOpen;
 

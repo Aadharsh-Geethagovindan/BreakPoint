@@ -206,7 +206,7 @@
         },
         {
           "name": "Scoped Rifle Shot",
-          "description": "All soldiers know that bracing and ADS help accuracy and precision.",
+          "description": "A good soldier knows that bracing and ADS help accuracy and precision.",
           "mechanics" : "Deals 35 force damage to 1 enemy",
           "cooldown": 3
         },
@@ -386,14 +386,14 @@
         {
           "name": "Riftbreaker Axe",
           "description": "Krakoa attacks with his riftbreaker axe",
-          "mechanics" : "Deals 35 elemental damage to 1 enemy",
+          "mechanics" : "Deals 25 elemental damage to 1 enemy",
           "cooldown": 0
         },
         {
           "name": "WarFrost",
           "description": "Krakoa's axe unleashes a wall of ice, dealing 30 Ice damage. He inflicts Chill on an enemy for 2 turns, dealing 20 ice damage",
           "mechanics" : "Deals 30 elemental damage to 1 enemy and applies Chill(20 elemental DoT) for 2 turns",
-          "cooldown": 2
+          "cooldown": 3
         },
         {
           "name": "Warriors Rage",
@@ -445,7 +445,7 @@
     },
     {
       "name": "Mizca",
-      "hp": 580,
+      "hp": 380,
       "speed": 30,
       "rarity": "R",
       "SigChargeReq": 120,
@@ -466,7 +466,7 @@
         {
           "name": "Saber Quake",
           "description": "Mizca slams the earth with his saber, bringing it back up from underneath the ground",
-          "mechanics" : "Deals 20 corrupt damage to enemies and has a 30% chance to apply weakened (-20% dmg mult.) for 1 turn",
+          "mechanics" : "Deals 20 corrupt damage to 2 enemies and has a 30% chance to apply weakened (-20% dmg mult.) for 1 turn",
           "cooldown": 2
         },
         {
@@ -534,7 +534,7 @@
         {
           "name": "Ocular Blaster",
           "description": "Olthar shoots an energy blast from his eyes",
-          "mechanics" : "Deals 35 Arcane damage",
+          "mechanics" : "Deals 35 Arcane damage to 1 enemy",
           "cooldown": 0
         },
         {
@@ -546,7 +546,7 @@
         {
           "name": " Word of Judgement",
           "description": "Olthar deals 60 energy damage and 15 energy damage to an enemy for the next two turns.",
-          "mechanics" : "Deals 60 arcane damage and applies Judgement(15 Arcane DoT) for 2 turns",
+          "mechanics" : "Deals 60 arcane damage to 1 enemy and applies Judgement(15 Arcane DoT) for 2 turns",
           "cooldown": 1
         }
       ],
@@ -620,7 +620,7 @@
           "name": "Martyr",
           "description": "When threatened, the raish will explode outward",
           "mechanics" : "Deals corrupt damage equal to 150% of damage it has recieved to 1 enemy ",
-          "cooldown": 1
+          "cooldown": 4
         }
       ],
       "affiliation": "Rift",
@@ -629,10 +629,10 @@
     },
     {
       "name": "Rei",
-      "hp": 600,
+      "hp": 570,
       "speed": 32,
       "rarity": "UR",
-      "SigChargeReq": 100,
+      "SigChargeReq": 140,
       "imageName": "Rei",
       "moves": [
         {
@@ -644,19 +644,19 @@
         {
           "name": "Magicians Thrust",
           "description": "Rei attacks with her arcane spear",
-          "mechanics" : "Deals 40 arcane damage to 1 enemy",
+          "mechanics" : "Deals 30 arcane damage to 1 enemy",
           "cooldown": 0
         },
         {
           "name": "Burst Charge",
           "description": "Rei utters an offensive incantation that smites down at her enemy",
-          "mechanics" : "Deals 35 arcane damage to 1 enemy and applies ElectroShocked (10 arcane damage) for 2 turns and Hex(-20% arcane res) for 2 turns",
+          "mechanics" : "Deals 30 arcane damage to 1 enemy and applies ElectroShocked (10 arcane damage) for 2 turns and Hex(-20% arcane res) for 2 turns",
           "cooldown": 3
         },
         {
           "name": "Stunlock Spear",
           "description": "Rei enhances her spear with powerful runes ",
-          "mechanics" : "Deals 140 arcane damage at 1 enemy and a has a 40% chance to apply Stun for 1 turn",
+          "mechanics" : "Deals 70 arcane damage at 1 enemy and a has a 60% chance to apply Stun for 1 turn",
           "cooldown": 1
         }
       ],
@@ -666,7 +666,7 @@
     },
     {
       "name": "Rellin",
-      "hp": 480,
+      "hp": 440,
       "speed": 30,
       "rarity": "R",
       "SigChargeReq": 100,
@@ -740,7 +740,7 @@
     },
     {
       "name": "Sedra",
-      "hp": 525,
+      "hp": 380 ,
       "speed": 60,
       "rarity": "R",
       "SigChargeReq": 100,
@@ -767,7 +767,7 @@
         {
           "name": "Starburst Explosion",
           "description": "Sedra channels her power to launch a large energy explosion",
-          "mechanics" : "Deals 50 arcane damage to 3 enemies",
+          "mechanics" : "Deals 40 arcane damage to 3 enemies",
           "cooldown": 1
         }
       ],
@@ -850,9 +850,9 @@
     },
     {
       "name": "TRex",
-      "hp": 670,
+      "hp": 620,
       "speed": 24,
-      "rarity": "R",
+      "rarity": "UR",
       "SigChargeReq": 130,
       "imageName": "TRex",
       "species": "Riftbeast",
@@ -867,7 +867,7 @@
         {
           "name": "CHOMP",
           "description": "Rexes are known for their incredible bite strength. A corrupted one adds even more damage to the mix",
-          "mechanics" : "Deals 40 corrupt damage to 1 enemy",
+          "mechanics" : "Deals 35 corrupt damage to 1 enemy",
           "cooldown": 0
         },
         {
@@ -879,7 +879,7 @@
         {
           "name": "Tyrant Lizard King",
           "description": "Readying itself, the King of reptiles strikes with all of its might",
-          "mechanics" : "Deals 50 corrupt damage and apply Poisioned (20 corrupt DoT) for 2 turns",
+          "mechanics" : "Deals 50 corrupt damage and apply Poisoned (20 corrupt DoT) for 2 turns",
           "cooldown": 1
         }
       ],
@@ -982,13 +982,13 @@
         {
           "name": "Mostly Stable Runic Blessing",
           "description": "Vas casts 2 runes on a party member",
-          "mechanics" : "40% chance to apply Haste (15% dodge) and a 40% chance to apply Clarity(Accuracy 15%) to a party member for 1 turn",
+          "mechanics" : "50% chance each to apply Haste (20% dodge), Clarity(Accuracy 20%), Strengthen (dmg mult 20%), Precision Focus (Cr 20%), Devastate (Cdmg 20%)  to a party member for 2 turn",
           "cooldown": 3
         },
         {
           "name": "Fully Stable Runic Array",
           "description": "Vas tunes his runic array on an ally, which applies Recover (20 HoT) for 2 turns and also reduces their skill cooldown by 2 turns",
-          "mechanics" : "applies Recover (20 HoT) to 1 party member for 2 turns and also reduce their skill cooldown by 2 turns",
+          "mechanics" : "applies Recover (20 HoT) Amped(40% dmg) to 1 party member for 2 turns and also reduce their skill cooldown by 2 turns",
           "cooldown": 1
         }
       ],
@@ -1056,13 +1056,13 @@
         {
           "name": "Frozen Aegis",
           "description": "Virae wraps her ally in a cocoon of ice",
-          "mechanics" : "Shield 1 ally for 25 and apply Frozen Aegis(20% elemental res)",
+          "mechanics" : "Shield 1 ally for 25 and apply Frozen Aegis(20% elemental res) for 2 turns",
           "cooldown": 2
         },
         {
           "name": "Glacial Bloom",
           "description": "Virae shares the exhiliarting energy of the ice with her allies",
-          "mechanics" : "Apply Glacial Bloom(15% dmg mult) to 1 ally for 2 turns and also extend another existing buff by 2 turns",
+          "mechanics" : "Apply Glacial Bloom(15% dmg mult) and Recover(20 HoT) to 1 ally for 2 turns extend another existing buff by 2 turns",
           "cooldown": 1
         }
       ],
@@ -1099,7 +1099,7 @@
         {
           "name": "Mighty Shield",
           "description": "VyGar activates a personal favorite salvaged rune array",
-          "mechanics" : "Shield 1 ally for 120",
+          "mechanics" : "Shield 1 ally for 100",
           "cooldown": 1
         }
       ],

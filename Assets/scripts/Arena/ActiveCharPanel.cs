@@ -19,12 +19,18 @@ public class ActiveCharPanel : MonoBehaviour
     public TextMeshProUGUI crRateText;
     public TextMeshProUGUI crDmgText;
     [SerializeField] private ResistanceGridUI resistanceGrid;
-    public TextMeshProUGUI statusEffectsText;
+    [SerializeField] private Transform statusEffectContainer;
+    [SerializeField] private GameObject statusChipPrefab;
 
     [Header("Move Area")]
     public Button move1Button;
     public Button move2Button;
     public Button move3Button;
+
+    public TextMeshProUGUI passiveDisplayTitle;
+    public TextMeshProUGUI normalDisplayTitle;
+    public TextMeshProUGUI skillDisplayTitle;
+    public TextMeshProUGUI sigDisplayTitle;
     public TextMeshProUGUI passiveDisplayText;
     public TextMeshProUGUI normalDisplayText;
     public TextMeshProUGUI skillDisplayText;
@@ -138,23 +144,31 @@ public class ActiveCharPanel : MonoBehaviour
         if (matchingData.moves != null && matchingData.moves.Length == 4)
         {
             if (passiveDisplayText != null)
-                passiveDisplayText.text = $"{matchingData.moves[0].name}: {matchingData.moves[0].description}";
-
+            {
+                passiveDisplayTitle.text = $"{matchingData.moves[0].name}";
+                passiveDisplayText.text = $"{matchingData.moves[0].description}";
+            }
             var n = matchingData.moves[1];
             var nMech = MechanicsFormatter.ApplyDamageMultiplier(n.mechanics, mult);
             if (normalDisplayText != null)
+            {
+                normalDisplayTitle.text = $"{n.name}";
                 normalDisplayText.text = $"{n.name}: {n.description}. {nMech} (Cooldown: {n.cooldown})";
-
+            }
             var s = matchingData.moves[2];
             var sMech = MechanicsFormatter.ApplyDamageMultiplier(s.mechanics, mult);
             if (skillDisplayText != null)
-                skillDisplayText.text = $"{s.name}: {s.description}. {sMech} (Cooldown: {s.cooldown})";
-
+            {
+                skillDisplayTitle.text = $"{s.name}";
+                skillDisplayText.text = $" {s.description}. {sMech} (Cooldown: {s.cooldown})";
+            }
             var g = matchingData.moves[3];
             var gMech = MechanicsFormatter.ApplyDamageMultiplier(g.mechanics, mult);
             if (sigDisplayText != null)
+            {
+                sigDisplayTitle.text = $"{g.name}";
                 sigDisplayText.text = $"{g.name}: {g.description}. {gMech} (Cooldown: {g.cooldown})";
-          
+            }
         }
 
         // === ACCURACY / DMG MULT ===
@@ -178,21 +192,35 @@ public class ActiveCharPanel : MonoBehaviour
         }
 
         // === STATUS EFFECTS ==
-        if (statusEffectsText != null)
+        if (statusEffectContainer != null)
         {
-            string statusText = "";
+            // Clear any previous chips
+            foreach (Transform child in statusEffectContainer)
+                Destroy(child.gameObject);
 
+            // Build new chips for all visible effects
             foreach (StatusEffect effect in character.StatusEffects)
             {
-                if (effect.ToDisplay)
+                if (!effect.ToDisplay)
+                    continue;
+
+                // Instantiate the chip prefab
+                GameObject chipObj = Instantiate(statusChipPrefab, statusEffectContainer);
+                StatusEffectChipUI chipUI = chipObj.GetComponent<StatusEffectChipUI>();
+
+                if (chipUI != null)
                 {
-                    string color = effect.IsDebuff ? "#ff4d4d" : "#4dff4d"; // Red for debuffs, green for buffs
-                    statusText += $"<color={color}>{effect.Name} ({effect.Duration})</color>\n";
-                    //Debug.Log(effect.ToDisplay);
+                    chipUI.Initialize(effect);
+                }
+                else
+                {
+                    Debug.LogWarning($"StatusChip prefab missing StatusChipUI component for {effect.Name}");
                 }
             }
 
-            statusEffectsText.text = statusText.TrimEnd(); // Remove last newline if needed
+            // Optional: force layout rebuild so chips position immediately
+            Canvas.ForceUpdateCanvases();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(statusEffectContainer as RectTransform);
         }
 
         // === ResistanceGrid === //

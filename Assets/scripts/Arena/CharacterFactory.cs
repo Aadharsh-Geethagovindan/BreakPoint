@@ -381,7 +381,7 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            35, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Elemental
+            25, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Elemental
         );
 
         var burnEffect = new StatusEffect("Chilled", StatusEffectType.DamageOverTime, 2, 20, null, DamageType.Elemental, isDebuff: true);
@@ -589,7 +589,7 @@ public static class CharacterFactory
         var normal = new Ability(
             data.moves[1].name, data.moves[1].description, AbilityType.Normal,
             baseCooldown: data.moves[1].cooldown,
-            damage: 40, healing: 0, shielding: 0, chargeReq: 0,
+            damage: 30, healing: 0, shielding: 0, chargeReq: 0,
             targetType: TargetType.Enemy, maxTargets: 1,
             damageType: DamageType.Arcane
         );
@@ -605,7 +605,7 @@ public static class CharacterFactory
         var skill = new Ability(
             data.moves[2].name, data.moves[2].description, AbilityType.Skill,
             baseCooldown: data.moves[2].cooldown,
-            damage: 35, healing: 0, shielding: 0, chargeReq: 0,
+            damage: 30, healing: 0, shielding: 0, chargeReq: 0,
             targetType: TargetType.Enemy, maxTargets: 1,
             statusEffectsApplied: electroshockEffects,
             damageType: DamageType.Arcane
@@ -614,13 +614,13 @@ public static class CharacterFactory
         // Signature - 40% chance to stun
         var sigEffects = new List<StatusEffect>
         {
-            new StatusEffect("Stunned", StatusEffectType.Stun, 1, 0f, null, DamageType.Arcane, isDebuff: true, applyChance: 0.4f)
+            new StatusEffect("Stunned", StatusEffectType.Stun, 1, 0f, null, DamageType.Arcane, isDebuff: true, applyChance: 0.6f)
         };
 
         var signature = new Ability(
             data.moves[3].name, data.moves[3].description, AbilityType.Signature,
             baseCooldown: data.moves[3].cooldown,
-            damage: 140, healing: 0, shielding: 0, chargeReq: data.SigChargeReq,
+            damage: 70, healing: 0, shielding: 0, chargeReq: data.SigChargeReq,
             targetType: TargetType.Enemy, maxTargets: 1,
             statusEffectsApplied: sigEffects,
             damageType: DamageType.Arcane
@@ -723,7 +723,7 @@ public static class CharacterFactory
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            50, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, null, DamageType.Arcane
+            40, 0, 0, data.SigChargeReq, TargetType.Enemy, 3, null, DamageType.Arcane
         );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
@@ -802,7 +802,7 @@ public static class CharacterFactory
 
         var normal = new Ability(
             moves[1].name, moves[1].description, AbilityType.Normal, moves[1].cooldown,
-            40, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Corrupt
+            35, 0, 0, 0, TargetType.Enemy, 1, null, DamageType.Corrupt
         );
 
         var hardenedHideEffects = new List<StatusEffect>
@@ -979,13 +979,13 @@ public static class CharacterFactory
             moves[2].name, moves[2].description, AbilityType.Skill, moves[2].cooldown,
             0, 0, 25, 0,TargetType.Ally,1,new List<StatusEffect> { iceRes }
     );
-
+    var recover = new StatusEffect("Recover", StatusEffectType.HealingOverTime, 2, 20, null, isDebuff: false);
     var dmgBuff = new StatusEffect("Glacial Bloom", StatusEffectType.DamageModifier, 2, 0.15f, null,isDebuff: false);
     var extendBuff = new StatusEffect("Extend Buff", StatusEffectType.DurationModifier, 0, 2,null, isDebuff: false);
         extendBuff.DurationTargeting = DurationTargetingMode.SingleBuff;
     var sig = new Ability(
         moves[3].name,moves[3].description,AbilityType.Signature,moves[3].cooldown,0, 0, 0,data.SigChargeReq,TargetType.Ally,1,
-        new List<StatusEffect> { dmgBuff, extendBuff }, DamageType.Elemental
+        new List<StatusEffect> { dmgBuff, extendBuff, recover }, DamageType.Elemental
     );
 
         return new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);
@@ -1014,7 +1014,7 @@ public static class CharacterFactory
 
         var sig = new Ability(
             moves[3].name, moves[3].description, AbilityType.Signature, moves[3].cooldown,
-            0, 0, 120, data.SigChargeReq, TargetType.AllyOrSelf, 1,null,DamageType.Force
+            0, 0, 100, data.SigChargeReq, TargetType.AllyOrSelf, 1,null,DamageType.Force
         );
 
         var VyGar = new GameCharacter(data.name, data.hp, data.speed, data.SigChargeReq, normal, skill, sig, passive, data.imageName, data.affiliation, data.lore, data.species);

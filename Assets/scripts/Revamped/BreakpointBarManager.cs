@@ -95,7 +95,7 @@ public class BreakpointBarManager : MonoBehaviour
         if (Mathf.Abs(B) >= cfg.bp_Cap - 0.0001f)
         {
             int winnerTeam = (B > 0f) ? 1 : 2;
-            
+            Debug.Log("Breakpoint Triggered");
             EventManager.Trigger("OnBreakpointTriggered", new GameEventData()
                 .Set("TeamId", winnerTeam)); 
             // Hard reset to center (simple policy)                       //  (reset)

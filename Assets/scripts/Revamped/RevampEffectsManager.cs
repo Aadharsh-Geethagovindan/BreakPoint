@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Collections;
+using UnityEngine.UI;
 public class RevampEffectsManager : MonoBehaviour
 {
     [SerializeField] private Breakpoint.Revamped.RevampTuningConfig cfg; // assign via code or Inspector
@@ -11,6 +13,14 @@ public class RevampEffectsManager : MonoBehaviour
 
     private BattleManager bm;
 
+    [SerializeField] private RectTransform emitterTeam1;
+    [SerializeField] private RectTransform emitterTeam2;
+    [SerializeField] private GameObject projectileUIPrefab;
+    [SerializeField] private RectTransform projectileParent;
+    [SerializeField] private float projectileSpeed = 600f;
+    [SerializeField] private float arcHeight = 100f;
+    private ActiveCharPanel activeCharPanel;
+
     void Awake()
     {
         bm = Object.FindFirstObjectByType<BattleManager>();
@@ -19,6 +29,7 @@ public class RevampEffectsManager : MonoBehaviour
             // Fallback: load from Resources if not assigned in Inspector
             cfg = Resources.Load<Breakpoint.Revamped.RevampTuningConfig>("RevampTuningConfig");
         }
+         activeCharPanel = Object.FindFirstObjectByType<ActiveCharPanel>();
     }
 
     void OnEnable()
@@ -99,6 +110,7 @@ public class RevampEffectsManager : MonoBehaviour
     {
         int team = TeamIdFrom(payload);
         var enemies = Enemies(team);
+        TriggerEmitter(team, "Force", targetAllies: false);
 
         foreach (var enemy in enemies)
         {
@@ -124,7 +136,7 @@ public class RevampEffectsManager : MonoBehaviour
     {
         int team = TeamIdFrom(payload);
         var allies = Allies(team);
-
+        TriggerEmitter(team, "Elemental", targetAllies: true);
         foreach (var ally in allies)
         {
             int shield = Mathf.CeilToInt(ally.MaxHP * cfg.elementalShieldPercent);
@@ -141,7 +153,7 @@ public class RevampEffectsManager : MonoBehaviour
     {
         int team = TeamIdFrom(payload);
         var enemies = Enemies(team);
-
+        TriggerEmitter(team, "Arcane", targetAllies: false);
         foreach (var enemy in enemies)
         {
             if (enemy.IsDead) continue;
@@ -170,7 +182,7 @@ public class RevampEffectsManager : MonoBehaviour
     {
         int team = TeamIdFrom(payload);
         var allies = Allies(team);
-
+        TriggerEmitter(team, "Corrupt", targetAllies: true);
         foreach (var ally in allies)
         {
             var amp = new StatusEffect(
@@ -211,6 +223,7 @@ public class RevampEffectsManager : MonoBehaviour
     private void OnDual_FA_Disruption(object payload)
     {
         int team = TeamIdFrom(payload);
+        TriggerEmitter(team, "Force_Arcane", targetAllies: true);
         Log($"[Revamped] Fusion: Disruption (stub) — Team {team}");
         {
             float cap = (cfg != null) ? cfg.bp_Cap : 1f;
@@ -225,7 +238,7 @@ public class RevampEffectsManager : MonoBehaviour
     {
         int team = TeamIdFrom(payload);
         var allies = Allies(team);
-
+        TriggerEmitter(team, "Force_Corrupt", targetAllies: true);
         foreach (var ally in allies)
         {
             var keen = new StatusEffect(
@@ -247,7 +260,7 @@ public class RevampEffectsManager : MonoBehaviour
     {
         int team = TeamIdFrom(payload);
         var allies = Allies(team);
-
+        TriggerEmitter(team, "Elemental_Arcane", targetAllies: true);
         foreach (var ally in allies)
         {
             // Gather all debuffs on this ally
@@ -272,7 +285,7 @@ public class RevampEffectsManager : MonoBehaviour
     {
         int team = TeamIdFrom(payload);
         var enemies = Enemies(team).Where(e => !e.IsDead).ToList();
-
+        TriggerEmitter(team, "Elemental_Corrupt", targetAllies: false);
         // Nothing to do if <2 enemies alive
         if (enemies.Count < 2)
         {
@@ -369,10 +382,12 @@ public class RevampEffectsManager : MonoBehaviour
 
     private void OnDual_AC_Mindbreak(object payload) //works
     {
+        
         int team = TeamIdFrom(payload);
         var enemies = Enemies(team);
         var allies  = Allies(team);
-
+        TriggerEmitter(team, "Arcane_Corrupt", targetAllies: false);
+        TriggerEmitter(team, "Arcane_Corrupt", targetAllies: true);
         // enemy -30 sig, allies +20 sig (tweak later or move to knobs)
         foreach (var e in enemies) e.ReduceCharge(30);
         foreach (var a in allies)  a.IncreaseCharge(+20);
@@ -396,6 +411,187 @@ public class RevampEffectsManager : MonoBehaviour
             }
         }
 
-        Log($"[Revamped] CATA CLYSM — Team {team} dealt {Mathf.RoundToInt(cfg.cataclysm_MaxHPPercentLoss*100)}% MaxHP True dmg");
+        Log($"[Revamped] CATA CLYSM — Team {team} dealt {Mathf.RoundToInt(cfg.cataclysm_MaxHPPercentLoss * 100)}% MaxHP True dmg");
     }
+    
+    // ===================== TRACK VISUAL HELPERS =====================
+    #region Track Visuals
+
+    private void TriggerEmitter(int teamId, string trackType, bool targetAllies)
+    {
+        RectTransform emitter = (teamId == 1) ? emitterTeam1 : emitterTeam2;
+        if (emitter == null || projectileUIPrefab == null || projectileParent == null)
+        {
+            Debug.LogWarning("[RevampEffects] Missing emitter or projectile references.");
+            return;
+        }
+
+        // Get emitter image for fade control
+        Image emitterImg = emitter.GetComponent<Image>();
+        if (emitterImg == null)
+        {
+            Debug.LogWarning("[RevampEffects] Emitter has no Image component.");
+            return;
+        }
+
+        // Determine targets and projectile sprite
+        List<GameCharacter> targets = targetAllies ? Allies(teamId) : Enemies(teamId);
+        Sprite sprite = GetSpriteForTrack(trackType);
+
+        // Play the whole sequence in one coroutine
+        StartCoroutine(EmitterSequence(emitterImg, sprite, targets,trackType));
+    }
+
+    private IEnumerator EmitterSequence(Image emitterImg, Sprite sprite, List<GameCharacter> targets, string trackType)
+    {
+        float powerUpDuration = 1.5f;
+        float cooldownDuration = 2f;
+
+        // --- PHASE 1: Power-up ---
+        //PlaySFX("powerUp")
+        SoundManager.Instance.PlaySFX("powerup");
+        float elapsed = 0f;
+        Color c = emitterImg.color;
+        while (elapsed < powerUpDuration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(100f / 255f, 1f, elapsed / powerUpDuration);
+            c.a = alpha;
+            emitterImg.color = c;
+            yield return null;
+        }
+
+        // --- PHASE 2: Fire projectiles ---
+        foreach (var t in targets)
+        {
+            if (t.IsDead) continue;
+            var card = activeCharPanel.FindCardForCharacter(t);
+            if (card == null) continue;
+            string sound = GetProjectileSound(trackType);
+            RectTransform to = card.GetComponent<RectTransform>();
+            yield return StartCoroutine(FireTrackProjectile(emitterImg.rectTransform, to, sprite, sound));
+        }
+
+        // --- PHASE 3: Cooldown fade ---
+        
+        SoundManager.Instance.PlaySFX("cooldown");
+        elapsed = 0f;
+        while (elapsed < cooldownDuration)
+        {
+            elapsed += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 100f / 255f, elapsed / cooldownDuration);
+            c.a = alpha;
+            emitterImg.color = c;
+            yield return null;
+        }
+    }
+
+    private IEnumerator FlashEmitter(RectTransform emitter)
+    {
+        var img = emitter.GetComponent<Image>();
+        if (img == null) yield break;
+
+        Color baseColor = img.color;
+        float flashDur = 0.75f;
+        float timer = 0f;
+
+        // Brighten to full alpha, then fade back
+        while (timer < flashDur)
+        {
+            timer += Time.deltaTime;
+            float t = timer / flashDur;
+            float alpha = Mathf.Sin(t * Mathf.PI); // quick pulse
+            img.color = new Color(baseColor.r, baseColor.g, baseColor.b, Mathf.Lerp(0.4f, 1f, alpha));
+            yield return null;
+        }
+
+        img.color = baseColor; // restore
+    }
+
+    private IEnumerator FireTrackProjectile(RectTransform from, RectTransform to, Sprite sprite, string sound)
+    {
+        if (from == null || to == null) yield break;
+        SoundManager.Instance.PlaySFX(sound);
+        // Spawn projectile
+        GameObject go = Instantiate(projectileUIPrefab, projectileParent);
+        RectTransform proj = go.GetComponent<RectTransform>();
+        Image img = go.GetComponent<Image>();
+        if (img != null) img.sprite = sprite;
+
+        // Convert to screen-space positions (same space for both)
+        Vector3 startWorld = from.TransformPoint(from.rect.center);
+        Vector3 endWorld   = to.TransformPoint(to.rect.center);
+
+        // Convert back into local space of projectileParent (so UI positions match)
+        Vector2 start = projectileParent.InverseTransformPoint(startWorld);
+        Vector2 end   = projectileParent.InverseTransformPoint(endWorld);
+
+        proj.anchoredPosition = start;
+
+        // Distance now measured in actual screen/UI pixels
+        float dist = Vector2.Distance(start, end);
+        float duration = Mathf.Max(0.05f, dist / Mathf.Max(1f, projectileSpeed));
+
+        Vector2 mid = (start + end) * 0.5f + Vector2.up * arcHeight;
+        Debug.Log($"Projectile dist={dist:F2} duration={duration:F2} speed={projectileSpeed}");
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / duration;
+            float u = 1f - Mathf.Clamp01(t);
+            Vector2 pos = (u * u) * start + (2f * u * t) * mid + (t * t) * end;
+            proj.anchoredPosition = pos;
+            yield return null;
+        }
+
+        proj.anchoredPosition = end;
+        Destroy(go);
+    }
+
+    private Sprite GetSpriteForTrack(string trackType)
+    {
+        switch (trackType)
+        {
+            case "Force": return cfg.forceTrackSprite;
+            case "Elemental": return cfg.elementalTrackSprite;
+            case "Arcane": return cfg.arcaneTrackSprite;
+            case "Corrupt": return cfg.corruptTrackSprite;
+
+            // Future dual / triple sprites
+            case "Force_Elemental": return cfg.defaultTrackSprite;
+            case "Force_Arcane": return cfg.defaultTrackSprite;
+            case "Force_Corrupt": return cfg.defaultTrackSprite;
+            case "Elemental_Arcane": return cfg.defaultTrackSprite;
+            case "Elemental_Corrupt": return cfg.defaultTrackSprite;
+            case "Arcane_Corrupt": return cfg.defaultTrackSprite;
+            case "Triple_Cataclysm": return cfg.defaultTrackSprite;
+
+            default: return cfg.defaultTrackSprite;
+        }
+    }
+
+    private string GetProjectileSound(string trackType)
+    {
+        switch (trackType)
+        {
+            case "Force": return "force_revamped";
+            case "Elemental": return "elemental_revamped";
+            case "Arcane": return "arcane_revamped";
+            case "Corrupt": return "corrupt_revamped";
+
+            // Future dual / triple sprites
+            case "Force_Elemental": return "eruption_revamped";
+            case "Force_Arcane": return "disruption_revamped";
+            case "Force_Corrupt": return "crush_revamped";
+            case "Elemental_Arcane": return "purify_revamped";
+            case "Elemental_Corrupt": return "blightstorm_revamped";
+            case "Arcane_Corrupt": return "mindbreak_revamped";
+            case "Triple_Cataclysm": return "cataclysm_revamped";
+
+            default: return "projectile_fire";
+        }
+    }
+
+    #endregion
+
 }

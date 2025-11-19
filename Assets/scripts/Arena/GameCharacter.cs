@@ -230,6 +230,12 @@ public class GameCharacter
         DodgeChance = Mathf.Clamp(DodgeChance, 0f, 1f);
     }
 
+    public void SetSpeed(int spd)
+    {
+        Speed = spd;
+    }
+
+
     public float GetModifiedDamageMultiplier()
     {
         float baseMultiplier = DamageMultiplier;
@@ -332,6 +338,7 @@ public class GameCharacter
 
 
         StatusEffects.Add(effect);
+        Debug.Log($"Added effect {effect} to {Name}");
         EventManager.Trigger("OnStatusEffectApplied", new GameEventData()
             .Set("Target", this)
             .Set("Effect", effect)
@@ -393,6 +400,7 @@ public class GameCharacter
         hasBeenAttackedThisTurn = value;
     }
 
+   
     public void ResetRoundFlags()
     {
         hasBeenAttackedThisTurn = false;

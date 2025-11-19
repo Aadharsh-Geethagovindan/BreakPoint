@@ -34,8 +34,10 @@ public class BreakpointEffectManager : MonoBehaviour
             return;
         }
 
+        Debug.Log($"allies for {teamId} are {GetAllies(teamId)}");
         // 🔹 Normalize the result text for easier comparison
         string key = result.ToLowerInvariant();
+        Debug.Log($"chosen team is {teamId}");
 
         // 🔹 Map result string → effect
         if (key.Contains("essence surge"))
@@ -56,6 +58,8 @@ public class BreakpointEffectManager : MonoBehaviour
             WeakenedResolve(teamId);
         else
             Debug.LogWarning($"[Breakpoint] No effect mapped for '{result}'");
+
+        EventManager.Trigger("OnBreakpointResolved");
     }
 
     private void ApplyRandomBuff(int teamId)
@@ -81,7 +85,7 @@ public class BreakpointEffectManager : MonoBehaviour
     {
         foreach (var ally in GetAllies(teamId))
         {
-            
+            Debug.Log($"applying to {ally.Name}");
             var eff = new StatusEffect("Essence Surge", StatusEffectType.DamageModifier, 2, 0.25f, null);
             ally.AddStatusEffect(eff);
         }
@@ -92,7 +96,7 @@ public class BreakpointEffectManager : MonoBehaviour
     {
         foreach (var ally in GetAllies(teamId))
         {
-            
+            Debug.Log($"applying to {ally.Name}");
             int shieldValue = Mathf.RoundToInt(ally.MaxHP * 0.3f);
             ally.AddShield(shieldValue);
         }
@@ -103,7 +107,7 @@ public class BreakpointEffectManager : MonoBehaviour
     {
         foreach (var ally in GetAllies(teamId))
         {
-            
+            Debug.Log($"applying to {ally.Name}");
             var eff = new StatusEffect("Critical Flow", StatusEffectType.CritRateModifier, 2, 0.3f, null);
             ally.AddStatusEffect(eff);
         }
@@ -114,7 +118,7 @@ public class BreakpointEffectManager : MonoBehaviour
     {
         foreach (var ally in GetAllies(teamId))
         {
-            
+            Debug.Log($"applying to {ally.Name}");
             ally.IncreaseCharge(40);
         }
 

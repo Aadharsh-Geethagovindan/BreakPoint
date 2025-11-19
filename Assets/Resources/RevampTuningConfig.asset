@@ -34,7 +34,7 @@ MonoBehaviour:
   cataclysm_MaxHPPercentLoss: 0.15
   elementalShieldPercent: 0.25
   elementalHealPercent: 0
-  bp_Cap: 3
+  bp_Cap: 4
   bp_DecayPerRound: 0
   bp_DampPower: 0
   bp_W_Damage: 12
@@ -44,7 +44,12 @@ MonoBehaviour:
   bp_Bonus_Stun: 2
   bp_Bonus_Cleanse: 1.5
   bp_Bonus_Spread: 1
-  bp_M_Force: 1
+  bp_M_Force: 0.9
   bp_M_Elemental: 1
   bp_M_Arcane: 1
-  bp_M_Corrupt: 1
+  bp_M_Corrupt: 1.1
+  forceTrackSprite: {fileID: -4815331354715453880, guid: 99567cab1910cbe4babe5ca6f1dd96f4, type: 3}
+  elementalTrackSprite: {fileID: 21300000, guid: 7e3cbdf8166e86548b5c6ceac9a4ed02, type: 3}
+  arcaneTrackSprite: {fileID: -8081055711735965442, guid: a64f72f1ffadffe489b926b88089bda1, type: 3}
+  corruptTrackSprite: {fileID: 2789568800841878960, guid: 54fe9de5a5b25e8448088a54d2bcb6e6, type: 3}
+  defaultTrackSprite: {fileID: -8756016195364273801, guid: 345884cab4307d047aa3086ca8090f53, type: 3}
