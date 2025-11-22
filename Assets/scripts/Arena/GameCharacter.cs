@@ -15,6 +15,8 @@ public class GameCharacter
     public int SigChargeReq { get; private set; }
     public string Lore { get; private set; }
     public string Species { get; private set; }
+    public int Id { get; private set; }
+    public void SetId(int id) => Id = id;
 
 
     [Header("Game Specific Stats")]
@@ -419,6 +421,25 @@ public class GameCharacter
             AbilityType.Passive => null, // Not targetable by effects
             _ => null
         };
+    }
+
+    public List<Ability> GetAllAbilities()
+    {
+        var list = new List<Ability>();
+
+        if (NormalAbility != null)
+            list.Add(NormalAbility);
+
+        if (SkillAbility != null)
+            list.Add(SkillAbility);
+
+        if (SignatureAbility != null)
+            list.Add(SignatureAbility);
+
+        if (PassiveAbility != null)
+            list.Add(PassiveAbility);
+
+        return list;
     }
 
     public List<GameCharacter> Allies => allies;

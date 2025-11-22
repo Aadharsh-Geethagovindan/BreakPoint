@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 using Essence = DamageType;
-using Microsoft.Unity.VisualStudio.Editor;
+//using Microsoft.Unity.VisualStudio.Editor;
 namespace Breakpoint.Revamped
 {
     

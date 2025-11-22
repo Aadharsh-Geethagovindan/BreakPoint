@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Bessil_0: -5586644656301703977
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

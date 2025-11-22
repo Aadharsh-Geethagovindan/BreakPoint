@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      horiLightStrip1_0: -335423637160939190
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

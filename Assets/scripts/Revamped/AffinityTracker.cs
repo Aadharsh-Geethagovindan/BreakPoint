@@ -97,7 +97,7 @@ namespace Breakpoint.Revamped
             if (lockedSingles.Contains(essence))
                 return;
             marks[essence] += amount;
-            Debug.Log($"[Affinity] Team {teamId} +{amount} {essence} → {marks[essence]}/{cfg.singleTrackThreshold}");
+            //Debug.Log($"[Affinity] Team {teamId} +{amount} {essence} → {marks[essence]}/{cfg.singleTrackThreshold}");
 
             if (marks[essence] > cfg.singleTrackThreshold)
             { marks[essence] = cfg.singleTrackThreshold; }

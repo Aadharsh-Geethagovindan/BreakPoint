@@ -533,7 +533,7 @@ public class RevampEffectsManager : MonoBehaviour
         float duration = Mathf.Max(0.05f, dist / Mathf.Max(1f, projectileSpeed));
 
         Vector2 mid = (start + end) * 0.5f + Vector2.up * arcHeight;
-        Debug.Log($"Projectile dist={dist:F2} duration={duration:F2} speed={projectileSpeed}");
+        //Debug.Log($"Projectile dist={dist:F2} duration={duration:F2} speed={projectileSpeed}");
         float t = 0f;
         while (t < 1f)
         {

@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      focused_bulb_0: 7585790791179134076
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -512,7 +512,9 @@ public class ActiveCharPanel : MonoBehaviour
         evt.Set("Targets", selectedTargets); 
         EventManager.Trigger("OnTargetingEnded", evt);
 
-        StartCoroutine(BattleManager.Instance.ExecuteAbility(currentGameCharacter, selectedAbility, selectedTargets));
+        // Build command and send to match controller
+        var cmd = new UseAbilityCommand(currentGameCharacter, selectedAbility, selectedTargets);
+        MatchController.Instance.HandleUseAbility(cmd);
 
         ClearTargetingState();
     }
@@ -573,7 +575,8 @@ public class ActiveCharPanel : MonoBehaviour
         evt.Set("Character", currentGameCharacter);
         EventManager.Trigger("OnTurnSkipped", evt);
 
-        TurnManager.Instance.AdvanceTurn(); 
+        var cmd = new SkipTurnCommand(currentGameCharacter);
+        MatchController.Instance.HandleSkipTurn(cmd);
     }
 
 

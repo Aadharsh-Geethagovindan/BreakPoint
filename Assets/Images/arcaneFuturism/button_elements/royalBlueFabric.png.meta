@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      royalBlueFabric_0: -8815032852573324858
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -21,3 +21,5 @@ UserSettings/
 *.VC.db
 .DS_Store
 *.log
+Assets/Mirror/
+Assets/Mirror*/**

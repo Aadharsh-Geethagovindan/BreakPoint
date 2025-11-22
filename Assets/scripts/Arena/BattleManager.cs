@@ -15,6 +15,8 @@ public class BattleManager : MonoBehaviour
     private GameCharacter currentCharacter => TurnManager.Instance.GetCurrentCharacter();
 
     private List<GameCharacter> charactersInOrder = new List<GameCharacter>();
+    private Dictionary<int, GameCharacter> characterById = new Dictionary<int, GameCharacter>();
+
 
     [SerializeField] private GameObject characterCardPrefab;
     [SerializeField] private Transform characterHolder;
@@ -85,11 +87,36 @@ public class BattleManager : MonoBehaviour
         }
 
         charactersInOrder = allCharacters.OrderByDescending(c => c.Speed).ToList();
+
+        AssignCharacterIds();
     }
 
+    
+    private void AssignCharacterIds()
+    {
+        characterById.Clear();
+        int nextId = 1; // or 0, your choice, just be consistent
 
+        foreach (var ch in allCharacters)
+        {
+            ch.SetId(nextId);
+            characterById[nextId] = ch;
+            nextId++;
+        }
+    }
+
+    public GameCharacter GetCharacterById(int id)
+    {
+        characterById.TryGetValue(id, out var character);
+        return character;
+    }
     public IEnumerator ExecuteAbility(GameCharacter user, Ability ability, List<GameCharacter> targets)
     {
+        var result = new AbilityResult
+        {
+            CasterId = user.Id,
+            AbilityType = ability.AbilityType
+        };
         // Defensive copy so UI mutations don't affect us during yields
         var targetsCopy = (targets != null) ? new List<GameCharacter>(targets) : new List<GameCharacter>();
 
@@ -108,6 +135,17 @@ public class BattleManager : MonoBehaviour
         var resolvedDict = new Dictionary<GameCharacter, bool>(resolutions.Count);
         foreach (var r in resolutions) resolvedDict[r.Target] = r.WillHit;
 
+        foreach (var hr in resolutions)
+        {
+            var tr = new TargetResult
+            {
+                TargetId = hr.Target.Id,
+                Hit = hr.WillHit
+            };
+
+            result.Targets.Add(tr);
+        }
+
         // VISUALS 
         if (targetsCopy.Count > 0 && ShouldFireProjectile(ability))
             yield return StartCoroutine(AnimationManager.Instance.PlayVolley(user, resolutions, ability.DamageType));
@@ -120,6 +158,29 @@ public class BattleManager : MonoBehaviour
         ability.CustomDamageOverride = null;
 
         HandleImmediateAbilityEffects(ability, user, targetsCopy);
+
+        //Networking info to capture
+        foreach (var tr in result.Targets)
+        {
+            var target = characterById[tr.TargetId];
+
+            // Damage: your system records last damage taken
+            tr.Damage = target.LastDamageTaken;
+
+            // HP after effects
+            tr.HPAfter = target.HP;
+
+            // Status Effects
+            foreach (var se in target.StatusEffects)
+            {
+                tr.AppliedEffects.Add(new AppliedStatusEffectResult
+                {
+                    EffectType = se.Type.ToString(),
+                    Duration = se.Duration,
+                    Magnitude = se.Value
+                });
+            }
+        }
 
         var evt = new GameEventData()
             .Set("User", user)
@@ -142,6 +203,8 @@ public class BattleManager : MonoBehaviour
             if (ability.Shielding > 0) summary += $"{t.Name} gained a shield of {ability.Shielding}\n";
         }
         GameUI.Announce(summary.Trim());
+        var snapshot = BuildGameStateSnapshot();
+        //Debug.Log($"[Snapshot] After ability, Round {snapshot.RoundNumber}, CurrentCharId {snapshot.CurrentCharacterId}");
 
         UIAnnouncer.Instance.DelayedAnnounceAndAdvance($"{TurnManager.Instance.PeekNextCharacter().Name} is choosing a move.");
 
@@ -151,6 +214,8 @@ public class BattleManager : MonoBehaviour
             CharacterCardUI card = charPanel.FindCardForCharacter(t);
             if (card != null) card.RefreshStatusEffects(t);
         }
+
+        EventManager.Trigger("OnExecuteAbility", result);
     }
 
 
@@ -299,6 +364,67 @@ public class BattleManager : MonoBehaviour
     public List<GameCharacter> GetAllAliveCharacters()
     {
         return charactersInOrder.Where(c => !c.IsDead).ToList();
+    }
+
+    public GameStateSnapshot BuildGameStateSnapshot()
+    {
+        var snapshot = new GameStateSnapshot();
+
+        // You probably track this in TurnManager; we’ll hook that in Step 5
+        snapshot.RoundNumber = TurnManager.Instance.GetCurrentRound(); 
+        snapshot.CurrentCharacterId = TurnManager.Instance.GetCurrentCharacter()?.Id ?? -1;
+        snapshot.CurrentTeamId = TurnManager.Instance.GetCurrentCharacter()?.TeamId ?? -1;
+
+        foreach (var ch in allCharacters)
+        {
+            var cs = new CharacterState
+            {
+                Id = ch.Id,
+                Name = ch.Name,
+                TeamId = ch.TeamId,
+                HP = ch.HP,
+                MaxHP = ch.MaxHP,
+                SigCharge = ch.Charge,          // or whatever field
+                SigChargeRequired = ch.SigChargeReq, // adjust to your actual name
+                IsDead = ch.HP <= 0,
+                IsStunned = ch.HasStatusEffect(StatusEffectType.Stun) // example
+            };
+
+            // Status effects
+            foreach (var se in ch.StatusEffects)
+            {
+                var seState = new StatusEffectState
+                {
+                    Type = se.Type.ToString(),            // or se.Id / enum name
+                    SourceName = se.Source?.Name,
+                    RemainingTurns = se.Duration,
+                    Magnitude = se.Value
+                };
+                cs.StatusEffects.Add(seState);
+            }
+
+            // Abilities – adapt to your setup
+            foreach (var ability in ch.GetAllAbilities()) // you might need to implement this helper
+            {
+                var aState = new AbilityState
+                {
+                    Name = ability.Name,
+                    AbilityType = ability.AbilityType.ToString(),
+                    CurrentCooldown = ability.CurrentCooldown,
+                    BaseCooldown = ability.BaseCooldown,
+                    IsUsable = ability.IsUsable(ch.Charge) // or replicate your existing logic
+                };
+                cs.Abilities.Add(aState);
+            }
+
+            snapshot.Characters.Add(cs);
+        }
+
+        // Breakpoint info if you want (adapt to your classes)
+        // snapshot.Player1BreakpointValue = AffinityTracker.Instance.GetValueForTeam(1);
+        // snapshot.Player2BreakpointValue = AffinityTracker.Instance.GetValueForTeam(2);
+
+        return snapshot;
     }
 
 }

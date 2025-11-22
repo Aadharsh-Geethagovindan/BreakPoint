@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      battlegroundBG_v2_0: -5731165868813643927
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

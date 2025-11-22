@@ -177,6 +177,9 @@ public class TurnManager : MonoBehaviour
             return;
         }
 
+        var snapshot = BattleManager.Instance.BuildGameStateSnapshot();
+        // For now, just log a quick summary for debugging
+        //Debug.Log($"[Snapshot] Round {snapshot.RoundNumber}, CurrentCharId {snapshot.CurrentCharacterId}, Characters: {snapshot.Characters.Count}");
 
         //activeCharPanel?.DisplayCharacter(currentCharacter);
 
@@ -204,7 +207,7 @@ public class TurnManager : MonoBehaviour
     }
     private void DoAdvanceTurnCore()
     {
-        Debug.Log("Advancing");
+        //Debug.Log("Advancing");
         EventManager.Trigger("OnTurnEnded", currentCharacter);
         TickAndExpireStatusEffects(currentCharacter);
         CharacterCardUI card = activeCharPanel.FindCardForCharacter(currentCharacter);

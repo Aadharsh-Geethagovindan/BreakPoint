@@ -209,7 +209,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      downChevron_0: 2032626511235566722
+      downChevron_1: 7517499103543796213
+      downChevron_2: -1695902342334384896
+      downChevron_3: 7084470245537087875
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
