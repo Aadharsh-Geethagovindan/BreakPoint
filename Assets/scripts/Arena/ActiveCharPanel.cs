@@ -453,6 +453,21 @@ public class ActiveCharPanel : MonoBehaviour
         return null;
     }
 
+    public CharacterCardUI FindCardForCharacterId(int characterId)
+    {
+        foreach (var kvp in cardLookup)
+        {
+            var ch = kvp.Key;
+            if (ch != null && ch.Id == characterId)
+                return kvp.Value;
+        }
+
+        Debug.LogWarning($"Card for characterId {characterId} not found.");
+        return null;
+    }
+
+   
+
     public void RegisterCard(GameCharacter character, CharacterCardUI cardUI)
     {
         if (!cardLookup.ContainsKey(character))

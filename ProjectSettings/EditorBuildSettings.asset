@@ -20,6 +20,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/EndGame.unity
     guid: 2546db7e28af4ca4d967529bc1ec9830
+  - enabled: 1
+    path: Assets/Scenes/Lobby.unity
+    guid: 14b8668a260b0be4080ff2dcf818c203
+  - enabled: 1
+    path: Assets/Scenes/OnlineCharacterSelect.unity
+    guid: b36a7f41fec3dc646bf09a664b01b65f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

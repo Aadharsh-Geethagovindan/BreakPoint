@@ -610,7 +610,7 @@ public static class PassiveManager
      public static void ClearResurrectionTracker()
     {
         ResurrectionTracker.Clear();
-        Debug.Log("Resurrection tracker cleared.");
+        //Debug.Log("Resurrection tracker cleared.");
     }
 
 

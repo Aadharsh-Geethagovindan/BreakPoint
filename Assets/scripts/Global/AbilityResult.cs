@@ -14,9 +14,8 @@ public class AbilityResult
 public class TargetResult
 {
     public int TargetId;
-    public bool Hit;          
-    public bool Crit;         
-    public int Damage;        // positive for damage, negative for healing
+    public bool Hit;
+    public int Damage;          // from LastDamageTaken
     public int HPAfter;
 
     public List<AppliedStatusEffectResult> AppliedEffects = new List<AppliedStatusEffectResult>();

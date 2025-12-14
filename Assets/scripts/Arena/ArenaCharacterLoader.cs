@@ -99,7 +99,7 @@ public class ArenaCharacterLoader : MonoBehaviour
             float angle = -angleStep * i;
             Vector2 basePosition = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)) * Radius;
             Vector2 position = basePosition + new Vector2(xOffset, yOffset); // shift up
-            Debug.Log($"Card {character.Name} position: {position}");
+            //Debug.Log($"Card {character.Name} position: {position}");
 
             GameObject cardObj = GameObject.Instantiate(characterCardPrefab, characterHolder);
            

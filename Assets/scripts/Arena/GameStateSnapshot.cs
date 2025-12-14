@@ -20,6 +20,8 @@ public class CharacterState
     public List<AbilityState> Abilities = new List<AbilityState>();
 }
 
+
+// NOTE:  ADD isDebuff HERE
 [System.Serializable]
 public class StatusEffectState
 {

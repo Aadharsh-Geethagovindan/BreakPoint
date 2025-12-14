@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using TMPro;
-
+using Mirror;
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance;
@@ -216,6 +216,13 @@ public class BattleManager : MonoBehaviour
         }
 
         EventManager.Trigger("OnExecuteAbility", result);
+        // send result to all connected clients (server only)
+        if (Mirror.NetworkServer.active)
+        {
+            var snap = BuildGameStateSnapshot();
+            Mirror.NetworkServer.SendToAll(new GameStateSnapshotNetMessage { Snapshot = snap });
+            Debug.Log("[ExecuteAbility] Server broadcasted GameStateSnapshot.");
+        }
     }
 
 
@@ -395,7 +402,7 @@ public class BattleManager : MonoBehaviour
             {
                 var seState = new StatusEffectState
                 {
-                    Type = se.Type.ToString(),            // or se.Id / enum name
+                    Type = se.GetIconName(),            // or se.Id / enum name
                     SourceName = se.Source?.Name,
                     RemainingTurns = se.Duration,
                     Magnitude = se.Value

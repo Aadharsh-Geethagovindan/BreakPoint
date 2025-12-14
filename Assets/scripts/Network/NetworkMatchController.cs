@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using Mirror;
 public class NetworkMatchController : IMatchController
 {
     // This is “server-side” match controller for now (still in same process)
@@ -13,25 +13,42 @@ public class NetworkMatchController : IMatchController
     // Called by the local client UI
     public void HandleUseAbility(UseAbilityCommand command)
     {
-        if (command == null)
-            return;
+        if (command == null) return;
 
-        // CLIENT SIDE: convert to ID-based data
         var data = command.ToData();
 
-        // Here, in a real network setup, you would send `data` to the server.
-        // For now, simulate server receive locally:
+        if (NetworkClient.active)
+        {
+            Debug.Log("NetworkMatchController: sending UseAbilityNetMessage to server.");
+            var msg = new UseAbilityNetMessage { Data = data };
+            NetworkClient.Send(msg);
+            return;
+        }
+
+        // Offline / editor-only fallback
+        Debug.LogWarning("NetworkMatchController: NetworkClient inactive, using local simulation.");
         SimulateServerReceiveUseAbility(data);
     }
 
     public void HandleSkipTurn(SkipTurnCommand command)
     {
-        if (command == null)
-            return;
+        if (command == null) return;
 
         var data = command.ToData();
+
+        if (NetworkClient.active)
+        {
+            Debug.Log("NetworkMatchController: sending SkipTurnNetMessage to server.");
+            var msg = new SkipTurnNetMessage { Data = data };
+            NetworkClient.Send(msg);
+            return;
+        }
+
+        Debug.LogWarning("NetworkMatchController: NetworkClient inactive, using local simulation.");
         SimulateServerReceiveSkipTurn(data);
     }
+
+  
 
     // “Server” receive path (still local for now)
     private void SimulateServerReceiveUseAbility(UseAbilityCommandData data)

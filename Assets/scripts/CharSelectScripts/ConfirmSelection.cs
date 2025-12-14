@@ -100,7 +100,7 @@ public class ConfirmSelection : MonoBehaviour
 
         if (selectedCharactersP1.Count >= MaxSelectionsPerPlayer && selectedCharactersP2.Count >= MaxSelectionsPerPlayer)
         {
-            DebugSelections();
+            //DebugSelections();
             SaveSelectedCharacters();
             SceneManager.LoadScene("Arena");
         }

@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+
 public class CharacterCardUI : MonoBehaviour
 {
     public Image outlineImage;
@@ -159,6 +161,20 @@ public class CharacterCardUI : MonoBehaviour
         }
     }
 
+    public void RefreshStatusEffectsFromSnapshot(List<StatusEffectState> statusStates)
+    {
+        if (setRecent)
+        {
+            statusEffectDisplay.recentStatusImage = GameObject.Find("RecentStatusImage")?.GetComponent<Image>();
+            setRecent = false;
+        }
+
+        if (statusEffectDisplay != null)
+        {
+            statusEffectDisplay.UpdateStatusEffectDisplayFromSnapshot(statusStates);
+        }
+    }
+
     public IEnumerator MoveToPosition(Vector2 targetPos, float duration)
     {
         RectTransform rectTransform = GetComponent<RectTransform>();
@@ -180,6 +196,16 @@ public class CharacterCardUI : MonoBehaviour
     {
         boundCharacter = character;
         if (speedRollText != null) speedRollText.text = ""; // clear at bind
+    }
+
+    public void ApplySnapshotHP(int hp, int maxHp)
+    {
+        if (HPBar == null) return;
+
+        var barController = HPBar.GetComponent<HPBarController>();
+        if (barController == null) return;
+
+        barController.ApplySnapshotHP(hp, maxHp);
     }
 
     private void HandleSpeedRoll(object data)

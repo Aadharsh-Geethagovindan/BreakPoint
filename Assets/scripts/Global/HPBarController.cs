@@ -15,6 +15,10 @@ public class HPBarController : MonoBehaviour
     public Color highHPColor = new Color(1f, 0.84f, 0f);  // Gold
     public Color lowHPColor = new Color(0.54f, 0f, 0.54f); // Violet
 
+    private bool useSnapshotOverride = false;
+    private int snapshotHP;
+    private int snapshotMaxHP;
+
     public void Initialize(GameCharacter character)
     {
         this.character = character;
@@ -23,6 +27,9 @@ public class HPBarController : MonoBehaviour
 
     private void Update()
     {
+        if (useSnapshotOverride)
+        return;
+        
         if (character == null) return;
         UpdateBar();
     }
@@ -56,5 +63,23 @@ public class HPBarController : MonoBehaviour
                 shieldSlider.gameObject.SetActive(false);
             }
 
+    }
+
+    public void ApplySnapshotHP(int hp, int maxHp)
+    {
+        useSnapshotOverride = true;
+        snapshotHP = hp;
+        snapshotMaxHP = maxHp;
+
+        if (hpSlider != null)
+        {
+            hpSlider.maxValue = maxHp;
+            hpSlider.value = hp;
+        }
+
+        if (hpText != null)
+        {
+            hpText.text = $"{hp}/{maxHp}";
+        }
     }
 }
