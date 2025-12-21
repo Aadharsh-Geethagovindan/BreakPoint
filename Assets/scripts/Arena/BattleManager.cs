@@ -45,52 +45,91 @@ public class BattleManager : MonoBehaviour
     }
 
 
-    public void InitializeBattle(CharacterDataArray allCharacterData)
+   public void InitializeBattle(CharacterDataArray allCharacterData)
     {
         allCharacters = new List<GameCharacter>();
+        characterById.Clear();
 
-        // --- Build Player 1 roster and tag TeamId=1 ---
+        // --- Build roster from GameData (this will already be populated for online by ArenaCharacterLoader) ---
         foreach (var cd in GameData.SelectedCharactersP1)
         {
             var gc = CharacterFactory.CreateCharacterByName(cd.name, allCharacterData);
-            if (gc != null)
+            if (gc == null)
             {
-                gc.SetTeam(1);
-                allCharacters.Add(gc);
-                //Debug.Log($"[Init] P1 -> {gc.Name} Team={gc.TeamId} hash={gc.GetHashCode()}");
+                Debug.LogError($"Could not create character: {cd.name}");
+                continue;
             }
-            else Debug.LogError($"Could not create character: {cd.name}");
+
+            gc.SetTeam(1); // local default; online will overwrite from roster mapping below
+            allCharacters.Add(gc);
         }
 
-        // --- Build Player 2 roster and tag TeamId=2 ---
         foreach (var cd in GameData.SelectedCharactersP2)
         {
             var gc = CharacterFactory.CreateCharacterByName(cd.name, allCharacterData);
-            if (gc != null)
+            if (gc == null)
             {
-                gc.SetTeam(2);
-                allCharacters.Add(gc);
-                //Debug.Log($"[Init] P2 -> {gc.Name} Team={gc.TeamId} hash={gc.GetHashCode()}");
+                Debug.LogError($"Could not create character: {cd.name}");
+                continue;
             }
-            else Debug.LogError($"Could not create character: {cd.name}");
+
+            gc.SetTeam(2); // local default; online will overwrite from roster mapping below
+            allCharacters.Add(gc);
         }
 
-        // --- Assign allies/enemies strictly by TeamId (never by name) ---
+        // --- Allies/enemies strictly by TeamId ---
         foreach (var c in allCharacters)
         {
+            c.ClearAllies();
+            c.ClearEnemies(); 
+
             foreach (var other in allCharacters)
             {
                 if (other == c) continue;
-                bool sameTeam = (c.TeamId == other.TeamId);
-                if (sameTeam) c.AddAlly(other); else c.AddEnemy(other);
+                if (c.TeamId == other.TeamId) c.AddAlly(other);
+                else c.AddEnemy(other);
             }
         }
 
+        // --- Turn order (same for local + online) ---
         charactersInOrder = allCharacters.OrderByDescending(c => c.Speed).ToList();
 
-        AssignCharacterIds();
-    }
+        // --- ID assignment (DIFFERENCE: online uses roster mapping; local uses sequential IDs) ---
+        if (OnlineMatchData.HasRoster)
+        {
+            // Expect 6 entries: Team1 IDs 1-3, Team2 IDs 4-6
+            var rosterByName = OnlineMatchData.Roster.ToDictionary(r => r.CharacterName, r => r);
 
+            foreach (var ch in allCharacters)
+            {
+                if (!rosterByName.TryGetValue(ch.Name, out var r))
+                {
+                    Debug.LogWarning($"[OnlineRoster] Missing roster entry for {ch.Name}. Falling back to local ID assignment later.");
+                    continue;
+                }
+
+                ch.SetTeam(r.TeamId);
+                ch.SetId(r.CharacterId);
+                characterById[r.CharacterId] = ch;
+            }
+
+            // Safety: if anything wasn't mapped (name mismatch), fall back for those only
+            int nextFallbackId = 1;
+            foreach (var ch in allCharacters)
+            {
+                if (ch.Id != 0) continue;
+
+                while (characterById.ContainsKey(nextFallbackId)) nextFallbackId++;
+                ch.SetId(nextFallbackId);
+                characterById[nextFallbackId] = ch;
+                nextFallbackId++;
+            }
+        }
+        else
+        {
+            AssignCharacterIds(); //   local method (sequential 1..N)
+        }
+    }
     
     private void AssignCharacterIds()
     {
@@ -203,7 +242,7 @@ public class BattleManager : MonoBehaviour
             if (ability.Shielding > 0) summary += $"{t.Name} gained a shield of {ability.Shielding}\n";
         }
         GameUI.Announce(summary.Trim());
-        var snapshot = BuildGameStateSnapshot();
+        //var snapshot = BuildGameStateSnapshot();
         //Debug.Log($"[Snapshot] After ability, Round {snapshot.RoundNumber}, CurrentCharId {snapshot.CurrentCharacterId}");
 
         UIAnnouncer.Instance.DelayedAnnounceAndAdvance($"{TurnManager.Instance.PeekNextCharacter().Name} is choosing a move.");
@@ -216,13 +255,13 @@ public class BattleManager : MonoBehaviour
         }
 
         EventManager.Trigger("OnExecuteAbility", result);
-        // send result to all connected clients (server only)
+        /* send result to all connected clients (server only)
         if (Mirror.NetworkServer.active)
         {
             var snap = BuildGameStateSnapshot();
             Mirror.NetworkServer.SendToAll(new GameStateSnapshotNetMessage { Snapshot = snap });
             Debug.Log("[ExecuteAbility] Server broadcasted GameStateSnapshot.");
-        }
+        }*/
     }
 
 
@@ -377,7 +416,7 @@ public class BattleManager : MonoBehaviour
     {
         var snapshot = new GameStateSnapshot();
 
-        // You probably track this in TurnManager; we’ll hook that in Step 5
+       
         snapshot.RoundNumber = TurnManager.Instance.GetCurrentRound(); 
         snapshot.CurrentCharacterId = TurnManager.Instance.GetCurrentCharacter()?.Id ?? -1;
         snapshot.CurrentTeamId = TurnManager.Instance.GetCurrentCharacter()?.TeamId ?? -1;
@@ -391,10 +430,10 @@ public class BattleManager : MonoBehaviour
                 TeamId = ch.TeamId,
                 HP = ch.HP,
                 MaxHP = ch.MaxHP,
-                SigCharge = ch.Charge,          // or whatever field
-                SigChargeRequired = ch.SigChargeReq, // adjust to your actual name
+                SigCharge = ch.Charge,          
+                SigChargeRequired = ch.SigChargeReq, 
                 IsDead = ch.HP <= 0,
-                IsStunned = ch.HasStatusEffect(StatusEffectType.Stun) // example
+                IsStunned = ch.HasStatusEffect(StatusEffectType.Stun) 
             };
 
             // Status effects
@@ -427,9 +466,7 @@ public class BattleManager : MonoBehaviour
             snapshot.Characters.Add(cs);
         }
 
-        // Breakpoint info if you want (adapt to your classes)
-        // snapshot.Player1BreakpointValue = AffinityTracker.Instance.GetValueForTeam(1);
-        // snapshot.Player2BreakpointValue = AffinityTracker.Instance.GetValueForTeam(2);
+        
 
         return snapshot;
     }

@@ -46,6 +46,22 @@ public class ArenaCharacterLoader : MonoBehaviour
 
     private void FetchSelectedCharacters()
     {
+        if (OnlineMatchData.HasRoster)
+        {
+            // Convert roster -> GameData.SelectedCharacters lists (by name)
+            GameData.SelectedCharactersP1 = new List<CharacterData>();
+            GameData.SelectedCharactersP2 = new List<CharacterData>();
+
+            foreach (var e in OnlineMatchData.Roster.OrderBy(r => r.CharacterId))
+            {
+                var match = FindCharacterByName(e.CharacterName);
+                if (match == null) continue;
+
+                if (e.TeamId == 1) GameData.SelectedCharactersP1.Add(match);
+                else GameData.SelectedCharactersP2.Add(match);
+            }
+        }
+        
         if (characterDataArray == null || characterDataArray.characters == null)
         {
             Debug.LogError("Character Data not loaded properly.");

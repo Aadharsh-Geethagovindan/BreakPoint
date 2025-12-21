@@ -50,6 +50,12 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
+        // Online pure client: do not run the simulation
+        if (Mirror.NetworkClient.active && !Mirror.NetworkServer.active)
+        {
+            Debug.Log("[TurnManager] Client-only instance: not starting turn system.");
+            return;
+        }
         StartCoroutine(InitializeTurnSystem());
     }
 
@@ -86,6 +92,7 @@ public class TurnManager : MonoBehaviour
 
         //  Apply one-time passives
         PassiveManager.OnGameStart(charactersInOrder);
+        BroadcastSnapshotIfServer("InitializeTurnSystem complete");
         StartCoroutine(StartNewRound()); // Begin first round
     }
 
@@ -125,7 +132,7 @@ public class TurnManager : MonoBehaviour
         {
             roundText.text = $"Round {currentRound}";
         }
-
+        BroadcastSnapshotIfServer($"StartNewRound end (round {currentRound})");
         currentCharacterIndex = 0;
         StartTurn();
     }
@@ -176,12 +183,11 @@ public class TurnManager : MonoBehaviour
             AdvanceTurn(); // Skip to next alive character
             return;
         }
-
-        var snapshot = BattleManager.Instance.BuildGameStateSnapshot();
         // For now, just log a quick summary for debugging
         //Debug.Log($"[Snapshot] Round {snapshot.RoundNumber}, CurrentCharId {snapshot.CurrentCharacterId}, Characters: {snapshot.Characters.Count}");
 
         //activeCharPanel?.DisplayCharacter(currentCharacter);
+        BroadcastSnapshotIfServer("StartTurn");
 
         if (currentCharacter.HasStatusEffect(StatusEffectType.Stun))
         {
@@ -191,10 +197,17 @@ public class TurnManager : MonoBehaviour
             return;
         }
 
+        
+
     }
 
     public void AdvanceTurn()
     {
+        if (Mirror.NetworkClient.active && !Mirror.NetworkServer.active) //backup guard for network client
+        {
+            Debug.Log("[TurnManager] Client-only: ignoring AdvanceTurn().");
+            return;
+        }
         if (breakpointLocked)
         {
             // remember that someone *wanted* to advance; we'll do it when resolved
@@ -435,6 +448,16 @@ public class TurnManager : MonoBehaviour
             pendingAdvance = false;
             DoAdvanceTurnCore();
         }
+    }
+
+    private void BroadcastSnapshotIfServer(string context)
+    {
+        if (!Mirror.NetworkServer.active) return;
+
+        var snap = BattleManager.Instance.BuildGameStateSnapshot();
+        Mirror.NetworkServer.SendToAll(new GameStateSnapshotNetMessage { Snapshot = snap });
+
+        Debug.Log($"[TurnManager] Server broadcasted snapshot ({context}).");
     }
 
 }

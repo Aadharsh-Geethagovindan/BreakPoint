@@ -1,6 +1,6 @@
 using Mirror;
 using UnityEngine;
-
+using System.Collections.Generic;
 public class BreakpointNetworkManager : NetworkManager
 {
     [Header("Breakpoint")]
@@ -9,6 +9,7 @@ public class BreakpointNetworkManager : NetworkManager
     private ActiveCharPanel activeCharPanel;
     public int ConnectedClientCount => Mirror.NetworkServer.active ? Mirror.NetworkServer.connections.Count : 0;
     private bool _handlersRegistered = false;
+    private readonly Dictionary<int, int> _connIdToTeam = new Dictionary<int, int>();
 
 
     private static BreakpointNetworkManager _instance;
@@ -51,10 +52,39 @@ public class BreakpointNetworkManager : NetworkManager
         base.OnServerConnect(conn);
         Debug.Log("Server: client connected, connectionId = " + conn.connectionId);
 
-        // IMPORTANT: mark this client as ready so it receives spawned objects
         NetworkServer.SetClientReady(conn);
+
+        int teamId = AssignTeamForConnection(conn);
+
+        conn.Send(new AssignTeamNetMessage { TeamId = teamId });
+        Debug.Log($"Server: assigned Team {teamId} to connectionId={conn.connectionId}");
     }
 
+    public override void OnStartHost()
+    {
+        base.OnStartHost();
+        OnlinePlayerIdentity.SetTeam(1);
+        Logger.Instance?.PostLog("[Net] Host is TeamId=1", LogType.Status);
+        Debug.Log("Host: TeamId=1");
+    }
+
+    private int AssignTeamForConnection(NetworkConnectionToClient conn)
+    {
+        // If already assigned (reconnect), return existing
+        if (_connIdToTeam.TryGetValue(conn.connectionId, out int existing))
+            return existing;
+
+        // Host's local client connection should be Team 1
+        if (conn == NetworkServer.localConnection)
+        {
+            _connIdToTeam[conn.connectionId] = 1;
+            return 1;
+        }
+
+        // First remote client becomes Team 2 (2-player only)
+        _connIdToTeam[conn.connectionId] = 2;
+        return 2;
+    }
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
         Debug.Log("Server: client disconnected, connectionId = " + conn.connectionId);
@@ -66,8 +96,13 @@ public class BreakpointNetworkManager : NetworkManager
         base.OnStartClient();
         Debug.Log($"Client: starting, connecting to {networkAddress}:{GetPortString()}");
 
+        NetworkClient.RegisterHandler<AssignTeamNetMessage>(OnAssignTeamMessage);
         NetworkClient.RegisterHandler<AbilityResultNetMessage>(OnAbilityResultMessage);
         NetworkClient.RegisterHandler<GameStateSnapshotNetMessage>(OnSnapshotMessage);
+        NetworkClient.RegisterHandler<DraftStateNetMessage>(OnlineDraftClient.OnDraftStateMessage);
+        NetworkClient.RegisterHandler<RosterMappingNetMessage>(OnRosterMappingMessage);
+
+
     }
 
     public override void OnClientConnect()
@@ -79,6 +114,7 @@ public class BreakpointNetworkManager : NetworkManager
     public override void OnClientDisconnect()
     {
         Debug.Log("Client: disconnected from server.");
+        OnlinePlayerIdentity.SetTeam(-1);
         base.OnClientDisconnect();
     }
 
@@ -96,6 +132,8 @@ public class BreakpointNetworkManager : NetworkManager
 
         NetworkServer.RegisterHandler<UseAbilityNetMessage>(OnUseAbilityMessage, false);
         NetworkServer.RegisterHandler<SkipTurnNetMessage>(OnSkipTurnMessage, false);
+        NetworkServer.RegisterHandler<PickRequestNetMessage>(OnPickRequestMessage, false);
+
 
         _handlersRegistered = true;
     }
@@ -199,4 +237,37 @@ public class BreakpointNetworkManager : NetworkManager
         Logger.Instance.PostLog(summary, LogType.Status);
     }
 
+    private void OnAssignTeamMessage(AssignTeamNetMessage msg)
+    {
+        OnlinePlayerIdentity.SetTeam(msg.TeamId);
+        Logger.Instance?.PostLog($"[Net] Assigned TeamId={msg.TeamId}", LogType.Status);
+        Debug.Log($"Client: assigned TeamId={msg.TeamId}");
+    }
+
+    private void OnPickRequestMessage(NetworkConnectionToClient conn, PickRequestNetMessage msg)
+    {
+        // forwarded to the server-side draft controller in OnlineCharacterSelect scene
+        NetworkDraftController.ServerInstance?.HandlePickRequest(conn, msg.CharacterName);
+    }
+    
+    private void OnRosterMappingMessage(RosterMappingNetMessage msg)
+    {
+        OnlineMatchData.Clear();
+
+        if (msg.Entries != null)
+        {
+            foreach (var e in msg.Entries)
+            {
+                OnlineMatchData.Roster.Add(new OnlineMatchData.RosterEntry
+                {
+                    CharacterId = e.CharacterId,
+                    TeamId = e.TeamId,
+                    SlotIndex = e.SlotIndex,
+                    CharacterName = e.CharacterName
+                });
+            }
+        }
+
+        Logger.Instance?.PostLog($"[Net] Roster received: {OnlineMatchData.Roster.Count} entries", LogType.Status);
+    }
 }
