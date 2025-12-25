@@ -54,6 +54,7 @@ public class TurnManager : MonoBehaviour
         if (Mirror.NetworkClient.active && !Mirror.NetworkServer.active)
         {
             Debug.Log("[TurnManager] Client-only instance: not starting turn system.");
+            StartCoroutine(InitializeClientViewOnly());
             return;
         }
         StartCoroutine(InitializeTurnSystem());
@@ -70,7 +71,7 @@ public class TurnManager : MonoBehaviour
 
         // Initialize characters
         BattleManager.Instance.InitializeBattle(loader.GetCharacterDataArray());
-        charactersInOrder = BattleManager.Instance.GetTurnOrder();
+        InitializeTurnOrder(BattleManager.Instance.GetAllCharacters());
 
         if (charactersInOrder == null || charactersInOrder.Count == 0)
         {
@@ -187,17 +188,18 @@ public class TurnManager : MonoBehaviour
         //Debug.Log($"[Snapshot] Round {snapshot.RoundNumber}, CurrentCharId {snapshot.CurrentCharacterId}, Characters: {snapshot.Characters.Count}");
 
         //activeCharPanel?.DisplayCharacter(currentCharacter);
-        BroadcastSnapshotIfServer("StartTurn");
+        
 
         if (currentCharacter.HasStatusEffect(StatusEffectType.Stun))
         {
             GameUI.Announce($"{currentCharacter.Name} is stunned and cannot act.");
             UIAnnouncer.Instance.DelayedAnnounceAndAdvance($"{TurnManager.Instance.PeekNextCharacter().Name} is choosing a move.");
             EventManager.Trigger("OnTurnSkipped", currentCharacter);
+            AdvanceTurn();
             return;
         }
 
-        
+        BroadcastSnapshotIfServer("StartTurn");
 
     }
 
@@ -246,6 +248,15 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    public void InitializeTurnOrder(List<GameCharacter> roster)
+    {
+        charactersInOrder = roster
+            .OrderByDescending(c => c.Speed)
+            .ToList();
+
+        currentCharacterIndex = 0;
+    }
+    public List<GameCharacter> GetTurnOrder() => charactersInOrder;
     public GameCharacter GetCurrentCharacter() => currentCharacter;
 
     public int GetCurrentRound() => currentRound;
@@ -458,6 +469,65 @@ public class TurnManager : MonoBehaviour
         Mirror.NetworkServer.SendToAll(new GameStateSnapshotNetMessage { Snapshot = snap });
 
         Debug.Log($"[TurnManager] Server broadcasted snapshot ({context}).");
+    }
+
+    public void ApplyAuthoritativeTurnOrder(List<int> orderedIds)
+    {
+        if (orderedIds == null || orderedIds.Count == 0) return;
+        if (charactersInOrder == null || charactersInOrder.Count == 0) return;
+
+        // Build lookup from local objects
+        var byId = new Dictionary<int, GameCharacter>();
+        foreach (var ch in charactersInOrder)
+            byId[ch.Id] = ch;
+
+        // Rebuild list in server order
+        var newOrder = new List<GameCharacter>(orderedIds.Count);
+        foreach (var id in orderedIds)
+            if (byId.TryGetValue(id, out var ch))
+                newOrder.Add(ch);
+
+        // Safety: if something didn't match, don't destroy the list
+        if (newOrder.Count == 0) return;
+
+        charactersInOrder = newOrder;
+
+        // Keep currentCharacterIndex consistent with currentCharacter if you want,
+        // but at minimum ensure it’s in range.
+        if (currentCharacterIndex >= charactersInOrder.Count)
+            currentCharacterIndex = 0;
+    }
+
+    private IEnumerator InitializeClientViewOnly() 
+    {
+        ArenaCharacterLoader loader = Object.FindFirstObjectByType<ArenaCharacterLoader>();
+        while (loader == null || loader.GetCharacterDataArray() == null || loader.GetCharacterDataArray().characters == null)
+        {
+            loader = Object.FindFirstObjectByType<ArenaCharacterLoader>();
+            yield return null;
+        }
+
+        // Build local character objects for UI binding (IDs/teams come from OnlineMatchData)
+        BattleManager.Instance.InitializeBattle(loader.GetCharacterDataArray());
+        InitializeTurnOrder(BattleManager.Instance.GetAllCharacters());
+
+        if (charactersInOrder == null || charactersInOrder.Count == 0)
+        {
+            Debug.LogError("[TurnManager] Client view init: no characters.");
+            yield break;
+        }
+
+        // Create UI cards + register them in ActiveCharPanel
+        loader.CreateCharacterCards(charactersInOrder);
+
+        activeCharPanel = Object.FindFirstObjectByType<ActiveCharPanel>();
+        if (activeCharPanel == null)
+        {
+            Debug.LogError("[TurnManager] Client view init: ActiveCharPanel not found.");
+            yield break;
+        }
+
+        
     }
 
 }

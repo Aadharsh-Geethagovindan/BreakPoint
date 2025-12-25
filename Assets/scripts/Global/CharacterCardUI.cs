@@ -10,19 +10,34 @@ public class CharacterCardUI : MonoBehaviour
     public Image outlineImage;
     public Image targetedImage;
     public Button cardButton;
+    public TMP_Text nameText;
     private GameCharacter characterRef;
     private Action<GameCharacter> onClickAction;
     public Vector2 ClockPosition { get; set; }
     public Slider shieldSlider; // Reference to the shield slider
     public RectTransform HPBar { get; set; }
-
+   
 
     public StatusEffectDisplay statusEffectDisplay;
 
     public bool setRecent = true;
     private Coroutine _moveRoutine;
-    public TMP_Text speedRollText; // Assign in prefab/inspector
+    public TMP_Text speedRollText; 
     private GameCharacter boundCharacter;
+
+    private Coroutine _activeTurnRoutine;
+    private bool _isActiveTurn;
+
+    [SerializeField] private RectTransform breatheTarget;
+
+    private TMPro.VertexGradient _baseGrad;
+    private TMPro.VertexGradient _pulseGrad;
+    private bool _hasBaseGrad;
+
+// Breathing
+    private Vector3 _baseScale;
+    private Vector3 _pulseScale;
+
 
     void OnEnable()
     {
@@ -32,6 +47,34 @@ public class CharacterCardUI : MonoBehaviour
     void OnDisable()
     {
         EventManager.Unsubscribe("OnSpeedRoll", HandleSpeedRoll);
+    }
+    private void Start()
+    {
+        if (breatheTarget == null)
+            breatheTarget = (RectTransform)transform;
+
+        _baseScale = breatheTarget.localScale;
+        _pulseScale = _baseScale * 1.025f; // subtle
+
+        if (nameText != null)
+        {
+            // Ensure gradient is enabled
+            nameText.enableVertexGradient = true;
+            nameText.colorGradient = new TMPro.VertexGradient(nameText.color);
+
+
+            _baseGrad = nameText.colorGradient;
+            _hasBaseGrad = true;
+
+            // Build a pulse gradient based on your current cyan:
+            // brighten slightly toward white (not neon)
+            Color topL = Color.Lerp(_baseGrad.topLeft, Color.green, 0.55f);
+            Color topR = Color.Lerp(_baseGrad.topRight, Color.green, 0.55f);
+            Color botL = Color.Lerp(_baseGrad.bottomLeft, Color.green, 0.10f);
+            Color botR = Color.Lerp(_baseGrad.bottomRight, Color.green, 0.10f);
+
+            _pulseGrad = new TMPro.VertexGradient(topL, topR, botL, botR);
+        }
     }
 
     public Coroutine StartMoveExclusive(Vector2 targetPos, float duration)
@@ -174,6 +217,41 @@ public class CharacterCardUI : MonoBehaviour
             statusEffectDisplay.UpdateStatusEffectDisplayFromSnapshot(statusStates);
         }
     }
+    private IEnumerator ActiveTurnLoop()
+    {
+        float t = 0f;
+        float t2 = 0f;
+        while (true)
+        {
+            //float pulse = (Mathf.Sin(t * Mathf.PI * 2f) + 1f) * 0.5f; // 0..1
+            float pulse = Mathf.PingPong(t2, 1f);
+            // Name gradient
+            if (nameText != null && _hasBaseGrad)
+            {
+                nameText.colorGradient = LerpGradient(_baseGrad, _pulseGrad, pulse);
+                nameText.SetVerticesDirty(); // force update
+            }
+
+            // Breathing scale
+            if (breatheTarget != null)
+                breatheTarget.localScale = Vector3.Lerp(_baseScale, _pulseScale, pulse);
+
+            t += Time.deltaTime * 0.25f; // slow
+            t2 += Time.deltaTime * 0.85f;
+            yield return null;
+        }
+    }
+
+    private TMPro.VertexGradient LerpGradient(TMPro.VertexGradient a, TMPro.VertexGradient b, float t)
+    {
+        return new TMPro.VertexGradient(
+            Color.Lerp(a.topLeft, b.topLeft, t),
+            Color.Lerp(a.topRight, b.topRight, t),
+            Color.Lerp(a.bottomLeft, b.bottomLeft, t),
+            Color.Lerp(a.bottomRight, b.bottomRight, t)
+        );
+    }
+
 
     public IEnumerator MoveToPosition(Vector2 targetPos, float duration)
     {
@@ -236,6 +314,32 @@ public class CharacterCardUI : MonoBehaviour
     {
         if (speedRollText != null)
             speedRollText.gameObject.SetActive(false);
+    }
+
+    public void SetActiveTurnVisual(bool active)
+    {
+        if (_isActiveTurn == active) return;
+        _isActiveTurn = active;
+
+        if (_activeTurnRoutine != null)
+            StopCoroutine(_activeTurnRoutine);
+
+        if (active)
+            _activeTurnRoutine = StartCoroutine(ActiveTurnLoop());
+        else
+            ResetActiveTurnVisuals();
+    }
+
+    private void ResetActiveTurnVisuals()
+    {
+        if (nameText != null && _hasBaseGrad)
+        {
+            nameText.colorGradient = _baseGrad;
+            nameText.SetVerticesDirty();
+        }
+
+        if (breatheTarget != null)
+            breatheTarget.localScale = _baseScale;
     }
 
 }

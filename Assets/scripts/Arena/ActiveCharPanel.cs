@@ -35,7 +35,7 @@ public class ActiveCharPanel : MonoBehaviour
     public TextMeshProUGUI normalDisplayText;
     public TextMeshProUGUI skillDisplayText;
     public TextMeshProUGUI sigDisplayText;
-
+    private bool cardsRegistered = false;
    
     [Header("Action Area")]
     public Button confirmButton;
@@ -49,6 +49,7 @@ public class ActiveCharPanel : MonoBehaviour
 
     private CharacterCardUI cardUI;
     public Button skipTurnButton;
+    private bool canInteract = true;
 
 
 
@@ -57,13 +58,20 @@ public class ActiveCharPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Subscribe("OnTurnStarted", HandleTurnStarted);
-        EventManager.Subscribe("OnTurnEnded", HandleTurnEnded);
+        if (!MatchTypeService.IsOnline)
+        {
+            EventManager.Subscribe("OnTurnStarted", HandleTurnStarted);
+            EventManager.Subscribe("OnTurnEnded", HandleTurnEnded);
+        }
     }
 
     private void OnDisable()
     {
-        EventManager.Unsubscribe("OnTurnStarted", HandleTurnStarted);
+        if (!MatchTypeService.IsOnline)
+        {
+            EventManager.Unsubscribe("OnTurnStarted", HandleTurnStarted);
+            EventManager.Unsubscribe("OnTurnEnded",HandleTurnEnded);
+        }
     }
 
     private void Start()
@@ -276,6 +284,12 @@ public class ActiveCharPanel : MonoBehaviour
 
     }
 
+    public void SetInteractable(bool value)
+    {
+        move1Button.interactable = value;
+        move2Button.interactable = value;
+        move3Button.interactable = value;
+    }
     private void SetupMoveButton(Button button, int index)
     {
         if (button != null)
@@ -288,6 +302,11 @@ public class ActiveCharPanel : MonoBehaviour
 
     private void UseMove(int index)
     {
+        if (!canInteract)
+        {
+            GameUI.Announce("Not your turn.");
+            return;
+        }
         SoundManager.Instance.PlaySFX("click");
         ClearTargetingState();
 
@@ -310,7 +329,7 @@ public class ActiveCharPanel : MonoBehaviour
 
 
         //Debug.Log($"Selected move: {selectedAbility.Name} ({selectedAbility.AbilityType})");
-        // 🔥 Start target selection
+        //  Start target selection
         BeginTargetSelection();
 
 
@@ -474,6 +493,7 @@ public class ActiveCharPanel : MonoBehaviour
         {
             cardLookup.Add(character, cardUI);
         }
+        cardsRegistered = true;
     }
 
     private void OnTargetClicked(GameCharacter target)
@@ -593,8 +613,23 @@ public class ActiveCharPanel : MonoBehaviour
         var cmd = new SkipTurnCommand(currentGameCharacter);
         MatchController.Instance.HandleSkipTurn(cmd);
     }
+    public bool HasCardsRegistered()
+    {
+        return cardsRegistered && cardLookup.Count > 0;
+    }
+    public void SetCanInteract(bool value)
+    {
+        canInteract = value;
+    }
 
-
+    public void ClearActiveTurnVisuals()
+    {
+        foreach (var kvp in cardLookup)
+        {
+            if (kvp.Value != null)
+                kvp.Value.SetActiveTurnVisual(false);
+        }
+    }
 }
 
 

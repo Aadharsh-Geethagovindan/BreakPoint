@@ -70,7 +70,52 @@ public class Logger : MonoBehaviour
         EventManager.Unsubscribe("OnBreakpointTriggered", HandleBarTriggered);
 
     }
+    public void PostLog(string message, LogType type)
+    {
+        // Always log locally on the instance that called it.
+        PostLogInternal(message, type);
 
+        // If we are the server in an online match, broadcast to clients.
+        if (MatchTypeService.IsOnline && Mirror.NetworkServer.active)
+        {
+            // Send to all clients (including host-client connection too, but that's fine)
+            Mirror.NetworkServer.SendToAll(new LogNetMessage
+            {
+                Message = message,
+                Type = (int)type
+            });
+        }
+    }
+    
+    public void PostLogFromNetwork(string message, LogType type)
+    {
+        PostLogInternal(message, type);
+    }
+    private void PostLogInternal(string message, LogType type)
+    {
+        GameObject entry = Instantiate(logEntryPrefab);
+        entry.transform.SetParent(logContainer.transform, false);
+        entry.transform.SetAsFirstSibling();
+
+        var text = entry.GetComponent<TMP_Text>();
+        text.text = message;
+        text.color = GetColorByType(type);
+
+        logQueue.Enqueue(entry);
+        UpdateTransparency();
+
+        if (logQueue.Count > maxLogs)
+        {
+            GameObject old = logQueue.Dequeue();
+            Destroy(old);
+        }
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)logContainer.transform);
+        Canvas.ForceUpdateCanvases();
+        var scrollRect = GetComponentInParent<ScrollRect>();
+        scrollRect.verticalNormalizedPosition = 1f;
+    }
+    /*
     public void PostLog(string message, LogType type)
     {
         //GameObject entry = Instantiate(logEntryPrefab, logContainer.transform);
@@ -95,7 +140,7 @@ public class Logger : MonoBehaviour
         var scrollRect = GetComponentInParent<ScrollRect>();
         scrollRect.verticalNormalizedPosition = 1f; // 1 = top
 
-    }
+    }*/
 
     private void UpdateTransparency()
     {

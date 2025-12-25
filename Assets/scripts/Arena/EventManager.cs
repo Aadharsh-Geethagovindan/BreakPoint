@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public static class EventManager
 {
     private static Dictionary<string, Action<object>> eventTable = new Dictionary<string, Action<object>>();
+    public static Action<string, object> OnEventTriggered;
+    public static bool SuppressGlobalHooks { get; set; }
 
     public static void Subscribe(string eventName, Action<object> listener)
     {
@@ -21,6 +23,9 @@ public static class EventManager
 
     public static void Trigger(string eventName, object param = null)
     {
+        if (!SuppressGlobalHooks)
+            OnEventTriggered?.Invoke(eventName, param);
+            
         if (eventTable.ContainsKey(eventName))
             eventTable[eventName].Invoke(param);
     }

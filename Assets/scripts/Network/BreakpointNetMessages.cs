@@ -52,3 +52,31 @@ public struct RosterMappingNetMessage : NetworkMessage
         public string CharacterName;
     }
 }
+
+public struct VolleyStartNetMessage : NetworkMessage
+{
+    public int CasterId;
+    public AbilityType AbilityType;   // optional but useful for debugging
+    public DamageType DamageType;     // so client doesn't need to look up ability
+    public int[] TargetIds;
+    public bool[] WillHit;
+}
+
+public struct ReplicatedEventNetMessage : NetworkMessage
+{
+    public string EventName;
+
+    public ReplicatedEventPayloadType PayloadType;
+
+    public int SourceId;     // -1 if unused
+    public int TargetId;     // -1 if unused
+    public int Amount;       // 0 if unused
+    public AbilityType AbilityType;
+    public string Text;      // null/empty if unused
+}
+
+public struct LogNetMessage : NetworkMessage
+{
+    public string Message;
+    public int Type; // cast from your LogType enum
+}

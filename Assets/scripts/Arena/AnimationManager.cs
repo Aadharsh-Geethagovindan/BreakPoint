@@ -37,14 +37,14 @@ public class AnimationManager : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.Subscribe("OnDamageDealt", HandleCardShake);
+        //EventManager.Subscribe("OnDamageDealt", HandleCardShake);
         //EventManager.Subscribe("OnDamageDealt", HandleDamageDealt);
         activeCharPanel = Object.FindFirstObjectByType<ActiveCharPanel>();
     }
 
     private void OnDisable()
     {
-        EventManager.Unsubscribe("OnDamageDealt", HandleCardShake);
+        //EventManager.Unsubscribe("OnDamageDealt", HandleCardShake);
     }
 
     private void HandleCardShake(object eventData)
@@ -192,11 +192,7 @@ public class AnimationManager : MonoBehaviour
         proj.anchoredPosition = end;
 
         yield return StartCoroutine(SoundManager.Instance.FadeOutAndStopLoop(loopHandle, 0.06f));
-        //SoundManager.Instance.PlaySFX("projectile_impact");
-
-        // Optional: tiny impact pulse on hit card (if you have such a method)
-        // var tgtCardUI = to.GetComponent<CharacterCardUI>();
-        // tgtCardUI?.ShakeCard();
+        
 
         Destroy(go);
     }
@@ -247,7 +243,16 @@ public class AnimationManager : MonoBehaviour
             //Debug.Log($"Volley plan → {res.Target.Name} WillHit={res.WillHit}");
             // Fire projectile (parallel)
             remaining++;
-            StartCoroutine(FireAndSignal(from, to, sprite, () => remaining--));
+            var hit = res; // or foreach (var hit in resolutions)
+
+            StartCoroutine(FireAndSignal(from, to, sprite, () =>
+            {
+                remaining--;
+
+                // impact moment: projectile finished, so shake now
+                if (hit.WillHit)
+                    ShakeTargetCard(hit.Target);
+            }));
 
             // Schedule dodge if this one is a miss
             if (!res.WillHit)
@@ -307,6 +312,18 @@ public class AnimationManager : MonoBehaviour
         //     yield return StartCoroutine(targetCard.HPBar.MoveToPosition(original + new Vector2(0, 92f), dodgeReturnDuration));
         // }
     }
+
+    private void ShakeTargetCard(GameCharacter target)
+    {
+        if (target == null) return;
+
+        var panel = Object.FindFirstObjectByType<ActiveCharPanel>();
+        if (panel == null) return;
+
+        var card = panel.FindCardForCharacter(target);
+        if (card != null) card.Shake();
+    }
+
 
 
 }

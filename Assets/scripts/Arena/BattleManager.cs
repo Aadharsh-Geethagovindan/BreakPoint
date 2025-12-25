@@ -14,7 +14,8 @@ public class BattleManager : MonoBehaviour
 
     private GameCharacter currentCharacter => TurnManager.Instance.GetCurrentCharacter();
 
-    private List<GameCharacter> charactersInOrder = new List<GameCharacter>();
+    //private List<GameCharacter> charactersInOrder = new List<GameCharacter>();
+    
     private Dictionary<int, GameCharacter> characterById = new Dictionary<int, GameCharacter>();
 
 
@@ -92,7 +93,7 @@ public class BattleManager : MonoBehaviour
         }
 
         // --- Turn order (same for local + online) ---
-        charactersInOrder = allCharacters.OrderByDescending(c => c.Speed).ToList();
+        //charactersInOrder = allCharacters.OrderByDescending(c => c.Speed).ToList();
 
         // --- ID assignment (DIFFERENCE: online uses roster mapping; local uses sequential IDs) ---
         if (OnlineMatchData.HasRoster)
@@ -185,6 +186,30 @@ public class BattleManager : MonoBehaviour
             result.Targets.Add(tr);
         }
 
+        // send clients volley info
+        if (MatchTypeService.IsOnline && Mirror.NetworkServer.active && targetsCopy.Count > 0 && ShouldFireProjectile(ability))
+        {
+            int n = resolutions.Count;
+            var targetIds = new int[n];
+            var willHit = new bool[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                targetIds[i] = resolutions[i].Target != null ? resolutions[i].Target.Id : -1;
+                willHit[i] = resolutions[i].WillHit;
+            }
+
+            Mirror.NetworkServer.SendToAll(new VolleyStartNetMessage
+            {
+                CasterId = user.Id,
+                AbilityType = ability.AbilityType,
+                DamageType = ability.DamageType,
+                TargetIds = targetIds,
+                WillHit = willHit
+            });
+        }
+
+
         // VISUALS 
         if (targetsCopy.Count > 0 && ShouldFireProjectile(ability))
             yield return StartCoroutine(AnimationManager.Instance.PlayVolley(user, resolutions, ability.DamageType));
@@ -244,6 +269,8 @@ public class BattleManager : MonoBehaviour
         GameUI.Announce(summary.Trim());
         //var snapshot = BuildGameStateSnapshot();
         //Debug.Log($"[Snapshot] After ability, Round {snapshot.RoundNumber}, CurrentCharId {snapshot.CurrentCharacterId}");
+        // Send ability Result to client
+        NetworkServer.SendToAll(new AbilityResultNetMessage { Result = result });
 
         UIAnnouncer.Instance.DelayedAnnounceAndAdvance($"{TurnManager.Instance.PeekNextCharacter().Name} is choosing a move.");
 
@@ -271,10 +298,7 @@ public class BattleManager : MonoBehaviour
         return ability.Damage > 0;
     }
 
-    public List<GameCharacter> GetTurnOrder()
-    {
-        return charactersInOrder;
-    }
+    public List<GameCharacter> GetAllCharacters() => allCharacters;
 
 
     public void HandleDeath(GameCharacter character)
@@ -403,14 +427,10 @@ public class BattleManager : MonoBehaviour
     }
 
     public List<GameCharacter> GetTeam(int teamId)
-    {
-        return charactersInOrder.Where(c => c.TeamId == teamId).ToList(); // NEW
-    }
+        => allCharacters.Where(c => c.TeamId == teamId).ToList();
 
     public List<GameCharacter> GetAllAliveCharacters()
-    {
-        return charactersInOrder.Where(c => !c.IsDead).ToList();
-    }
+        => allCharacters.Where(c => !c.IsDead).ToList();
 
     public GameStateSnapshot BuildGameStateSnapshot()
     {
@@ -462,7 +482,7 @@ public class BattleManager : MonoBehaviour
                 };
                 cs.Abilities.Add(aState);
             }
-
+            snapshot.TurnOrderIds = TurnManager.Instance.GetTurnOrder().Select(c => c.Id).ToList();
             snapshot.Characters.Add(cs);
         }
 

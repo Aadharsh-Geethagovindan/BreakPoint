@@ -53,4 +53,5 @@ public class GameStateSnapshot
     // If you want breakpoint info now:
     public float Player1BreakpointValue;
     public float Player2BreakpointValue;
+    public List<int> TurnOrderIds = new();
 }

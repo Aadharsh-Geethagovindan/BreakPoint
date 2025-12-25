@@ -18,3 +18,10 @@ public static class OnlineMatchData
         Roster.Clear();
     }
 }
+public enum ReplicatedEventPayloadType
+{
+    None = 0,
+    TargetOnly = 1,          // e.g. popups: hit/miss/immune, etc.
+    SourceTargetAmount = 2,  // e.g. damage/heal/shield amounts
+    Text = 3                 // e.g. announcer lines if you want
+}
